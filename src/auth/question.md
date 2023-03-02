@@ -27,7 +27,7 @@ npm i dotenv
 <input type="checkbox" checked > 데이터를 함수로 전달할때, 묶어서 전달하는게 좋을까, 풀어서 전달하는게 좋을까<br>
   - 묶인 데이터가 한가지를 설명할 수 있다면 묶어서 주고 아니라면 풀어주는게 좋다.
 
-<input type="checkbox"  > <br>
+<input type="checkbox"  > swagger사용시 PickType 을 이용중이라면 어떻게 적어야할까? <br>
 <input type="checkbox"  > <br>
 <input type="checkbox"  > <br>
 <input type="checkbox"  > <br>
