@@ -1,10 +1,18 @@
-import { ConflictException, HttpException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
+import { LoginUserDto } from './dtos/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 dotenv.config();
 
@@ -12,8 +20,41 @@ dotenv.config();
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
-  
+
+  /**
+   * 로그인
+   * @userId 로그인아이디
+   * @password 비밀번호
+   */
+  async login({ userId, password }: LoginUserDto) {
+    const userData = await this.getUserByUserId(userId, ['id', 'password']);
+    if (!userData) {
+      throw new NotFoundException('아이디가 존재하지 않습니다.');
+    }
+
+    const isEqual = await bcrypt.compare(password, userData.password);
+    if (isEqual === false) {
+      throw new UnauthorizedException('비밀번호가 다릅니다.');
+    }
+
+    const payload = { id: userData.id };
+    const accessToken = await this.jwtService.signAsync(payload);
+
+    return accessToken;
+  }
+
+  /**
+   * 회원가입
+   * @name 이름
+   * @userId 로그인아이디
+   * @password 비밀번호
+   * @passwordCheck 비밀번호체크
+   * @email 이메일
+   * @phone 휴대폰
+   * @birthDay 생년월일
+   */
   async createUser({
     name,
     userId,
@@ -22,20 +63,19 @@ export class AuthService {
     email,
     phone,
     birthDay,
-  }:CreateUserDto) {
+  }: CreateUserDto) {
     if (password !== passwordCheck) {
       throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
     }
 
-    const existUser =  await this.userRepository.find({where:{userId}});
-    if(existUser.length >0){
+    const userData = await this.getUserByUserId(userId, ['userId']);
+    if (userData) {
       throw new ConflictException('아이디가 존재합니다.');
     }
-    
+
     const saltRound = process.env.HASH_SALT_OR_ROUND;
-    const passwordCopy  = await bcrypt.hash(password, Number.parseInt(saltRound)??10);
-    
-    console.log(await bcrypt.compare(password, passwordCopy));
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
+
     const { identifiers } = await this.userRepository.insert({
       name,
       userId,
@@ -46,5 +86,16 @@ export class AuthService {
     });
 
     return { id: identifiers[0].id };
+  }
+
+  /** userId로 원하는 컬럼 불러오기
+   * @userId 로그인아이디
+   * @selects select하고싶은 컬럼 string Array로 전달
+   */
+  private async getUserByUserId(userId, selects?) {
+    return await this.userRepository.findOne({
+      select: [...selects],
+      where: { userId, deletedAt: null },
+    });
   }
 }

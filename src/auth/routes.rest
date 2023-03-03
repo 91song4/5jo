@@ -12,3 +12,18 @@ Content-Type: application/json
   "email":"test23@mail.com",
   "birthday": "1930-12-30"
 }
+
+###
+
+POST http://localhost:3000/api/auth/log-in
+Content-Type: application/json
+
+{
+  "userId": "song4",
+  "password": "1234"
+}
+
+###
+
+PUT http://localhost:3000/api/auth/update
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc3NzczNzE5LCJleHAiOjE2Nzc3NzczMTl9.Rm7JsJG_do7K8KOLgSoUBJeKrOT1uIgn1iwaM8CFfXs
