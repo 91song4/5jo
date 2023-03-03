@@ -1,5 +1,17 @@
 // Module
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+
+import { JwtModule } from '@nestjs/jwt';
+
+import { AuthMiddleware } from './auth/auth.middleware';
+import { AuthModule } from './auth/auth.module';
+import { JwtConfigService } from './config/jwt.config.service';
+
 // app
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,15 +26,31 @@ import { CampService } from './camp/camp.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), // 일단 이것은 무조건 가장 위에서!
+    ConfigModule.forRoot({ isGlobal: true }),
     CampModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule], // 주목
+      imports: [ConfigModule],
       useClass: TypeOrmConfigService,
-      inject: [ConfigService], // 주목
+      inject: [ConfigService],
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
+      inject: [ConfigService],
+    }),
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'auth/log-in', method: RequestMethod.POST },
+        { path: 'auth/sign-up', method: RequestMethod.POST },
+      )
+      .forRoutes('auth');
+  }
+}
