@@ -1,6 +1,8 @@
 import {
+  CACHE_MANAGER,
   ConflictException,
   HttpException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -13,6 +15,8 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { Cache } from 'cache-manager';
 
 dotenv.config();
 
@@ -21,7 +25,14 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
+
+  async testGetUsers() {
+    const users = await this.userRepository.find();
+    return users;
+  }
 
   /**
    * 로그인
@@ -39,10 +50,10 @@ export class AuthService {
       throw new UnauthorizedException('비밀번호가 다릅니다.');
     }
 
-    const payload = { id: userData.id };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = await this.createAccessToken(userData.id);
+    const refreshToken = await this.createRefreshToken();
 
-    return accessToken;
+    return { accessToken, refreshToken, id: userData.id };
   }
 
   /**
@@ -97,5 +108,14 @@ export class AuthService {
       select: [...selects],
       where: { userId, deletedAt: null },
     });
+  }
+
+  private async createAccessToken(id: number) {
+    const accessToken = await this.jwtService.signAsync({ id });
+    return accessToken;
+  }
+  private async createRefreshToken() {
+    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+    return refreshToken;
   }
 }

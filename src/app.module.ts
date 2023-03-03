@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -11,6 +12,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
+import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 
@@ -27,6 +29,11 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: CacheConfigService,
+    }),
     AuthModule,
   ],
   controllers: [AppController],
@@ -34,12 +41,12 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude(
-        { path: 'auth/log-in', method: RequestMethod.POST },
-        { path: 'auth/sign-up', method: RequestMethod.POST },
-      )
-      .forRoutes('auth');
+    // consumer
+    //   .apply(AuthMiddleware)
+    //   .exclude(
+    //     { path: 'auth/log-in', method: RequestMethod.POST },
+    //     { path: 'auth/sign-up', method: RequestMethod.POST },
+    //   )
+    // .forRoutes('auth');
   }
 }
