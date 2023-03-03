@@ -1,11 +1,18 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, Param } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CampService } from './camp/camp.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly campService: CampService,
+  ) {}
 
   @Get()
   @Render('index')
-  root() {}
+  async managermain() {
+    const camps = await this.campService.getCamps();
+    return { camps };
+  }
 }

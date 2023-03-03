@@ -10,5 +10,6 @@ import { Camp } from './camp.entity';
   imports: [TypeOrmModule.forFeature([Camp])],
   controllers: [CampController],
   providers: [CampService],
+  exports: [CampService],
 })
 export class CampModule {}

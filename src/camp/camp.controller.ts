@@ -7,11 +7,13 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CampService } from './camp.service';
 // dto
-import { CreateCampDto } from './dto/create-camp';
-import { UpdateCampDto } from './dto/update-camp';
+import { CreateCampDto } from './dto/create-camp.dto';
+import { UpdateCampDto } from './dto/update-camp.dto';
 
+@ApiTags('camp')
 @Controller('api')
 export class CampController {
   constructor(private readonly campService: CampService) {}

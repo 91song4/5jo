@@ -10,6 +10,7 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
+import { CampService } from './camp/camp.service';
 
 @Module({
   imports: [

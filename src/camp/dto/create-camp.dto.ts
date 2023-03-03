@@ -3,6 +3,10 @@ import { IsNull } from 'typeorm';
 
 // dto는 시퀄라이즈의 Model을 담당
 export class CreateCampDto {
+  /**
+   * 캠프명
+   * @example 'C1'
+   */
   @IsString()
   readonly name: string;
 
