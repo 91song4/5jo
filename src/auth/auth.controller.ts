@@ -46,7 +46,7 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    return 'hgehe';
+    res.send({ message: '로그인 성공' });
   }
 
   @Post('/sign-up')

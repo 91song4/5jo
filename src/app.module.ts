@@ -41,12 +41,12 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer
-    //   .apply(AuthMiddleware)
-    //   .exclude(
-    //     { path: 'auth/log-in', method: RequestMethod.POST },
-    //     { path: 'auth/sign-up', method: RequestMethod.POST },
-    //   )
-    // .forRoutes('auth');
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'auth/log-in', method: RequestMethod.POST },
+        { path: 'auth/sign-up', method: RequestMethod.POST },
+      )
+    .forRoutes('auth');
   }
 }

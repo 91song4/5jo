@@ -1,8 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +10,7 @@ async function bootstrap() {
   // prefix 예외처리
   // exclude: [{ path: 'health', method: RequestMethod.GET }],
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
 
   // swagger 설정 - 공식문서
   const config = new DocumentBuilder()
@@ -20,11 +21,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  // 로그인시도에 사용해볼 옵션 {
-  // retryAttempts: message retry count(default: 0)
-  // retryDelay: Delay between message retry attempts(ms)(default: 0)
-  // }
 
   await app.listen(3000);
 }
