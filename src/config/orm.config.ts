@@ -11,3 +11,6 @@ export const ormConfig: DataSourceOptions = {
   password: process.env.DATABASE_PASSWORD,
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 };
+
+
+
