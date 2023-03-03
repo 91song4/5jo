@@ -14,7 +14,7 @@ import { CreateCampDto } from './dto/create-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')
-@Controller('api')
+@Controller('')
 export class CampController {
   constructor(private readonly campService: CampService) {}
 
