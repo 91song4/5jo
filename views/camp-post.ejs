@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <title>Page Title</title>
+
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        background-size: cover;
+      }
+
+      .main {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        /* justify-content: flex-start; */
+      }
+      .sidebar {
+        border: black 1px solid;
+        width: 20vh;
+        height: 100vh;
+      }
+      .admin {
+        border: black 1px solid;
+        border-radius: 10px;
+        margin: 20px;
+        padding: 10px;
+        width: 100%;
+      }
+      #dropdownMenuButton1 {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="main">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"
+              >관리자 홈으로</a
+            >
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                시설관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">시설조회</a></li>
+                <li><a class="dropdown-item" href="#">시설등록</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                회원관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">회원조회</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                결제관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">주문조회</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                쿠폰관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">쿠폰조회</a></li>
+                <li><a class="dropdown-item" href="#">쿠폰생성</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">ㅁ</a>
+          </li>
+        </ul>
+      </div>
+      <div class="admin">
+        <table>
+          <th>캠프명</th>
+          <th>캠프타입</th>
+          <th>최대인원수</th>
+          <th>가격</th>
+          <th>상태</th>
+          <th></th>
+          <% for(let i = 0; i<camps.length; i++){ %>
+          <tr>
+            <td><%=camps[i].name%></td>
+            <td><%=camps[i].type%></td>
+            <td><%=camps[i].headcount%></td>
+            <td><%=camps[i].price%></td>
+            <% if (!camps[i].isRepair) { %> <td>정상</td>
+            <% } else {%><td>수리중</td><%}%>
+            <td><button onclick="location.href='/camps/<%=camps[i].id%>'">상세보기</button></td>
+          </tr>
+          <% } %>
+        </table>
+      </div>
+    </section>
+  </body>
+  
+  <script>
+    
+  </script>
+</html>

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
+import { Camp } from 'src/camp/camp.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -14,7 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DATABASE_NAME'),
       username: this.configService.get<string>('DATABASE_USERNAME'),
       password: this.configService.get<string>('DATABASE_PASSWORD'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [Camp],
       logging: false,
       synchronize: false,
     };
