@@ -1,3 +1,4 @@
+// Module
 import {
   CacheModule,
   MiddlewareConsumer,
@@ -5,20 +6,30 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
+
+// app
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+// TypeOrm
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
+
+// camp
+import { CampModule } from './camp/camp.module';
+import { CampService } from './camp/camp.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    CampModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,

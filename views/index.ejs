@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <title>Page Title</title>
+
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        background-size: cover;
+      }
+
+      .main {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        /* justify-content: flex-start; */
+      }
+      .sidebar {
+        border: black 1px solid;
+        width: 20vh;
+        height: 100vh;
+      }
+      .mid {
+        border: black 1px solid;
+        border-radius: 10px;
+        margin: 20px;
+        padding: 10px;
+        width: 100%;
+      }
+      #dropdownMenuButton1 {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="main">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/"
+              >관리자홈</a
+            >
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                시설관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="/">시설조회</a></li>
+                <li><a class="dropdown-item" onclick="camp_create_form()">시설등록</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                회원관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">회원조회</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                결제관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">주문조회</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                쿠폰관리
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">쿠폰조회</a></li>
+                <li><a class="dropdown-item" href="#">쿠폰생성</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">ㅁ</a>
+          </li>
+        </ul>
+      </div>
+      <div class="mid">
+        <div class="camps">
+        <table>
+          <th>캠프명</th>
+          <th>캠프타입</th>
+          <th>최대인원수</th>
+          <th>가격</th>
+          <th>상태</th>
+          <th></th>
+          <% for(let i = 0; i<camps.length; i++){ %>
+          <tr>
+            <td><%=camps[i].name%></td>
+            <td><%=camps[i].type%></td>
+            <td><%=camps[i].headcount%></td>
+            <td><%=camps[i].price%></td>
+            <% if (!camps[i].isRepair) { %> <td>정상</td>
+            <% } else {%><td>수리중</td><%}%>
+            <td><button value="<%=camps[i].id%>" onclick="getCampById(this)">상세보기</button></td>
+          </tr>
+          <% } %>
+        </table>
+        </div>
+      </div>
+      
+    </section>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+  <script>
+    
+
+    function camp_create_form(){
+      $('.camps').hide()
+      let temp_html = `
+                  <div class="camps">
+                    <div">캠프 등록 페이지</div>
+                    이름 : <input type="text" id="name" placeholder="캠프명"/></br>
+                    최대인원 : <input type="number" id="headcount" placeholder="최대인원"/></br>
+                    가격 : <input type="number" id="price" placeholder="가격"/> </br>
+                    유형 : <input type="number" id="type" placeholder="유형"/></br></br>
+                    <button onclick="createCamp()">등록</button>
+                    <button onclick="location.replace('/')">뒤로가기</button>
+                  </div>`
+                  $('.mid').append(temp_html)
+    }
+
+    function createCamp(){
+      let name = $('#name').val()
+      let headcount = $('#headcount').val()
+      let price = $('#price').val()
+      let type = $('#type').val()
+      $.ajax({
+                type: "POST",
+                url: `/api/camps/`,
+                beforeSend: function(xhrObj)
+                {     
+                xhrObj.setRequestHeader("Content-Type","application/json");     
+                xhrObj.setRequestHeader("Accept","application/json"); 
+              },
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                  name:name,
+                  headcount:Number(headcount),
+                  price:Number(price),
+                  type:Number(type),
+                }),
+                  success: function(result) {
+                      if (result) {
+                          alert("완료");
+                      } else {
+                          alert("전송된 값 없음");
+                      }
+                  },
+                  error: function() {
+                      alert("전송 완료");
+                  }
+              })
+            }
+    
+
+    
+    function getCampById(camp){
+    let camp_id = $(camp).val()
+      $.ajax({
+                type: "GET",
+                url: `/api/camps/${camp_id}`,
+                data: {},
+                success: function (response) {
+                  $('.camps').hide()
+                  let id = response[0].id
+                  let name = response[0].name
+                  let headcount = response[0].headcount
+                  let price = response[0].price
+                  let type = response[0].type
+                  let isRepair = response[0].isRepair
+                  if (isRepair === false){
+                    isRepair = "운영중"
+                  } else if(isRepair===true){
+                    isRepair = "점검중"
+                  }
+                  let repairEndDate = response[0].repairEndDate
+                  if(!repairEndDate){
+                    repairEndDate = "점검중이 아닙니다."
+                  }
+                  let temp_html =`
+                  <div class="camps">
+                    <div >번호 : ${id}</div>
+                    <div >이름 : ${name}</div>
+                    <div >최대인원 : ${headcount}</div>
+                    <div >가격 : ${price}</div>
+                    <div >유형 : ${type}</div>
+                    <div >상태 : ${isRepair}</div>
+                    <div >점검종료일 : ${repairEndDate}</div>
+                    <button value="${id}" onclick="camp_update_form(this)">수정하기</button>
+                    <button value="${id}" onclick="deleteCamp(this)">삭제하기</button>
+                    <button onclick="location.replace('/')">뒤로가기</button>
+                  </div>`
+                  $('.mid').append(temp_html)
+                  }
+            })
+          }
+
+  function deleteCamp(camp){
+      let camp_id = $(camp).val()
+      let input = prompt('삭제하시려면 "삭제합니다" 를 입력해 주세요');
+      if(input === "삭제합니다"){
+        $.ajax({
+                type: "DELETE",
+                url: `/api/camps/${camp_id}`,
+                data: {},
+                  success: function(result) {
+                    alert("삭제 완료");
+                      location.replace('/')
+                  },
+                  error: function() {
+                    alert("실패")       
+                  }
+              })
+            }else{
+              alert("일치하지 않습니다")
+            }
+          }
+
+      
+    function camp_update_form(camp){
+            let camp_id = $(camp).val()
+            $.ajax({
+                type: "GET",
+                url: `/api/camps/${camp_id}`,
+                data: {},
+                success: function (response) {
+                  $('.camps').hide()
+                  let id = response[0].id
+                  let name = response[0].name
+                  let headcount = response[0].headcount
+                  let price = response[0].price
+                  let type = response[0].type
+                  let isRepair = response[0].isRepair
+                  let repairEndDate = response[0].repairEndDate
+                  let temp_html = `
+                  <div class="camps">
+                    <div id="id" value="${camp_id}">번호 : ${camp_id}</div>
+                    이름 : <input type="text" id="name" value="${name}"/></br>
+                    최대인원 : <input type="number" id="headcount" value="${headcount}"/></br>
+                    가격 : <input type="number" id="price" value="${price}"/> </br>
+                    유형 : <input type="number" id="type" value="${type}"/></br>
+                    점검상태 : <input type="checkbox" id="isRepair"/></br>
+                    점검종료일 : <input type="date" id="repairEndDate" value="${repairEndDate}"/></br>
+                    <button value="${id}" onclick="updateCamp(this)">수정하기</button>
+                    <button value="${camp_id}" onclick="getCampById(this)">뒤로가기</button>
+                  </div>`
+                  $('.mid').append(temp_html)
+                }
+              })
+            }
+    
+      
+    function updateCamp(camp){
+      let camp_id = $(camp).val()
+      let name = $('#name').val()
+      let headcount = $('#headcount').val()
+      let price = $('#price').val()
+      let type = $('#type').val()
+      let repairEndDate = $('#repairEndDate').val()
+      let isRepair = document.getElementById('isRepair')
+      const is_checked = isRepair.checked;
+      $.ajax({
+                type: "PUT",
+                url: `/api/camps/${camp_id}`,
+                beforeSend: function(xhrObj)
+                {     
+                xhrObj.setRequestHeader("Content-Type","application/json");     
+                xhrObj.setRequestHeader("Accept","application/json"); 
+              },
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                  name:name,
+                  headcount:Number(headcount),
+                  price:Number(price),
+                  type:Number(type),
+                  isRepair:is_checked,
+                  repairEndDate:repairEndDate
+                }),
+                  success: function(result) {
+                      if (result) {
+                          alert("완료");
+                      } else {
+                          alert("전송된 값 없음");
+                      }
+                  },
+                  error: function() {
+                      alert("전송 완료");
+                      location.replace('/')
+                  }
+              })
+            }
+            </script>
+      </html>
+

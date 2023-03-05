@@ -1,15 +1,23 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
+import { RequestMethod } from '@nestjs/common';import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   // prefix 예외처리
-  // exclude: [{ path: 'health', method: RequestMethod.GET }],
-  app.setGlobalPrefix('api');
+
+  app.setGlobalPrefix('api', {
+    exclude: [{ path: '', method: RequestMethod.GET }],
+  });
+
+  app.useStaticAssets(join(__dirname, '..', 'public')); // 정적파일제공 (nest모듈로했으니 안해도된다.)
+  app.setBaseViewsDir(join(__dirname, '..', 'views')); // dir
+  app.setViewEngine('ejs'); // 템플릿 엔진설정
   app.use(cookieParser());
 
   // swagger 설정 - 공식문서
@@ -21,7 +29,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
 
-  await app.listen(3000);
+  console.log(`${port} 서버가 열렸어요`);
 }
 bootstrap();
