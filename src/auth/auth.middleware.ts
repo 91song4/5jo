@@ -27,6 +27,14 @@ export class AuthMiddleware implements NestMiddleware {
     const isAccessTokenValidate = await this.validateToken(accessToken);
     const isRefreshTokenValidate = await this.validateToken(refreshToken);
 
+    const accessTokenId = await this.cacheManager.get(refreshToken);
+
+    if (!accessTokenId) {
+      throw new UnauthorizedException(
+        'Refresh Token의 정보가 서버에 존재하지 않습니다.',
+      );
+    }
+
     if (!isRefreshTokenValidate) {
       throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
     }
