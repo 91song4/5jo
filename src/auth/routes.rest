@@ -28,4 +28,6 @@ Content-Type: application/json
 
 # 캐시 테스트용 getUsers
 GET http://localhost:3000/api/auth/test-auth
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDE0NzkyLCJleHAiOjE2NzgwMTgzOTJ9.EcgElSJuy3UqXR634Jrv_JmU4RQCWxM0muoQceVB6OU; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMTQ3OTIsImV4cCI6MTY3ODA5NzU5Mn0.qX-_SopwcccZJHp1hjoUQzdVxd2eqSUOFE2u5-DyoBQ; Path=/
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDI1NTgxLCJleHAiOjE2NzgwMjkxODF9.8zdT2JpdqLWZ-lWlS07Ztjz9IxZhXUPNEvWxx4lIDcA; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMjU1ODEsImV4cCI6MTY3ODEwODM4MX0.nfVsigVfDskea4DxIqXHzlvZImYIMyyLZEmJ5qGiLbo; Path=/
+
+
