@@ -18,6 +18,6 @@ export class UpdateCampDto {
   @IsBoolean()
   readonly isRepair: boolean;
 
-  // @IsDate()
-  // readonly repairEndDate: null | Date;
+  @IsString()
+  readonly repairEndDate: null | string;
 }

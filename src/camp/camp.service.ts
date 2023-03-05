@@ -48,9 +48,8 @@ export class CampService {
     headcount: number,
     price: number,
     isRepair: boolean,
-    // repairEndDate: Date | null,
+    repairEndDate: string | null,
   ) {
-    const repairEndDate = new Date(2023, 3, 4);
     this.campRepository.update(id, {
       name,
       type,

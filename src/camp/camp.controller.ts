@@ -44,6 +44,7 @@ export class CampController {
   // 캠프 정보 수정
   @Put('/camps/:id')
   updateCamp(@Param('id') campId: number, @Body() data: UpdateCampDto) {
+    console.log(campId, data);
     return this.campService.updateCamp(
       campId,
       data.name,
@@ -51,7 +52,7 @@ export class CampController {
       data.headcount,
       data.price,
       data.isRepair,
-      // data.repairEndDate,
+      data.repairEndDate,
     );
   }
 
