@@ -15,7 +15,6 @@ export class CacheConfigService implements CacheOptionsFactory {
       store: redisStore,
       host: this.configService.get<string>('RERESHTOKEN_HOST'),
       port: this.configService.get<number>('RERESHTOKEN_PORT'),
-      // refreshToken 하루
       ttl: this.configService.get<number>('RERESHTOKEN_EXP'),
       isGlobal: true,
     };

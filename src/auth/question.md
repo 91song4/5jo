@@ -55,6 +55,7 @@ npm i cookie-parser @types/cookie-parser
 - RateLimiterRedis(Rate Limite 와 개념은 같다)
   - refresh token
   - 로그인 시도 횟수 제한(redis 기한을 길게 준다)
+- 토큰 로컬저장과 쿠키저장의 장단점 차이점 공부!!!!!!!!!!
 
 
 <br>

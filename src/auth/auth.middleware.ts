@@ -13,6 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
     private readonly jwtService: JwtService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
+
   async use(req: any, res: any, next: (error?: any) => void) {
     const { accessToken, refreshToken } = req.cookies;
 
@@ -31,7 +32,6 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     if (!isAccessTokenValidate) {
-      // 스트링으로 받는지 체크
       const accessTokenId = await this.cacheManager.get(refreshToken);
 
       if (!accessTokenId) {
