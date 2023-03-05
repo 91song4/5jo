@@ -15,8 +15,6 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { Cache } from 'cache-manager';
 
 dotenv.config();
 
@@ -25,8 +23,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async testGetUsers() {
@@ -51,7 +47,7 @@ export class AuthService {
     }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = this.createRefreshToken();
 
     return { accessToken, refreshToken, id: userData.id };
   }
@@ -114,8 +110,8 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync({ id });
     return accessToken;
   }
-  private async createRefreshToken() {
-    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+  private createRefreshToken() {
+    const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;
   }
 }
