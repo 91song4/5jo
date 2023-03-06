@@ -33,7 +33,7 @@ export class User {
   readonly email: string;
 
   @Column('date')
-  readonly birthDay: Date;
+  readonly birthday: Date;
 
   @CreateDateColumn({ nullable: true })
   readonly createdAt: Date;
