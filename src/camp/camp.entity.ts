@@ -37,4 +37,7 @@ export class Camp {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: null | Date;
 }
