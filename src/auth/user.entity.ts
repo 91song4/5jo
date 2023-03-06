@@ -16,10 +16,10 @@ export class User {
   @Index({ unique: true })
   @Column('varchar', { length: 10 })
   readonly userId: string;
-  
+
   @Column('varchar', { select: false })
   readonly password: string;
-  
+
   @Index({ unique: true })
   @Column('varchar', { length: 10 })
   readonly name: string;
