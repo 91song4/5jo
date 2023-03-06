@@ -10,11 +10,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { User } from './user.entity';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
+
+import { ConfigService } from '@nestjs/config';
+import { Cache } from 'cache-manager';
+import { User } from 'src/users/users.entity';
+
 
 dotenv.config();
 
@@ -69,7 +73,7 @@ export class AuthService {
     passwordCheck,
     email,
     phone,
-    birthDay,
+    birthday,
   }: CreateUserDto) {
     if (password !== passwordCheck) {
       throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
@@ -89,7 +93,7 @@ export class AuthService {
       password,
       email,
       phone,
-      birthDay,
+      birthday,
     });
 
     return { id: identifiers[0].id };

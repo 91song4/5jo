@@ -36,6 +36,8 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
+  // DTO의 유효성 검사 코드
+  app.useGlobalPipes(new ValidationPipe({ transform: true })); // 이 한줄만 넣어주면 됩니다! 잊지마세요!
   console.log(`${port} 서버가 열렸어요`);
 }
 bootstrap();

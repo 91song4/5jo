@@ -15,16 +15,18 @@ import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
 
 // app
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-// TypeOrm
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+// TypeOrm
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
 import { CampService } from './camp/camp.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -46,6 +48,12 @@ import { CampService } from './camp/camp.service';
       useClass: CacheConfigService,
     }),
     AuthModule,
+
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
