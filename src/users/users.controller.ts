@@ -43,7 +43,7 @@ export class UsersController {
       data.phone,
       data.email,
       data.password,
-      data.birthDay,
+      data.birthday,
       data.userId,
     );
   }
@@ -65,7 +65,7 @@ export class UsersController {
       data.phone,
       data.email,
       data.password,
-      data.birthDay,
+      data.birthday,
       data.userId,
     );
   }

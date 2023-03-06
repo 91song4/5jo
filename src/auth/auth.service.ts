@@ -73,7 +73,7 @@ export class AuthService {
     passwordCheck,
     email,
     phone,
-    birthDay,
+    birthday,
   }: CreateUserDto) {
     if (password !== passwordCheck) {
       throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
@@ -93,7 +93,7 @@ export class AuthService {
       password,
       email,
       phone,
-      birthDay,
+      birthday,
     });
 
     return { id: identifiers[0].id };

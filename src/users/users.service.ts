@@ -24,7 +24,7 @@ export class UsersService {
   async getUsersInformation() {
     return await this.userRepository.find({
       where: { deletedAt: null },
-      select: ['id', 'name', 'phone', 'email', 'birthDay', 'userId'],
+      select: ['id', 'userId', 'name', 'phone', 'email'],
     });
   }
 
@@ -32,7 +32,15 @@ export class UsersService {
   async getUsersInformationById(id: number) {
     const userobj = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'createdAt', 'birthDay', 'userId'],
+      select: [
+        'id',
+        'userId',
+        'name',
+        'phone',
+        'email',
+        'birthday',
+        'createdAt',
+      ],
     });
 
     const newTypeuserobj: {
@@ -41,7 +49,7 @@ export class UsersService {
       email: string;
       // createdAt: Date;
       createdIdDate: string;
-      birthDay: Date;
+      birthday: Date;
       userId: string;
     } = {
       name: userobj.name,
@@ -51,7 +59,7 @@ export class UsersService {
       createdIdDate: `${userobj.createdAt.getFullYear()}-${
         userobj.createdAt.getMonth() + 1
       }-${userobj.createdAt.getDate()}`,
-      birthDay: userobj.birthDay,
+      birthday: userobj.birthday,
       userId: userobj.userId,
     };
 
@@ -65,12 +73,12 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
-    birthDay: Date,
+    birthday: Date,
     userId: string,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'createdAt', 'birthDay', 'userId'],
+      select: ['name', 'phone', 'email', 'createdAt', 'birthday', 'userId'],
     });
 
     if (_.isNil(user)) {
@@ -82,7 +90,7 @@ export class UsersService {
       phone,
       email,
       password,
-      birthDay,
+      birthday,
       userId,
     });
   }
@@ -106,7 +114,7 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
-    birthDay: Date,
+    birthday: Date,
     userId: string,
   ) {
     this.userRepository.insert({
@@ -114,7 +122,7 @@ export class UsersService {
       phone,
       email,
       password,
-      birthDay,
+      birthday,
       userId,
     });
   }
