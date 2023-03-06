@@ -5,9 +5,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-
 import { JwtModule } from '@nestjs/jwt';
-
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { JwtConfigService } from './config/jwt.config.service';
@@ -24,6 +22,8 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { CampModule } from './camp/camp.module';
 import { CampService } from './camp/camp.service';
 
+import { OrdersModule } from './orders/orders.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -39,6 +39,7 @@ import { CampService } from './camp/camp.service';
       inject: [ConfigService],
     }),
     AuthModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
