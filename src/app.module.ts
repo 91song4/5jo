@@ -1,5 +1,6 @@
 // Module
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -10,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
+import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
 
 // app
@@ -37,6 +39,11 @@ import { CampService } from './camp/camp.service';
       imports: [ConfigModule],
       useClass: JwtConfigService,
       inject: [ConfigService],
+    }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: CacheConfigService,
     }),
     AuthModule,
   ],

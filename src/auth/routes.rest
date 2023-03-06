@@ -15,6 +15,7 @@ Content-Type: application/json
 
 ###
 
+# 로그인
 POST http://localhost:3000/api/auth/log-in
 Content-Type: application/json
 
@@ -25,5 +26,8 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/api/auth/update
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc3NzczNzE5LCJleHAiOjE2Nzc3NzczMTl9.Rm7JsJG_do7K8KOLgSoUBJeKrOT1uIgn1iwaM8CFfXs
+# 캐시 테스트용 getUsers
+GET http://localhost:3000/api/auth/test-auth
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDI1NTgxLCJleHAiOjE2NzgwMjkxODF9.8zdT2JpdqLWZ-lWlS07Ztjz9IxZhXUPNEvWxx4lIDcA; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMjU1ODEsImV4cCI6MTY3ODEwODM4MX0.nfVsigVfDskea4DxIqXHzlvZImYIMyyLZEmJ5qGiLbo; Path=/
+
+
