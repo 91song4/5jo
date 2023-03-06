@@ -63,6 +63,6 @@ export class CampService {
   // 캠프 삭제
 
   deleteCamp(id: number) {
-    this.campRepository.delete(id);
+    this.campRepository.softDelete(id);
   }
 }
