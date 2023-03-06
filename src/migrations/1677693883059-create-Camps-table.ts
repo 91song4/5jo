@@ -1,4 +1,5 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { table } from 'console';
+import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
 
 export class createCampsTable1677693883059 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -61,6 +62,13 @@ export class createCampsTable1677693883059 implements MigrationInterface {
             type: 'datetime',
             isNullable: true,
             default: 'now()',
+            onUpdate: 'now()',
+          },
+          {
+            name: 'deletedAt',
+            type: 'datetime',
+            isNullable: false,
+            default: null,
             onUpdate: 'now()',
           },
         ],

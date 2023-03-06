@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ schema: 'glamping', name: 'users' })
+@Entity({ schema: 'glamping', name: 'Users' })
 export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   readonly id: number;
