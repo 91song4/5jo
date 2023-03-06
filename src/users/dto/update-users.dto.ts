@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class UpdateUsersInformationDto {
   @IsString()
@@ -12,4 +12,10 @@ export class UpdateUsersInformationDto {
 
   @IsNumber()
   readonly password: string;
+
+  @IsString()
+  readonly userId: string;
+
+  @IsDate()
+  readonly birthDay: Date;
 }

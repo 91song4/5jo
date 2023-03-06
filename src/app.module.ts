@@ -1,13 +1,47 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+// Module
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+
+import { JwtModule } from '@nestjs/jwt';
+
+import { AuthMiddleware } from './auth/auth.middleware';
+import { AuthModule } from './auth/auth.module';
+import { JwtConfigService } from './config/jwt.config.service';
+
+// app
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// TypeOrm
 import { TypeOrmConfigService } from './config/typeorm.config.service';
+
+// camp
+import { CampModule } from './camp/camp.module';
+import { CampService } from './camp/camp.service';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    CampModule,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: TypeOrmConfigService,
+      inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
+      inject: [ConfigService],
+    }),
+    AuthModule,
+
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
@@ -15,6 +49,16 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'auth/log-in', method: RequestMethod.POST },
+        { path: 'auth/sign-up', method: RequestMethod.POST },
+      )
+      .forRoutes('auth');
+  }
+}

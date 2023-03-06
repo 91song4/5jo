@@ -7,28 +7,30 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ schema: 'glamping', name: 'users' })
-export class User {
+// 시퀄라이즈의 마이그레이션 파일을 담당
+
+@Entity({ schema: 'glamping', name: 'camps' })
+export class Camp {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', { length: 10 })
+  @Column('varchar', { length: 20 })
   name: string;
 
-  @Column('varchar', { length: 50 })
-  phone: string;
+  @Column('bigint')
+  type: number;
 
-  @Column('varchar', { length: 15 })
-  userId: string;
+  @Column('bigint')
+  headcount: number;
 
-  @Column('varchar', { length: 1000 })
-  email: string;
+  @Column('bigint')
+  price: number;
 
-  @Column('varchar', { select: false })
-  password: string;
+  @Column('boolean')
+  isRepair: boolean;
 
   @Column()
-  birthDay: Date;
+  repairEndDate: Date | null;
 
   @CreateDateColumn()
   createdAt: Date;

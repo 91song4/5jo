@@ -24,7 +24,7 @@ export class UsersService {
   async getUsersInformation() {
     return await this.userRepository.find({
       where: { deletedAt: null },
-      select: ['id', 'name', 'phone', 'email'],
+      select: ['id', 'name', 'phone', 'email', 'birthDay', 'userId'],
     });
   }
 
@@ -32,7 +32,7 @@ export class UsersService {
   async getUsersInformationById(id: number) {
     const userobj = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'createdAt'],
+      select: ['name', 'phone', 'email', 'createdAt', 'birthDay', 'userId'],
     });
 
     const newTypeuserobj: {
@@ -41,10 +41,14 @@ export class UsersService {
       email: string;
       // createdAt: Date;
       createdIdDate: string;
+      birthDay: Date;
+      userId: string;
     } = {
       name: userobj.name,
       phone: userobj.phone,
       email: userobj.email,
+      birthDay: userobj.birthDay,
+      userId: userobj.userId,
       // createdAt: userobj.createdAt,
       createdIdDate: `${userobj.createdAt.getFullYear()}-${
         userobj.createdAt.getMonth() + 1
@@ -61,10 +65,12 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
+    birthDay: Date,
+    userId: string,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'createdAt'],
+      select: ['name', 'phone', 'email', 'createdAt', 'birthDay', 'userId'],
     });
 
     if (_.isNil(user)) {
@@ -93,12 +99,16 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
+    birthDay: Date,
+    userId: string,
   ) {
     this.userRepository.insert({
       name,
       phone,
       email,
       password,
+      birthDay,
+      userId,
     });
   }
 }
