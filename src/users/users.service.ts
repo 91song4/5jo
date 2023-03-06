@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { NotFoundError } from 'rxjs';
 import { Repository } from 'typeorm';
-import { GetUsersInformationDto } from './dto/get-users.dto';
-import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
+// import { GetUsersInformationDto } from './dto/get-users.dto';
+// import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
 import { User } from './users.entity';
 
 @Injectable()
@@ -47,12 +47,12 @@ export class UsersService {
       name: userobj.name,
       phone: userobj.phone,
       email: userobj.email,
-      birthDay: userobj.birthDay,
-      userId: userobj.userId,
       // createdAt: userobj.createdAt,
       createdIdDate: `${userobj.createdAt.getFullYear()}-${
         userobj.createdAt.getMonth() + 1
       }-${userobj.createdAt.getDate()}`,
+      birthDay: userobj.birthDay,
+      userId: userobj.userId,
     };
 
     return newTypeuserobj;
@@ -77,7 +77,14 @@ export class UsersService {
       throw new Error(`user not found. id: + ${id}`);
     }
 
-    this.userRepository.update(id, { name, phone, email, password });
+    this.userRepository.update(id, {
+      name,
+      phone,
+      email,
+      password,
+      birthDay,
+      userId,
+    });
   }
 
   // 유저 정보 삭제 API

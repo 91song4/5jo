@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Camp } from 'src/camp/camp.entity';
-import { User } from '../auth/user.entity';
 import { User } from 'src/users/users.entity';
 
 @Injectable()
@@ -20,7 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       entities: [User, Camp],
       logging: false,
       autoLoadEntities: true,
-      // synchronize: true,
+      synchronize: false,
     };
   }
 }

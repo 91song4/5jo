@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -10,32 +11,36 @@ import {
 @Entity({ schema: 'glamping', name: 'users' })
 export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  id: number;
+  readonly id: number;
 
+  @Index({ unique: true })
   @Column('varchar', { length: 10 })
-  name: string;
-
-  @Column('varchar', { length: 50 })
-  phone: string;
-
-  @Column('varchar', { length: 15 })
-  userId: string;
-
-  @Column('varchar', { length: 1000 })
-  email: string;
+  readonly userId: string;
 
   @Column('varchar', { select: false })
-  password: string;
+  readonly password: string;
 
-  @Column()
-  birthDay: Date;
+  @Index({ unique: true })
+  @Column('varchar', { length: 10 })
+  readonly name: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Index({ unique: true })
+  @Column('varchar', { length: 15 })
+  readonly phone: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Index({ unique: true })
+  @Column('varchar', { length: 30 })
+  readonly email: string;
 
-  @DeleteDateColumn()
-  deletedAt: Date | null;
+  @Column('date')
+  readonly birthDay: Date;
+
+  @CreateDateColumn({ nullable: true })
+  readonly createdAt: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  readonly updatedAt: Date;
+
+  @DeleteDateColumn({ default: null })
+  readonly deletedAt: Date | null;
 }

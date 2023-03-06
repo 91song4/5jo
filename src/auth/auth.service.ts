@@ -10,13 +10,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { User } from './user.entity';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
+import { User } from 'src/users/users.entity';
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
-import { User } from '../auth/user.entity';
+import { User } from 'src/users/users.entity';
 dotenv.config();
 
 const seed = {
