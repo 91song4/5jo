@@ -157,10 +157,10 @@
     
 
     function camp_create_form(){
-      $('.camps').hide()
+      $('.camps').hide()  
       let temp_html = `
                   <div class="camps">
-                    <div">캠프 등록 페이지</div>
+                    <div>캠프 등록 페이지</div>
                     이름 : <input type="text" id="name" placeholder="캠프명"/></br>
                     최대인원 : <input type="number" id="headcount" placeholder="최대인원"/></br>
                     가격 : <input type="number" id="price" placeholder="가격"/> </br>
@@ -169,6 +169,7 @@
                     <button onclick="location.replace('/')">뒤로가기</button>
                   </div>`
                   $('.mid').append(temp_html)
+                            
     }
 
     function createCamp(){
