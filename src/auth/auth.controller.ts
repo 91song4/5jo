@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
   Req,
   Res,
@@ -36,6 +37,11 @@ export class AuthController {
     console.log('nonUse cache!!!!!!');
     await this.cacheManager.set('users', 'hehe');
     return users;
+  }
+
+  @Get('/user/:userId')
+  async isExist(@Param('userId') userId: string) {
+    return this.authService.isExist(userId);
   }
 
   @Post('/log-in')
