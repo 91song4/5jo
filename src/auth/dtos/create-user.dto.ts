@@ -54,5 +54,5 @@ export class CreateUserDto {
    */
   @IsNotEmpty({ message: '빈 값이 들어있습니다' })
   @IsDateString()
-  readonly birthDay: Date;
+  readonly birthday: Date;
 }
