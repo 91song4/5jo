@@ -15,16 +15,19 @@ import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
 
 // app
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-// TypeOrm
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+// TypeOrm
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
-import { CampService } from './camp/camp.service';
+import { UsersModule } from './users/users.module';
+import { ManagementPage } from './views/controllers/management.page';
+import { AuthPage } from './views/controllers/auth.page';
 
 @Module({
   imports: [
@@ -46,8 +49,14 @@ import { CampService } from './camp/camp.service';
       useClass: CacheConfigService,
     }),
     AuthModule,
+
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
+    UsersModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
@@ -57,6 +66,8 @@ export class AppModule implements NestModule {
       .exclude(
         { path: 'auth/log-in', method: RequestMethod.POST },
         { path: 'auth/sign-up', method: RequestMethod.POST },
+        { path: 'auth/user/:userId', method: RequestMethod.GET },
+        { path: 'auth/lost/id', method: RequestMethod.POST },
       )
       .forRoutes('auth');
   }

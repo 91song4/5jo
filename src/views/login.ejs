@@ -1,0 +1,32 @@
+<body>
+  <%-include('./components/header.ejs') %>
+  <%-include('./components/login-form.ejs') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    const userId = document.querySelector('#userId');
+    const password = document.querySelector('#password');
+
+    const findIdBtn = document.querySelector('#findId-btn');
+    const loginBtn = document.querySelector('#login-btn');
+    const signupBtn = document.querySelector('#signup-btn');
+
+    loginBtn.addEventListener('click', () => {
+      try {
+        axios
+          .post('/api/auth/log-in', {
+            userId: userId.value,
+            password: password.value,
+          })
+          .then((response) => {
+            window.location.href = '/';
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+  </script>
+</body>
