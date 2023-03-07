@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%-include('components/head.ejs') %> 
+    <%-include('components/head') %> 
   <body>
-
+    <%-include('./components/header') %>
     
     <% if(components === 'main'){ %> 
-      <%-include('main.ejs') %> 
+      <%-include('main') %> 
     <%} %>
     <% if(components === 'signup'){ %> 
-      <%-include('sign-up.ejs') %> 
+      <%-include('sign-up') %> 
     <%} %>
     <% if(components === 'login'){ %> 
-      <%-include('login.ejs') %> 
+      <%-include('login') %> 
+    <%} %>
+    <% if(components === 'lostId'){ %> 
+      <%-include('lost-id') %> 
     <%} %>
   </body>
 </html>

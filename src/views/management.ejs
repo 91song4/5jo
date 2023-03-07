@@ -66,7 +66,7 @@
                 시설관리
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="/">시설조회</a></li>
+                <li><a class="dropdown-item" href="/view/management">시설조회</a></li>
                 <li><a class="dropdown-item" onclick="camp_create_form()">시설등록</a></li>
               </ul>
             </div>
@@ -166,7 +166,7 @@
                     가격 : <input type="number" id="price" placeholder="가격"/> </br>
                     유형 : <input type="number" id="type" placeholder="유형"/></br></br>
                     <button onclick="createCamp()">등록</button>
-                    <button onclick="location.replace('/')">뒤로가기</button>
+                    <button onclick="location.replace('/view/management')">뒤로가기</button>
                   </div>`
                   $('.mid').append(temp_html)
                             
@@ -216,18 +216,18 @@
                 data: {},
                 success: function (response) {
                   $('.camps').hide()
-                  let id = response[0].id
-                  let name = response[0].name
-                  let headcount = response[0].headcount
-                  let price = response[0].price
-                  let type = response[0].type
-                  let isRepair = response[0].isRepair
+                  let id = response.id
+                  let name = response.name
+                  let headcount = response.headcount
+                  let price = response.price
+                  let type = response.type
+                  let isRepair = response.isRepair
                   if (isRepair === false){
                     isRepair = "운영중"
                   } else if(isRepair===true){
                     isRepair = "점검중"
                   }
-                  let repairEndDate = response[0].repairEndDate
+                  let repairEndDate = response.repairEndDate
                   if(!repairEndDate){
                     repairEndDate = "점검중이 아닙니다."
                   }
@@ -242,7 +242,7 @@
                     <div >점검종료일 : ${repairEndDate}</div>
                     <button value="${id}" onclick="camp_update_form(this)">수정하기</button>
                     <button value="${id}" onclick="deleteCamp(this)">삭제하기</button>
-                    <button onclick="location.replace('/')">뒤로가기</button>
+                    <button onclick="location.replace('/view/management')">뒤로가기</button>
                   </div>`
                   $('.mid').append(temp_html)
                   }
@@ -279,13 +279,13 @@
                 data: {},
                 success: function (response) {
                   $('.camps').hide()
-                  let id = response[0].id
-                  let name = response[0].name
-                  let headcount = response[0].headcount
-                  let price = response[0].price
-                  let type = response[0].type
-                  let isRepair = response[0].isRepair
-                  let repairEndDate = response[0].repairEndDate
+                  let id = response.id
+                  let name = response.name
+                  let headcount = response.headcount
+                  let price = response.price
+                  let type = response.type
+                  let isRepair = response.isRepair
+                  let repairEndDate = response.repairEndDate
                   let temp_html = `
                   <div class="camps">
                     <div id="id" value="${camp_id}">번호 : ${camp_id}</div>
@@ -316,11 +316,11 @@
       $.ajax({
                 type: "PUT",
                 url: `/api/camps/${camp_id}`,
-                beforeSend: function(xhrObj)
-                {     
-                xhrObj.setRequestHeader("Content-Type","application/json");     
-                xhrObj.setRequestHeader("Accept","application/json"); 
-              },
+              //   beforeSend: function(xhrObj)
+              //   {     
+              //   xhrObj.setRequestHeader("Content-Type","application/json");     
+              //   xhrObj.setRequestHeader("Accept","application/json"); 
+              // },
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({
@@ -340,7 +340,7 @@
                   },
                   error: function() {
                       alert("전송 완료");
-                      location.replace('/')
+                      location.replace('/view/management')
                   }
               })
             }
