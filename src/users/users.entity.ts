@@ -1,9 +1,11 @@
+import { Order } from 'src/order/order.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -43,4 +45,7 @@ export class User {
 
   @DeleteDateColumn({ default: null })
   readonly deletedAt: Date | null;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

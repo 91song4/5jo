@@ -6,9 +6,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-
 import { JwtModule } from '@nestjs/jwt';
-
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { CacheConfigService } from './config/cache.config.service';
@@ -28,6 +26,9 @@ import { CampModule } from './camp/camp.module';
 import { UsersModule } from './users/users.module';
 import { ManagementPage } from './views/controllers/management.page';
 import { AuthPage } from './views/controllers/auth.page';
+
+// Order
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AuthPage } from './views/controllers/auth.page';
       useClass: TypeOrmConfigService,
     }),
     UsersModule,
+    OrderModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],

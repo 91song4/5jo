@@ -4,13 +4,13 @@ POST http://localhost:3000/api/auth/sign-up
 Content-Type: application/json
 
 {
-  "userId":"test23",
+  "userId":"test4848",
   "password":"1234",
   "passwordCheck":"1234",
   "name":"song",
-  "phone":"1122",
-  "email":"test23@mail.com",
-  "birthday": "1930-12-30"
+  "phone":"4848",
+  "email":"test4848@gmail.com",
+  "birthDay": "1996-01-25"
 }
 
 ###
@@ -20,7 +20,7 @@ POST http://localhost:3000/api/auth/log-in
 Content-Type: application/json
 
 {
-  "userId": "song4",
+  "userId": "test4848",
   "password": "1234"
 }
 
