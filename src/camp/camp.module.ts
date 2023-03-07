@@ -8,7 +8,7 @@ import { Camp } from './camp.entity';
 import { CampRepository } from './camp.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CampRepository])],
+  imports: [TypeOrmModule.forFeature([Camp])],
   controllers: [CampController],
   providers: [CampService, CampRepository],
   exports: [CampService],
