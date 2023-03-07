@@ -25,6 +25,9 @@ import { CampModule } from './camp/camp.module';
 import { CampService } from './camp/camp.service';
 
 import { OrdersModule } from './orders/orders.module';
+import { OrderController } from './order/order.controller';
+import { OrderService } from './order/order.service';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -47,9 +50,10 @@ import { OrdersModule } from './orders/orders.module';
     }),
     AuthModule,
     OrdersModule,
+    OrderModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthMiddleware],
+  controllers: [AppController, OrderController],
+  providers: [AppService, AuthMiddleware, OrderService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
