@@ -13,11 +13,14 @@ async function bootstrap() {
   // prefix 예외처리
 
   app.setGlobalPrefix('api', {
-    exclude: [{ path: '', method: RequestMethod.GET }],
+    exclude: [
+      { path: '', method: RequestMethod.GET },
+      { path: 'view/(.*)', method: RequestMethod.GET },
+    ],
   });
 
-  app.useStaticAssets(join(__dirname, '..', 'public')); // 정적파일제공 (nest모듈로했으니 안해도된다.)
-  app.setBaseViewsDir(join(__dirname, '..', 'views')); // dir
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public')); // 정적파일제공 (nest모듈로했으니 안해도된다.)
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views')); // dir
   app.setViewEngine('ejs'); // 템플릿 엔진설정
   app.use(cookieParser());
 

@@ -25,8 +25,9 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
-import { CampService } from './camp/camp.service';
 import { UsersModule } from './users/users.module';
+import { ManagementPage } from './views/controllers/management.page';
+import { AuthPage } from './views/controllers/auth.page';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
@@ -65,6 +66,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: 'auth/log-in', method: RequestMethod.POST },
         { path: 'auth/sign-up', method: RequestMethod.POST },
+        { path: 'auth/user/:userId', method: RequestMethod.GET },
       )
       .forRoutes('auth');
   }

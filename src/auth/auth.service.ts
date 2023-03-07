@@ -19,7 +19,6 @@ import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { User } from 'src/users/users.entity';
 
-
 dotenv.config();
 
 @Injectable()
@@ -32,6 +31,15 @@ export class AuthService {
   async testGetUsers() {
     const users = await this.userRepository.find();
     return users;
+  }
+
+  async isExist(userId: string) {
+    const user = await this.userRepository.findOne({
+      select: ['userId'],
+      where: { userId },
+    });
+
+    return user;
   }
 
   /**
@@ -70,15 +78,10 @@ export class AuthService {
     name,
     userId,
     password,
-    passwordCheck,
     email,
     phone,
     birthday,
   }: CreateUserDto) {
-    if (password !== passwordCheck) {
-      throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
-    }
-
     const userData = await this.getUserByUserId(userId, ['userId']);
     if (userData) {
       throw new ConflictException('아이디가 존재합니다.');

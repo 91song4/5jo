@@ -1,10 +1,4 @@
-import {
-  IsDateString,
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Validate,
-} from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
   /**
@@ -20,13 +14,6 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '빈 값이 들어있습니다' })
   @IsString()
   readonly password: string;
-
-  /**
-   * @example 1233
-   */
-  @IsNotEmpty({ message: '빈 값이 들어있습니다' })
-  @IsString()
-  readonly passwordCheck: string;
 
   /**
    * @example 송지훈

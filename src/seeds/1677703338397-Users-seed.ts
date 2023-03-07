@@ -11,7 +11,7 @@ const seed = {
   password: process.env.ADMIN_PASSWORD,
   email: 'admin@admin.com',
   phone: '010-0000-0000',
-  birthDay: '2023-03-02',
+  birthday: '2023-03-02',
 };
 
 export class UsersSeed1677703338397 implements MigrationInterface {
