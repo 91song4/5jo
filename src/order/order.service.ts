@@ -11,19 +11,23 @@ export class OrderService {
   ) {}
 
   // 주문 생성
-  createOrder(
+  async createOrder(
     userId: number,
     campId: number,
-    selectedDay: Date,
+    selectedDay: string,
     headcount: number,
     receipt: number,
+    isReview: boolean,
+    type: number,
   ) {
     const order = this.orderRepository.create({
-      user: { id: userId },
-      camp: { id: campId },
+      userId,
+      campId,
       selectedDay,
       headcount,
       receipt,
+      isReview,
+      type,
     });
 
     return this.orderRepository.save(order);

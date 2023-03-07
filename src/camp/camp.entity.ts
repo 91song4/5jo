@@ -1,8 +1,10 @@
+import { Order } from 'src/order/order.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -40,4 +42,7 @@ export class Camp {
 
   @DeleteDateColumn()
   deletedAt: null | Date;
+
+  @OneToMany(() => Order, (order) => order.camp)
+  orders: Order[];
 }

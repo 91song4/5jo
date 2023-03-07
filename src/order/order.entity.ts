@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Camp } from 'src/camp/camp.entity';
 import { User } from 'src/users/users.entity';
 import {
@@ -5,37 +6,69 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'glamping', name: 'Orders' })
 export class Order {
+  @ApiProperty({ example: 1, description: '주문 Primary Key' })
   @PrimaryGeneratedColumn()
-  readonly id: number;
+  id: number;
 
-  @ManyToOne(() => User)
-  readonly user: User;
+  @ApiProperty({ example: 1, description: '주문한 유저의 Primary Key' })
+  @Column({ default: 0 })
+  userId: number;
 
-  @ManyToOne(() => Camp)
-  readonly camp: Camp;
+  @ApiProperty({ example: 1, description: '주문한 캠프의 Primary Key' })
+  @Column({ default: 0 })
+  campId: number;
 
+  @ApiProperty({ example: '2023-01-01', description: '선택한 날짜' })
+  @Column({ type: 'date' })
+  selectedDay: string;
+
+  @ApiProperty({ example: 4, description: '총 인원' })
   @Column()
-  readonly selectedDay: Date;
+  headcount: number;
 
+  @ApiProperty({ example: 50000, description: '총 가격' })
   @Column()
-  readonly headcount: number;
+  receipt: number;
 
+  @ApiProperty({
+    example: false,
+    description: '해당 주문에 대한 리뷰가 작성되었는가?',
+  })
+  @Column({ default: false })
+  isReview: boolean;
+
+  @ApiProperty({ example: 0, description: '0:카드결제 / 1:무통장입금' })
   @Column()
-  readonly receipt: number;
+  type: number;
 
   @CreateDateColumn()
-  readonly createdAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  readonly updatedAt: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn()
-  readonly deletedAt?: Date;
+  deletedAt: Date | null;
+
+  @ManyToOne(() => User, (user) => user.orders, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @ManyToOne(() => Camp, (camp) => camp.orders, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'campId' })
+  camp: Camp;
 }
