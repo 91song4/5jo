@@ -8,23 +8,82 @@
     <script src="/js/main.js"></script>
     <script>
       const checkIdBtn = document.querySelector('#checkId');
-      
-      // 아이디 체크 버튼
-      checkIdBtn.addEventListener('click', async () => {
-        const inputId = document.querySelector('#id');
-        const response = await axios.get(`/api/auth/user/${inputId.value}`);
+      const signupBtn = document.querySelector('#signup-btn');
 
-        if (response.data) {
-          alert('아이디가 이미 존재합니다.');
-          inputId.value = '';
-        }
-        if (!response.data) {
-          alert('아이디 사용 가능');
+      const userId = document.querySelector('#userId');
+      const password = document.querySelector('#password');
+      const passwordConfirm = document.querySelector('#passwordConfirm');
+      const name = document.querySelector('#name');
+      const email = document.querySelector('#email');
+      const phone = document.querySelector('#phone');
+      const birthday = document.querySelector('#birthday');
+
+      // 아이디 체크 버튼
+      checkIdBtn.addEventListener('click', () => {
+        try {
+          if (userId.value === '') {
+            return alert('아이디를 입력해주세요.');
+          }
+
+          axios
+            .get(`/api/auth/user/${userId.value}`)
+            .then((response) => {
+              if (response.data) {
+                alert('아이디가 이미 존재합니다.');
+                userId.value = '';
+              }
+              if (!response.data) {
+                alert('아이디 사용 가능');
+              }
+            })
+            .catch((error) => console.log({ err }));
+        } catch (error) {
+          console.error(error.message);
         }
       });
 
-      const signupBtn = document.querySelector('signup-btn');
-      signupBtn.addEventListener('click', () => {});
+      signupBtn.addEventListener('click', async () => {
+        try {
+          if (password.value !== passwordConfirm.value) {
+            alert('비밀번호가 다릅니다.');
+            password.value = '';
+            passwordConfirm.value = '';
+            return;
+          }
+          if (
+            !userId.value ||
+            !password.value ||
+            !name.value ||
+            !email.value ||
+            !phone.value ||
+            !birthday.value
+          ) {
+            return alert('입력이 안된 값이 있습니다.');
+          }
+
+          axios
+            .post(`/api/auth/sign-up`, {
+              userId: userId.value,
+              password: password.value,
+              name: name.value,
+              email: email.value,
+              phone: phone.value,
+              birthday: birthday.value,
+            })
+            .then((response) => {
+              console.log(response.data);
+              if (response?.status === 201) {
+                window.location.href = '/view/login';
+              }
+            })
+            .catch((error) => {
+              alert('회원가입에 실패하였습니다.');
+              console.log(error.request.response);
+            });
+        } catch (error) {
+          console.error(error.messgae);
+        }
+      });
     </script>
   </body>
 </html>

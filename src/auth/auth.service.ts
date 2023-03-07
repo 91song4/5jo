@@ -78,15 +78,10 @@ export class AuthService {
     name,
     userId,
     password,
-    passwordCheck,
     email,
     phone,
     birthday,
   }: CreateUserDto) {
-    if (password !== passwordCheck) {
-      throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
-    }
-
     const userData = await this.getUserByUserId(userId, ['userId']);
     if (userData) {
       throw new ConflictException('아이디가 존재합니다.');

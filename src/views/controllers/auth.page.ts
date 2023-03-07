@@ -7,4 +7,10 @@ export class AuthPage {
   signup() {
     return { components: 'signup' };
   }
+
+  @Get('login')
+  @Render('index')
+  login() {
+    return { components: 'login' };
+  }
 }
