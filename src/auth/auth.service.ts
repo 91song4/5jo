@@ -1,8 +1,5 @@
 import {
-  CACHE_MANAGER,
   ConflictException,
-  HttpException,
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -15,9 +12,8 @@ import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 
-import { ConfigService } from '@nestjs/config';
-import { Cache } from 'cache-manager';
 import { User } from 'src/users/users.entity';
+import { FindUserDto } from './dtos/find-user.dto';
 
 dotenv.config();
 
@@ -33,13 +29,16 @@ export class AuthService {
     return users;
   }
 
-  async isExist(userId: string) {
-    const user = await this.userRepository.findOne({
+  /**
+   * 이름과 이메일을 받아서 아이디를 찾아주는 함수
+   * @name 이름
+   * @email 이메일
+   */
+  async findUserId({ name, email }: FindUserDto) {
+    return await this.userRepository.findOne({
       select: ['userId'],
-      where: { userId },
+      where: { name, email, deletedAt: null },
     });
-
-    return user;
   }
 
   /**
@@ -106,7 +105,7 @@ export class AuthService {
    * @userId 로그인아이디
    * @selects select하고싶은 컬럼 string Array로 전달
    */
-  private async getUserByUserId(userId, selects?) {
+  async getUserByUserId(userId, selects?) {
     return await this.userRepository.findOne({
       select: [...selects],
       where: { userId, deletedAt: null },

@@ -15,6 +15,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { Cache } from 'cache-manager';
 import { Request, Response } from 'express';
+import { FindUserDto } from './dtos/find-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -41,7 +42,12 @@ export class AuthController {
 
   @Get('/user/:userId')
   async isExist(@Param('userId') userId: string) {
-    return this.authService.isExist(userId);
+    return this.authService.getUserByUserId(userId, ['userId']);
+  }
+
+  @Post('/lost/id')
+  async findUserId(@Body() findUserDto: FindUserDto) {
+    return await this.authService.findUserId(findUserDto);
   }
 
   @Post('/log-in')
