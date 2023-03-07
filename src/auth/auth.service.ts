@@ -105,7 +105,9 @@ export class AuthService {
    * 비밀번호 재설정
    * @password 비밀번호
    */
-  resetPassword(userId: string, password: string) {
+  async resetPassword(userId: string, password: string) {
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
     this.userRepository.update({ userId }, { password });
   }
 
