@@ -4,7 +4,9 @@ import {
   Controller,
   Get,
   Inject,
+  NotFoundException,
   Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -16,6 +18,7 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { Cache } from 'cache-manager';
 import { Request, Response } from 'express';
 import { FindUserDto } from './dtos/find-user.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -48,6 +51,21 @@ export class AuthController {
   @Post('/lost/id')
   async findUserId(@Body() findUserDto: FindUserDto) {
     return await this.authService.findUserId(findUserDto);
+  }
+
+  @Patch('/reset/password:userId')
+  async resetPassword(
+    @Param('userId') userId: string,
+    @Body() { password }: ResetPasswordDto,
+  ) {
+    if (!(await this.cacheManager.get(userId))) {
+      throw new NotFoundException('올바른 접근 경로가 아닙니다.');
+    }
+
+    await this.authService.resetPassword(userId, password);
+
+    this.cacheManager.del(userId);
+    return { message: '비밀번호 재설정 완료' };
   }
 
   @Post('/log-in')

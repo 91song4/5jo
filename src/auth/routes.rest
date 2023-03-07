@@ -38,3 +38,12 @@ POST http://localhost:3000/api/auth/log-out
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDM0NzQ4LCJleHAiOjE2NzgwMzgzNDh9.eZ0IHQYfZ4t-5HRVgqmjuA4CJcysAevFxm4Tv28U_PA; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMzQ3NDgsImV4cCI6MTY3ODExNzU0OH0.BhHPxykKC0IFce8Z4YsZcWSJ9UzCokMy4Zjd2VRs5Ro; Path=/
 
 
+###
+
+# 비밀번호 재설정 API
+PATCH http:localhost:3000/api/auth/reset/password/91song4
+Content-Type: application/json
+
+{
+  "password": "123123"
+}

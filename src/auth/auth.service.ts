@@ -101,6 +101,16 @@ export class AuthService {
     return { id: identifiers[0].id };
   }
 
+  /**
+   * 비밀번호 재설정
+   * @password 비밀번호
+   */
+  async resetPassword(userId: string, password: string) {
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
+    this.userRepository.update({ userId }, { password });
+  }
+
   /** userId로 원하는 컬럼 불러오기
    * @userId 로그인아이디
    * @selects select하고싶은 컬럼 string Array로 전달
