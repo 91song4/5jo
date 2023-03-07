@@ -15,7 +15,8 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { Cache } from 'cache-manager';
 import { Request, Response } from 'express';
-import { FindUserDto } from './dtos/find-user.dto';
+import { FindUserIdDto } from './dtos/find-user-id.dto';
+import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -46,8 +47,15 @@ export class AuthController {
   }
 
   @Post('/lost/id')
-  async findUserId(@Body() findUserDto: FindUserDto) {
-    return await this.authService.findUserId(findUserDto);
+  async findUserId(@Body() findUserIdDto: FindUserIdDto) {
+    return await this.authService.findUserId(findUserIdDto);
+  }
+
+  @Post('/lost/password')
+  async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
+    return await this.authService.getUserByUserId(findUserPasswordDto.userId, [
+      'userId',
+    ]);
   }
 
   @Post('/log-in')

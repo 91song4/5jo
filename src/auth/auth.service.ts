@@ -13,7 +13,7 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/users/users.entity';
-import { FindUserDto } from './dtos/find-user.dto';
+import { FindUserIdDto } from './dtos/find-user-id.dto';
 
 dotenv.config();
 
@@ -34,7 +34,7 @@ export class AuthService {
    * @name 이름
    * @email 이메일
    */
-  async findUserId({ name, email }: FindUserDto) {
+  async findUserId({ name, email }: FindUserIdDto) {
     return await this.userRepository.findOne({
       select: ['userId'],
       where: { name, email, deletedAt: null },
