@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Camp } from 'src/camp/camp.entity';
+import { Camp } from '../camp/camp.entity';
 import { User } from '../auth/user.entity';
 
 @Injectable()

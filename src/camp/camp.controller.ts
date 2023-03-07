@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CampService } from './camp.service';
 // dto
 import { CreateCampDto } from './dto/create-camp.dto';
+import { DeleteCampDto } from './dto/delete-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')
@@ -44,7 +45,6 @@ export class CampController {
   // 캠프 정보 수정
   @Put('/camps/:id')
   updateCamp(@Param('id') campId: number, @Body() data: UpdateCampDto) {
-    console.log(campId, data);
     return this.campService.updateCamp(
       campId,
       data.name,
