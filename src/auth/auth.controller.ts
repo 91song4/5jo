@@ -5,6 +5,7 @@ import {
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -48,6 +49,21 @@ export class AuthController {
   @Post('/lost/id')
   async findUserId(@Body() findUserDto: FindUserDto) {
     return await this.authService.findUserId(findUserDto);
+  }
+
+  @Patch('/reset/password:userId')
+  async resetPassword(
+    @Param('userId') userId: string,
+    @Body('password') password: string,
+  ) {
+    if (!(await this.cacheManager.get(userId))) {
+      throw new Error('올바른 접근 경로가 아닙니다.');
+    }
+
+    this.authService.resetPassword(userId, password);
+
+    this.cacheManager.del(userId);
+    return { message: '비밀번호 재설정 완료' };
   }
 
   @Post('/log-in')
