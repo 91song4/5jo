@@ -1,5 +1,5 @@
-import { User } from 'src/auth/user.entity';
 import { Camp } from 'src/camp/camp.entity';
+import { User } from 'src/users/users.entity';
 import {
   Column,
   CreateDateColumn,

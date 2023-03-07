@@ -10,13 +10,14 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { User } from './user.entity';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
+
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
+import { User } from 'src/users/users.entity';
 
 dotenv.config();
 
@@ -25,13 +26,20 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async testGetUsers() {
     const users = await this.userRepository.find();
     return users;
+  }
+
+  async isExist(userId: string) {
+    const user = await this.userRepository.findOne({
+      select: ['userId'],
+      where: { userId },
+    });
+
+    return user;
   }
 
   /**
@@ -51,7 +59,7 @@ export class AuthService {
     }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = this.createRefreshToken();
 
     return { accessToken, refreshToken, id: userData.id };
   }
@@ -70,15 +78,10 @@ export class AuthService {
     name,
     userId,
     password,
-    passwordCheck,
     email,
     phone,
-    birthDay,
+    birthday,
   }: CreateUserDto) {
-    if (password !== passwordCheck) {
-      throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
-    }
-
     const userData = await this.getUserByUserId(userId, ['userId']);
     if (userData) {
       throw new ConflictException('아이디가 존재합니다.');
@@ -93,7 +96,7 @@ export class AuthService {
       password,
       email,
       phone,
-      birthDay,
+      birthday,
     });
 
     return { id: identifiers[0].id };
@@ -114,8 +117,8 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync({ id });
     return accessToken;
   }
-  private async createRefreshToken() {
-    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+  private createRefreshToken() {
+    const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;
   }
 }

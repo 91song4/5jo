@@ -13,20 +13,21 @@ import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
 
 // app
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-// TypeOrm
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+// TypeOrm
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
-import { CampService } from './camp/camp.service';
+import { UsersModule } from './users/users.module';
+import { ManagementPage } from './views/controllers/management.page';
+import { AuthPage } from './views/controllers/auth.page';
 
-import { OrdersModule } from './orders/orders.module';
-import { OrderController } from './order/order.controller';
-import { OrderService } from './order/order.service';
+// Order
 import { OrderModule } from './order/order.module';
 
 @Module({
@@ -49,11 +50,16 @@ import { OrderModule } from './order/order.module';
       useClass: CacheConfigService,
     }),
     AuthModule,
-    OrdersModule,
+
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
+    UsersModule,
     OrderModule,
   ],
-  controllers: [AppController, OrderController],
-  providers: [AppService, AuthMiddleware, OrderService],
+  controllers: [AppController, ManagementPage, AuthPage],
+  providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -62,6 +68,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: 'auth/log-in', method: RequestMethod.POST },
         { path: 'auth/sign-up', method: RequestMethod.POST },
+        { path: 'auth/user/:userId', method: RequestMethod.GET },
       )
       .forRoutes('auth');
   }

@@ -9,7 +9,7 @@ import {
 
 // 시퀄라이즈의 마이그레이션 파일을 담당
 
-@Entity({ schema: 'glamping', name: 'camps' })
+@Entity({ schema: 'glamping', name: 'Camps' })
 export class Camp {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
@@ -39,5 +39,5 @@ export class Camp {
   updatedAt: Date;
 
   @DeleteDateColumn()
-  deletedAt: Date | null;
+  deletedAt: null | Date;
 }
