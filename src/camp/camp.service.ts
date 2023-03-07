@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CampRepository } from './camp.repository';
 import { Camp } from './camp.entity';
 import { Repository } from 'typeorm';
 @Injectable()
 export class CampService {
-  constructor(private readonly campRepository: Repository<Camp>) {}
+  constructor(
+    @InjectRepository(Camp) private readonly campRepository: Repository<Camp>,
+  ) {}
 
   // 캠프 목록 조회
   async getCamps() {

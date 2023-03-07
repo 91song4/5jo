@@ -5,12 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CampController } from './camp.controller';
 import { CampService } from './camp.service';
 import { Camp } from './camp.entity';
-import { CampRepository } from './camp.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Camp])],
   controllers: [CampController],
-  providers: [CampService, CampRepository],
+  providers: [CampService],
   exports: [CampService],
 })
 export class CampModule {}
