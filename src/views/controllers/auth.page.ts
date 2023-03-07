@@ -13,4 +13,10 @@ export class AuthPage {
   login() {
     return { components: 'login' };
   }
+
+  @Get('lost/id')
+  @Render('index')
+  lostId() {
+    return { components: 'lostId' };
+  }
 }
