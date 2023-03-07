@@ -11,7 +11,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { CampService } from './camp.service';
 // dto
 import { CreateCampDto } from './dto/create-camp.dto';
-import { DeleteCampDto } from './dto/delete-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')

@@ -7,12 +7,10 @@ export class CampService {
 
   // 캠프 목록 조회
   async getCamps() {
-    const camps = await this.campRepository.find();
-    return camps;
+    return await this.campRepository.find();
   }
 
   // 캠프 상세 조회
-
   async getCampById(id: number) {
     try {
       const camp = await this.campRepository.findOne({
@@ -25,7 +23,6 @@ export class CampService {
   }
 
   // 새로운 캠프 등록
-
   createCamp(name: string, type: number, headcount: number, price: number) {
     const camp = this.campRepository.insert({
       name,
@@ -34,6 +31,7 @@ export class CampService {
       price,
       isRepair: false,
     });
+    console.log(camp);
     return camp;
   }
 
@@ -48,7 +46,7 @@ export class CampService {
     isRepair: boolean,
     repairEndDate: string | null,
   ) {
-    this.campRepository.update(id, {
+    return this.campRepository.update(id, {
       name,
       type,
       headcount,
@@ -56,7 +54,6 @@ export class CampService {
       isRepair,
       repairEndDate,
     });
-    return;
   }
 
   // 캠프 삭제

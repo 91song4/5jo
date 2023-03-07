@@ -1,14 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CampService } from './camp.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Camp } from './camp.entity';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmConfigService } from '../config/typeorm.config.service';
 import { CampRepository } from './camp.repository';
 
 const mockCampRepository = () => {
-  return { getCamps: jest.fn() };
+  return { getCamps: jest.fn(), createCamp: jest.fn };
 };
 describe('CampService', () => {
   let campsService: CampService;
@@ -27,10 +22,10 @@ describe('CampService', () => {
     campsService = module.get<CampService>(CampService);
     campsReposirory = module.get(CampRepository);
   });
-  describe('creat camp', () => {
+  describe('create camp', () => {
     it('should create camp', async () => {
       const result = await campsService.createCamp('A1', 1, 4, 50000);
-      expect(result).toBe('A1');
+      expect(result).toBe({ name: 'A1', type: 1, headcount: 4, price: 50000 });
     });
   });
 

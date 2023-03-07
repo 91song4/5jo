@@ -41,10 +41,10 @@ export class CampRepository extends Repository<Camp> {
     return camp;
   }
 
-  // async deleteCamp(id: number) {
-  //   const camp = await this.createQueryBuilder('camp').where('camp.id = :id', {
-  //     id: id,
-  //   });
-  //   return camp;
-  // }
+  async deleteCamp(id: number) {
+    const camp = this.createQueryBuilder('camp').where('camp.id = :id', {
+      id: id,
+    });
+    return camp;
+  }
 }
