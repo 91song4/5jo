@@ -59,14 +59,12 @@ export class Order {
   deletedAt: Date | null;
 
   @ManyToOne(() => User, (user) => user.orders, {
-    nullable: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })
   user: User;
 
   @ManyToOne(() => Camp, (camp) => camp.orders, {
-    nullable: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'campId' })
