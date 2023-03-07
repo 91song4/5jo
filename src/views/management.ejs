@@ -66,7 +66,7 @@
                 시설관리
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="/">시설조회</a></li>
+                <li><a class="dropdown-item" href="/view/management">시설조회</a></li>
                 <li><a class="dropdown-item" onclick="camp_create_form()">시설등록</a></li>
               </ul>
             </div>
@@ -166,7 +166,7 @@
                     가격 : <input type="number" id="price" placeholder="가격"/> </br>
                     유형 : <input type="number" id="type" placeholder="유형"/></br></br>
                     <button onclick="createCamp()">등록</button>
-                    <button onclick="location.replace('/')">뒤로가기</button>
+                    <button onclick="location.replace('/view/management')">뒤로가기</button>
                   </div>`
                   $('.mid').append(temp_html)
                             
@@ -242,7 +242,7 @@
                     <div >점검종료일 : ${repairEndDate}</div>
                     <button value="${id}" onclick="camp_update_form(this)">수정하기</button>
                     <button value="${id}" onclick="deleteCamp(this)">삭제하기</button>
-                    <button onclick="location.replace('/')">뒤로가기</button>
+                    <button onclick="location.replace('/view/management')">뒤로가기</button>
                   </div>`
                   $('.mid').append(temp_html)
                   }
