@@ -24,15 +24,17 @@ async function bootstrap() {
   app.setViewEngine('ejs'); // 템플릿 엔진설정
   app.use(cookieParser());
 
-  // swagger 설정 - 공식문서
+  // swagger 설정 - 공식문서 - 의미없는 cats API 제거
   const config = new DocumentBuilder()
     .setTitle('글래머와 캠핑')
-    .setDescription('The cats API description')
+    .setDescription('글램핑 페이지 개발을 위한 API 문서')
     .setVersion('1.0')
-    .addTag('cats')
+    .addCookieAuth('')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
 

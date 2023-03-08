@@ -11,38 +11,26 @@ import {
 
 // 시퀄라이즈의 마이그레이션 파일을 담당
 
-@Entity({ schema: 'glamping', name: 'Camps' })
-export class Camp {
+@Entity({ schema: 'glamping', name: 'Coupons' })
+export class Coupon {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', { length: 20 })
+  @Column('varchar', { length: 15 })
   name: string;
 
   @Column('bigint')
-  type: number;
+  discount: number;
 
   @Column('bigint')
-  headcount: number;
+  dateOfUse: Date;
 
   @Column('bigint')
-  price: number;
-
-  @Column('boolean')
-  isRepair: boolean;
-
-  @Column()
-  repairEndDate: Date | null;
+  maxDiscount: number;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: null | Date;
-
-  @OneToMany(() => Order, (order) => order.camp)
-  orders: Order[];
 }

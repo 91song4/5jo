@@ -19,4 +19,10 @@ export class AuthPage {
   lostId() {
     return { components: 'lostId' };
   }
+
+  @Get('reset/password/:userId')
+  @Render('index')
+  resetPassword() {
+    return { components: 'resetPassword' };
+  }
 }

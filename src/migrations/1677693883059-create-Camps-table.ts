@@ -69,7 +69,6 @@ export class createCampsTable1677693883059 implements MigrationInterface {
             type: 'datetime',
             isNullable: false,
             default: null,
-            onUpdate: 'now()',
           },
         ],
       }),
