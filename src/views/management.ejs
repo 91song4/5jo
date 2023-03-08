@@ -30,7 +30,12 @@
         if(component==='camp'){ %>
         <%-include('./components/manager-camp-detail') %> <%} %> <%
         if(component==='campUpdateForm'){ %>
-        <%-include('./components/manager-camp-update') %> <%} %>
+        <%-include('./components/manager-camp-update') %> <%} %> <%
+        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
+        %> <%} %> <% if(component==='coupon'){ %>
+        <%-include('./components/manager-coupon-detail') %> <%} %> <%
+        if(component==='couponUpdateForm'){ %>
+        <%-include('./components/manager-coupon-update') %> <%} %>
       </div>
     </section>
   </body>

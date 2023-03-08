@@ -1,0 +1,20 @@
+<body>
+    <div class="camps">
+    <table>
+      <th>쿠폰명</th>
+      <th>할인율</th>
+      <th>사용기한</th>
+      <th>최대할인액</th>
+      <th></th>
+      <% for(let i = 0; i<coupons.length; i++){ %>
+      <tr> 
+        <td><%=coupons[i].name%></td>
+        <td><%=coupons[i].discount%> %</td>
+        <td><%=coupons[i].dateOfUse%> 개월</td>
+        <td><%=coupons[i].maxDiscount%> 원</td>
+        <td><button onclick="location.replace(`/view/management/coupon/<%=coupons[i].id%>`)">상세보기</button></td>
+      </tr>
+      <% } %>
+    </table>
+    </div>
+</body>
