@@ -1,0 +1,27 @@
+body {
+  height: 100vh;
+  margin: 0;
+  background-size: cover;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* justify-content: flex-start; */
+}
+.sidebar {
+  border: black 1px solid;
+  width: 20vh;
+  height: 100vh;
+}
+.mid {
+  border: black 1px solid;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+  width: 100%;
+}
+#dropdownMenuButton1 {
+  width: 100%;
+}

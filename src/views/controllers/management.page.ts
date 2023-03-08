@@ -7,8 +7,15 @@ export class ManagementPage {
 
   @Get('/management')
   @Render('management')
-  async managermain() {
+  async main() {
     const camps = await this.campService.getCamps();
-    return { camps };
+    return { component: 'main' };
+  }
+
+  @Get('/management/users')
+  @Render('users')
+  async users() {
+    const camps = await this.campService.getCamps();
+    return { component: 'users', camps };
   }
 }
