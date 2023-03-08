@@ -7,9 +7,11 @@
 
     <!-- body -->
     <% if(components === 'main'){ %> <%-include('main') %> <%} %>
-    <%if(components === 'signup'){ %> <%-include('sign-up') %> <%} %
+    <%if(components === 'signup'){ %> <%-include('sign-up') %> <%} %>
     <%if(components === 'login' ){ %> <%-include('login') %> <%} %>
     <%if(components === 'lostId'){ %> <%-include('lost-id') %> <%} %>
-    <%if(components === 'resetPassword'){ %> <%-include('reset-password')%><%}%>
+    <%if(components === 'lostPassword'){ %> <%-include('lost-password') %> <%}%> 
+    <%if(components === 'resetPassword'){ %>
+    <%-include('reset-password')%><%}%>
   </body>
 </html>
