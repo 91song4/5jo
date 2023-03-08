@@ -13,6 +13,7 @@ body {
 .sidebar {
   border: black 1px solid;
   width: 20vh;
+  min-width: 110px;
   height: 100vh;
 }
 .mid {
