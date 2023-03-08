@@ -1,14 +1,22 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import { CampService } from 'src/camp/camp.service';
 
 @Controller('view')
 export class ManagementPage {
-  constructor(private readonly campService: CampService) {}
-
-  @Get('/management')
+  @Get('/camp')
   @Render('management')
-  async managermain() {
-    const camps = await this.campService.getCamps();
-    return { camps };
+  async camp() {
+    return { component: 'main' };
+  }
+
+  @Get('/user')
+  @Render('management')
+  async user() {
+    return { component: 'user' };
+  }
+
+  @Get('/coupon')
+  @Render('management')
+  async coupon() {
+    return { component: 'coupon' };
   }
 }
