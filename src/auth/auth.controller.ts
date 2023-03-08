@@ -17,7 +17,8 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { Cache } from 'cache-manager';
 import { Request, Response } from 'express';
-import { FindUserDto } from './dtos/find-user.dto';
+import { FindUserIdDto } from './dtos/find-user-id.dto';
+import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @ApiTags('auth')
@@ -45,12 +46,31 @@ export class AuthController {
 
   @Get('/user/:userId')
   async isExist(@Param('userId') userId: string) {
-    return this.authService.getUserByUserId(userId, ['userId']);
+    return this.authService.getUserSelect({ userId }, ['userId']);
   }
 
   @Post('/lost/id')
-  async findUserId(@Body() findUserDto: FindUserDto) {
-    return await this.authService.findUserId(findUserDto);
+  async findUserId(@Body() findUserIdDto: FindUserIdDto) {
+    return await this.authService.findUserId(findUserIdDto);
+  }
+
+  @Post('/lost/password')
+  async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
+    const user = await this.authService.getUserSelect(findUserPasswordDto, [
+      'userId',
+    ]);
+
+    if (!user) {
+      return user;
+    }
+
+    await this.cacheManager.set(user.userId, 1);
+    setTimeout(async () => {
+      if (await this.cacheManager.get(user.userId)) {
+        this.cacheManager.del(user.userId);
+      }
+    }, 1000 * 60 * 3);
+    return user;
   }
 
   @Patch('/reset/password/:userId')

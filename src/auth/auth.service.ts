@@ -13,7 +13,7 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/users/users.entity';
-import { FindUserDto } from './dtos/find-user.dto';
+import { FindUserIdDto } from './dtos/find-user-id.dto';
 
 dotenv.config();
 
@@ -34,7 +34,7 @@ export class AuthService {
    * @name 이름
    * @email 이메일
    */
-  async findUserId({ name, email }: FindUserDto) {
+  async findUserId({ name, email }: FindUserIdDto) {
     return await this.userRepository.findOne({
       select: ['userId'],
       where: { name, email, deletedAt: null },
@@ -47,7 +47,7 @@ export class AuthService {
    * @password 비밀번호
    */
   async login({ userId, password }: LoginUserDto) {
-    const userData = await this.getUserByUserId(userId, ['id', 'password']);
+    const userData = await this.getUserSelect({ userId }, ['id', 'password']);
     if (!userData) {
       throw new NotFoundException('아이디가 존재하지 않습니다.');
     }
@@ -81,7 +81,7 @@ export class AuthService {
     phone,
     birthday,
   }: CreateUserDto) {
-    const userData = await this.getUserByUserId(userId, ['userId']);
+    const userData = await this.getUserSelect({ userId }, ['userId']);
     if (userData) {
       throw new ConflictException('아이디가 존재합니다.');
     }
@@ -111,15 +111,16 @@ export class AuthService {
     this.userRepository.update({ userId }, { password });
   }
 
-  /** userId로 원하는 컬럼 불러오기
+  /** where로 원하는 컬럼 불러오기
    * @userId 로그인아이디
    * @selects select하고싶은 컬럼 string Array로 전달
    */
-  async getUserByUserId(userId, selects?) {
-    return await this.userRepository.findOne({
+  async getUserSelect(where, selects?) {
+    const test = await this.userRepository.findOne({
       select: [...selects],
-      where: { userId, deletedAt: null },
+      where: { ...where, deletedAt: null },
     });
+    return test;
   }
 
   private async createAccessToken(id: number) {

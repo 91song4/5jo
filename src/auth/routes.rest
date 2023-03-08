@@ -41,9 +41,21 @@ Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0Ijo
 ###
 
 # 비밀번호 재설정 API
-PATCH http:localhost:3000/api/auth/reset/password/91song4
+PATCH http://localhost:3000/api/auth/reset/password/91song4
 Content-Type: application/json
 
 {
   "password": "123123"
+}
+
+###
+
+# 비밀번호 찾기 API
+POST http://localhost:3000/api/auth/lost/password
+Content-Type: application/json
+
+{
+"userId":"91song4",
+"email":"test@gmail.com",
+"phone":"010-1234-7542"
 }
