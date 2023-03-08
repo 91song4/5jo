@@ -9,22 +9,22 @@ export class CouponService {
     private readonly couponRepository: Repository<Coupon>,
   ) {}
 
-  // // 캠프 목록 조회
-  // async getCoupons() {
-  //   return await this.couponRepository.find();
-  // }
+  // 쿠폰 목록 조회
+  async getCoupons() {
+    return await this.couponRepository.find();
+  }
 
-  // // 캠프 상세 조회
-  // async getCouponById(id: number) {
-  //   try {
-  //     const coupon = await this.couponRepository.findOne({
-  //       where: { id },
-  //     });
-  //     return coupon;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  // 쿠폰 상세 조회
+  async getCouponById(id: number) {
+    try {
+      const coupon = await this.couponRepository.findOne({
+        where: { id },
+      });
+      return coupon;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // 쿠폰 등록
   createCoupon(

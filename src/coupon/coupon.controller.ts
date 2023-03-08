@@ -16,17 +16,17 @@ import { CreateCouponDto } from './dto/create-coupon.dto';
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
-  // // 쿠폰 목록 조회
-  // @Get('/coupon')
-  // getCamps() {
-  //   return this.couponService.getCoupons();
-  // }
+  // 쿠폰 목록 조회
+  @Get('/coupon')
+  getCoupons() {
+    return this.couponService.getCoupons();
+  }
 
-  // // 쿠폰 상세 조회
-  // @Get('/coupon/:id')
-  // getCouponById(@Param('id') couponId: number) {
-  //   return this.couponService.getCouponById(Number(couponId));
-  // }
+  // 쿠폰 상세 조회
+  @Get('/coupon/:id')
+  getCouponById(@Param('id') couponId: number) {
+    return this.couponService.getCouponById(Number(couponId));
+  }
 
   // 새로운 쿠폰 등록
   @Post('/coupon')
