@@ -43,26 +43,22 @@ export class CouponService {
     return coupon;
   }
 
-  // // 캠프 정보 수정
+  // 쿠폰 정보 수정
 
-  // updateCoupon(
-  //   id: number,
-  //   name: string,
-  //   type: number,
-  //   headcount: number,
-  //   price: number,
-  //   isRepair: boolean,
-  //   repairEndDate: string | null,
-  // ) {
-  //   return this.couponRepository.update(id, {
-  //     name,
-  //     type,
-  //     headcount,
-  //     price,
-  //     isRepair,
-  //     repairEndDate,
-  //   });
-  // }
+  updateCoupon(
+    id: number,
+    name: string,
+    discount: number,
+    dateOfUse: number,
+    maxDiscount: number,
+  ) {
+    return this.couponRepository.update(id, {
+      name,
+      discount,
+      dateOfUse,
+      maxDiscount,
+    });
+  }
 
   // // 캠프 삭제
 

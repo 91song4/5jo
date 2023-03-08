@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CouponService } from './coupon.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
+import { UpdateCouponDto } from './dto/update-coupon.dto';
 
 @ApiTags('coupon')
 @Controller('')
@@ -39,19 +40,17 @@ export class CouponController {
     );
   }
 
-  // // 쿠폰 정보 수정
-  // @Put('/coupon/:id')
-  // updateCoupon(@Param('id') couponId: number, @Body() data: UpdateCouponDto) {
-  //   return this.couponService.updateCoupon(
-  //     couponId,
-  //     data.name,
-  //     data.type,
-  //     data.headcount,
-  //     data.price,
-  //     data.isRepair,
-  //     data.repairEndDate,
-  //   );
-  // }
+  // 쿠폰 정보 수정
+  @Put('/coupon/:id')
+  updateCoupon(@Param('id') couponId: number, @Body() data: UpdateCouponDto) {
+    return this.couponService.updateCoupon(
+      couponId,
+      data.name,
+      data.discount,
+      data.dateOfUse,
+      data.maxDiscount,
+    );
+  }
 
   // // 쿠폰 삭제
   // @Delete('/coupon/:id')
