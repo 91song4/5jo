@@ -13,9 +13,6 @@ export class UpdateUsersInformationDto {
   @IsNumber()
   readonly password: string;
 
-  @IsString()
-  readonly userId: string;
-
   @IsDateString()
   readonly birthday: Date;
 }
