@@ -1,68 +1,73 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Camp } from './camp.entity';
 import { Repository } from 'typeorm';
+import { Coupon } from './coupon.entity';
 @Injectable()
-export class CampService {
+export class CouponService {
   constructor(
-    @InjectRepository(Camp) private readonly campRepository: Repository<Camp>,
+    @InjectRepository(Coupon)
+    private readonly couponRepository: Repository<Coupon>,
   ) {}
 
-  // 캠프 목록 조회
-  async getCamps() {
-    return await this.campRepository.find();
-  }
+  // // 캠프 목록 조회
+  // async getCoupons() {
+  //   return await this.couponRepository.find();
+  // }
 
-  // 캠프 상세 조회
-  async getCampById(id: number) {
-    try {
-      const camp = await this.campRepository.findOne({
-        where: { id },
-      });
-      return camp;
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // // 캠프 상세 조회
+  // async getCouponById(id: number) {
+  //   try {
+  //     const coupon = await this.couponRepository.findOne({
+  //       where: { id },
+  //     });
+  //     return coupon;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
-  // 새로운 캠프 등록
-  createCamp(name: string, type: number, headcount: number, price: number) {
-    const camp = this.campRepository.insert({
-      name,
-      type,
-      headcount,
-      price,
-      isRepair: false,
-    });
-    console.log(camp);
-    return camp;
-  }
-
-  // 캠프 정보 수정
-
-  updateCamp(
-    id: number,
+  // 쿠폰 등록
+  createCoupon(
     name: string,
-    type: number,
-    headcount: number,
-    price: number,
-    isRepair: boolean,
-    repairEndDate: string | null,
+    discount: number,
+    dateOfUse: number,
+    maxDiscount: number,
   ) {
-    return this.campRepository.update(id, {
+    const coupon = this.couponRepository.insert({
       name,
-      type,
-      headcount,
-      price,
-      isRepair,
-      repairEndDate,
+      discount,
+      dateOfUse,
+      maxDiscount,
     });
+    console.log(coupon);
+    return coupon;
   }
 
-  // 캠프 삭제
+  // // 캠프 정보 수정
 
-  deleteCamp(id: number) {
-    this.campRepository.softDelete(id);
-    return id;
-  }
+  // updateCoupon(
+  //   id: number,
+  //   name: string,
+  //   type: number,
+  //   headcount: number,
+  //   price: number,
+  //   isRepair: boolean,
+  //   repairEndDate: string | null,
+  // ) {
+  //   return this.couponRepository.update(id, {
+  //     name,
+  //     type,
+  //     headcount,
+  //     price,
+  //     isRepair,
+  //     repairEndDate,
+  //   });
+  // }
+
+  // // 캠프 삭제
+
+  // deleteCoupon(id: number) {
+  //   this.couponRepository.delete(id);
+  //   return id;
+  // }
 }
