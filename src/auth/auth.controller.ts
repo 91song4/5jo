@@ -2,6 +2,7 @@ import {
   Body,
   CACHE_MANAGER,
   Controller,
+  Delete,
   Get,
   Inject,
   NotFoundException,
@@ -115,5 +116,15 @@ export class AuthController {
     this.cacheManager.del('users');
 
     return id;
+  }
+
+  @Delete('/withdrawal')
+  async deleteUser(@Req() req: Request, @Res() res: Response) {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    const { accessToken, refreshToken } = req.cookies;
+    this.cacheManager.del(refreshToken);
+    await this.authService.deleteUser(accessToken);
+    res.send({ message: '회원탈퇴 완료' });
   }
 }
