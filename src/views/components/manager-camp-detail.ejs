@@ -1,25 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
-  </head>
-  <body>
-    <div class="camps">
-      <div>번호 : ${id}</div>
-      <div>이름 : ${name}</div>
-      <div>최대인원 : ${headcount}</div>
-      <div>가격 : ${price}</div>
-      <div>유형 : ${type}</div>
-      <div>상태 : ${isRepair}</div>
-      <div>점검종료일 : ${repairEndDate}</div>
-      <button value="${id}" onclick="camp_update_form(this)">수정하기</button>
-      <button value="${id}" onclick="deleteCamp(this)">삭제하기</button>
-      <button onclick="location.replace('/view/management')">뒤로가기</button>
-    </div>
-  </body>
-</html>
+<div class="camps">
+  <div>번호 : <%=camp.id%></div>
+  <div>이름 : <%=camp.name%></div>
+  <div>최대인원 : <%=camp.headcount%></div>
+  <div>가격 : <%=camp.price%></div>
+  <div>유형 : <%=camp.type%></div>
+  <div>상태 : <% if(!camp.isRepair){%> 영업중<%} else { %> 수리중<%} %></div>
+  <div>점검종료일 : <%=camp.repairEndDate%></div>
+  <button
+    onclick="location.replace('/view/management/camp/update/<%=camp.id%>')"
+  >
+    수정하기
+  </button>
+  <button onclick="deleteCamp('<%=camp.id%>')">삭제하기</button>
+  <button onclick="location.replace('/view/management/camp')">뒤로가기</button>
+</div>

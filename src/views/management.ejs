@@ -24,11 +24,16 @@
         <% if(component==='main'){ %> <%-include('./components/manager-main') %>
         <%} %> <% if(component==='camps'){ %>
         <%-include('./components/manager-camp') %> <%} %> <%
-        if(component==='campRegiste'){ %>
-        <%-include('./components/manager-camp-registe') %> <%} %>
+        if(component==='campRegister'){ %>
+        <%-include('./components/manager-camp-register') %> <%} %> <%
+        if(component==='camp'){ %>
+        <%-include('./components/manager-camp-detail') %> <%} %> <%
+        if(component==='campUpdateForm'){ %>
+        <%-include('./components/manager-camp-update') %> <%} %>
       </div>
     </section>
   </body>
+
   <script src="/js/camp.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script

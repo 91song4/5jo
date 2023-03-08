@@ -18,28 +18,23 @@ export class ManagementPage {
     return { component: 'camps', camps };
   }
 
+  @Get('/management/camp/register')
+  @Render('management')
+  async campForm() {
+    return { component: 'campRegister' };
+  }
+
+  @Get('/management/camp/update/:id')
+  @Render('management')
+  async campUpdateForm(@Param('id') campId: number) {
+    const camp = await this.campService.getCampById(campId);
+    return { component: 'campUpdateForm', camp };
+  }
+
   @Get('/management/camp/:id')
   @Render('management')
   async camp(@Param('id') campId: number) {
     const camp = await this.campService.getCampById(campId);
     return { component: 'camp', camp };
-  }
-
-  @Get('/management/camp/registe')
-  @Render('management')
-  async campRegisteForm() {
-    return { component: 'campRegiste' };
-  }
-
-  @Get('/management/user')
-  @Render('management')
-  async user() {
-    return { component: 'user' };
-  }
-
-  @Get('/management/coupon')
-  @Render('management')
-  async coupon() {
-    return { component: 'coupon' };
   }
 }
