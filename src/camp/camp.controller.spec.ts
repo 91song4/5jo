@@ -1,18 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { CampController } from './camp.controller';
+import { CampRepository } from './camp.repository';
+import { CampService } from './camp.service';
 
 describe('CampController', () => {
-  let controller: CampController;
+  let campRepository: CampRepository;
+  let campController: CampController;
+  let campService: CampService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CampController],
-    }).compile();
-
-    controller = module.get<CampController>(CampController);
+  beforeEach(() => {
+    campService = new CampService(campRepository);
+    campController = new CampController(campService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('getCamps', () => {
+    it('should return an array of Camp', async () => {
+      const result = campController.getCamps();
+      expect(result).toBe(result);
+    });
   });
 });

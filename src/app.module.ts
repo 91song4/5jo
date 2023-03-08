@@ -6,9 +6,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-
 import { JwtModule } from '@nestjs/jwt';
-
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { CacheConfigService } from './config/cache.config.service';
@@ -25,9 +23,13 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 
 // camp
 import { CampModule } from './camp/camp.module';
-import { CampService } from './camp/camp.service';
 import { UsersModule } from './users/users.module';
 import { ManagementPage } from './views/controllers/management.page';
+import { AuthPage } from './views/controllers/auth.page';
+
+// Order
+import { OrderModule } from './order/order.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
@@ -55,18 +57,17 @@ import { ManagementPage } from './views/controllers/management.page';
       useClass: TypeOrmConfigService,
     }),
     UsersModule,
+    OrderModule,
+    CouponModule,
   ],
-  controllers: [AppController, ManagementPage],
+  controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude(
-        { path: 'auth/log-in', method: RequestMethod.POST },
-        { path: 'auth/sign-up', method: RequestMethod.POST },
-      )
-      .forRoutes('auth');
+      .exclude('auth')
+      .forRoutes({ path: 'auth/log-out', method: RequestMethod.POST });
   }
 }

@@ -1,0 +1,33 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const name = document.querySelector('#name');
+    const email = document.querySelector('#email');
+    const userId = document.querySelector('#userId');
+
+    const findBtn = document.querySelector('#find-btn');
+    findBtn.addEventListener('click', () => {
+      try {
+        axios
+          .post('/api/auth/lost/id', {
+            name: name.value,
+            email: email.value,
+          })
+          .then((response) => {
+            if (response.data === '') {
+              userId.value = '아이디를 찾을 수 없습니다.';
+            } else {
+              userId.value = response.data.userId;
+            }
+            name.disabled = true;
+            email.disabled = true;
+          })
+          .catch((error) => alert(error.response.data.message));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+  });
+</script>
+<body>
+  <%-include('./components/lost-id-form') %>
+</body>

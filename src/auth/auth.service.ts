@@ -1,8 +1,5 @@
 import {
-  CACHE_MANAGER,
   ConflictException,
-  HttpException,
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -14,9 +11,9 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { Cache } from 'cache-manager';
+
 import { User } from 'src/users/users.entity';
+import { FindUserDto } from './dtos/find-user.dto';
 
 dotenv.config();
 
@@ -25,13 +22,23 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async testGetUsers() {
     const users = await this.userRepository.find();
     return users;
+  }
+
+  /**
+   * 이름과 이메일을 받아서 아이디를 찾아주는 함수
+   * @name 이름
+   * @email 이메일
+   */
+  async findUserId({ name, email }: FindUserDto) {
+    return await this.userRepository.findOne({
+      select: ['userId'],
+      where: { name, email, deletedAt: null },
+    });
   }
 
   /**
@@ -51,7 +58,7 @@ export class AuthService {
     }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = this.createRefreshToken();
 
     return { accessToken, refreshToken, id: userData.id };
   }
@@ -70,15 +77,10 @@ export class AuthService {
     name,
     userId,
     password,
-    passwordCheck,
     email,
     phone,
     birthday,
   }: CreateUserDto) {
-    if (password !== passwordCheck) {
-      throw new HttpException('비밀번호가 일치하지 않습니다.', 400);
-    }
-
     const userData = await this.getUserByUserId(userId, ['userId']);
     if (userData) {
       throw new ConflictException('아이디가 존재합니다.');
@@ -99,11 +101,21 @@ export class AuthService {
     return { id: identifiers[0].id };
   }
 
+  /**
+   * 비밀번호 재설정
+   * @password 비밀번호
+   */
+  async resetPassword(userId: string, password: string) {
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
+    this.userRepository.update({ userId }, { password });
+  }
+
   /** userId로 원하는 컬럼 불러오기
    * @userId 로그인아이디
    * @selects select하고싶은 컬럼 string Array로 전달
    */
-  private async getUserByUserId(userId, selects?) {
+  async getUserByUserId(userId, selects?) {
     return await this.userRepository.findOne({
       select: [...selects],
       where: { userId, deletedAt: null },
@@ -114,8 +126,8 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync({ id });
     return accessToken;
   }
-  private async createRefreshToken() {
-    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+  private createRefreshToken() {
+    const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;
   }
 }
