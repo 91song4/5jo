@@ -390,13 +390,16 @@
             success: function (response) {
               console.log(response)
 
+              //비우기
+              $('#usersinfo').empty()
+
               for (let i = 0; i < response.length; i++) {
-              $('.users')
-              let id = response[i].id
-              let userId = response[i].userId
-              let name = response[i].name
-              let phone = response[i].phone
-              let email = response[i].email
+              // $('.users')
+                let id = response[i].id
+                let userId = response[i].userId
+                let name = response[i].name
+                let phone = response[i].phone
+                let email = response[i].email
               
               let temp_html =`
               <tr class="users">
@@ -409,6 +412,8 @@
                 <td><button type="button" class="btn btn-outline-warning"><a onclick="deleteUser(${id})">삭제</a></button></td>
 
               </tr>`
+
+              // 붙이기
               $('#usersinfo').append(temp_html)
             }
           }
@@ -448,16 +453,17 @@
 
 
     function getUsersById(id){
+      // $('.camps').hide() 
+      $('.users').hide() 
       console.log(id)
       // let user_id = $(id).val()
-        $.ajax({
-            type: "GET",
-            url: `/api/users/${id}`,
-            data: {},
-            success: function (response) {
-              console.log(response)
-
-              $('.users').hide()
+      $.ajax({
+        type: "GET",
+        url: `/api/users/${id}`,
+        data: {},
+        success: function (response) {
+          console.log(response)
+          
               let id = response.id
               let userId = response.userId
               let name = response.name
@@ -467,7 +473,7 @@
               let birthday = response.birthday
               
               let temp_html =`
-              <div class="camps">
+              <div class="usersInfo">
                 <div >고유번호 : ${id}</div>
                 <div >유저아이디 : ${userId}</div>
                 <div >이름 : ${name}</div>
@@ -476,15 +482,24 @@
                 <div >생일 : ${birthday}</div>
                 <div >아이디생성일 : ${createdIdDate}</div>
 
-                <button onclick="users_view()">뒤로가기</button>
+                <button onclick="$('.users').show(), getUsersByIdDelete()">뒤로가기</button>
               </div>`
+
               $('.mid').append(temp_html)
+             
               }
+              
             })
           }
-
+          
+    function getUsersByIdDelete() {
+      $(".usersInfo").remove()
+    }
+          
 
     function user_update_form(id){
+      $('.camps').hide() 
+      $('.users').hide() 
       // let user_id = $(user).val()
       console.log(id)
       // $.ajax({
@@ -500,7 +515,7 @@
       //       let password = response[0].password
       //       let brithday = response[0].brithday
             let temp_html = `
-            <div class="camps">
+            <div class="updateform">
               <div id="id" value="${id}">유저아이디 : ${id}</div>
               이름 : <input type="text" id="name" /></br>
               핸드폰번호 : <input type="string" id="phone" /></br>
@@ -509,13 +524,17 @@
               생일 : <input type="date" id="birthday" /></br>
               
               <button onclick="updateUser(${id})">수정하기</button>
-              <button onclick="getUsersById(${id})">뒤로가기</button>
+              <button onclick="$('.users').show(), user_update_form_Delete()">뒤로가기</button>
             </div>`
             $('.mid').append(temp_html)
           }
       //   })
       // }
       
+
+    function user_update_form_Delete() {
+    $(".updateform").remove()
+  }
         
     function updateUser(id){
       let name = $('#name').val()
@@ -544,6 +563,8 @@
           
             success: function(result) {
                     alert("유저정보 수정완료");
+                    $('.updateform').hide()
+                   location.replace('/view')
             },
             error: function(error) {
                 console.log(error);
@@ -563,13 +584,13 @@
               data: {},
                 success: function(result) {
                   alert("삭제 완료");
-                    location.replace('/')
+                    location.replace('/view')
                 },
                 error: function() {
                   alert("실패")       
                 }
             })
-          }else{
+        }else{
             alert("일치하지 않습니다")
           }
         }
