@@ -52,9 +52,9 @@ export class CouponController {
     );
   }
 
-  // // 쿠폰 삭제
-  // @Delete('/coupon/:id')
-  // deleteCoupon(@Param('id') couponId: number) {
-  //   return this.couponService.deleteCoupon(couponId);
-  // }
+  // 쿠폰 삭제
+  @Delete('/coupon/:id')
+  deleteCoupon(@Param('id') couponId: number) {
+    return this.couponService.deleteCoupon(couponId);
+  }
 }
