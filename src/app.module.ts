@@ -27,6 +27,7 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { CampModule } from './camp/camp.module';
 import { CampService } from './camp/camp.service';
 import { UsersModule } from './users/users.module';
+import { ManagementPage } from './views/controllers/management.page';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ManagementPage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {

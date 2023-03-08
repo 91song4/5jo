@@ -11,8 +11,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async managermain() {
-    const camps = await this.campService.getCamps();
-    return { camps };
+  async root() {
+    return { message: '환영합니다. 메인페이지 입니다.' };
   }
 }

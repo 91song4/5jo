@@ -15,6 +15,7 @@
     ></script>
     <title>Page Title</title>
 
+
     <style>
       body {
         height: 100vh;
@@ -44,7 +45,12 @@
         width: 100%;
       }
     </style>
+
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+
   </head>
+
   <body>
     <section class="main">
       <div class="sidebar">
@@ -83,10 +89,11 @@
                 회원관리
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">회원조회</a></li>
+                <li><a class="dropdown-item" onclick="users_view()">회원조회</a></li>
               </ul>
             </div>
           </li>
+          
           <li class="nav-item">
             <div class="dropdown">
               <button
@@ -151,13 +158,15 @@
       
     </section>
   </body>
+  
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
   <script>
     
 
     function camp_create_form(){
-      $('.camps').hide()  
+      $('.camps').hide() 
+      $('.users').hide()       
       let temp_html = `
                   <div class="camps">
                     <div>캠프 등록 페이지</div>
@@ -168,9 +177,9 @@
                     <button onclick="createCamp()">등록</button>
                     <button onclick="location.replace('/')">뒤로가기</button>
                   </div>`
-                  $('.mid').append(temp_html)
-                            
+                  $('.mid').append(temp_html)        
     }
+
 
     function createCamp(){
       let name = $('#name').val()
@@ -207,7 +216,6 @@
             }
     
 
-    
     function getCampById(camp){
     let camp_id = $(camp).val()
       $.ajax({
@@ -249,7 +257,8 @@
             })
           }
 
-  function deleteCamp(camp){
+
+    function deleteCamp(camp){
       let camp_id = $(camp).val()
       let input = prompt('삭제하시려면 "삭제합니다" 를 입력해 주세요');
       if(input === "삭제합니다"){
@@ -314,36 +323,256 @@
       let isRepair = document.getElementById('isRepair')
       const is_checked = isRepair.checked;
       $.ajax({
-                type: "PUT",
-                url: `/api/camps/${camp_id}`,
-                beforeSend: function(xhrObj)
-                {     
-                xhrObj.setRequestHeader("Content-Type","application/json");     
-                xhrObj.setRequestHeader("Accept","application/json"); 
-              },
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({
-                  name:name,
-                  headcount:Number(headcount),
-                  price:Number(price),
-                  type:Number(type),
-                  isRepair:is_checked,
-                  repairEndDate:repairEndDate
-                }),
-                  success: function(result) {
-                      if (result) {
-                          alert("완료");
-                      } else {
-                          alert("전송된 값 없음");
-                      }
-                  },
-                  error: function() {
-                      alert("전송 완료");
-                      location.replace('/')
-                  }
-              })
+          type: "PUT",
+          url: `/api/camps/${camp_id}`,
+          beforeSend: function(xhrObj)
+          {     
+          xhrObj.setRequestHeader("Content-Type","application/json");     
+          xhrObj.setRequestHeader("Accept","application/json"); 
+        },
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({
+            name:name,
+            headcount:Number(headcount),
+            price:Number(price),
+            type:Number(type),
+            isRepair:is_checked,
+            repairEndDate:repairEndDate
+          }),
+            success: function(result) {
+                if (result) {
+                    alert("완료");
+                } else {
+                    alert("전송된 값 없음");
+                }
+            },
+            error: function() {
+                alert("전송 완료");
+                location.replace('/')
             }
+          })
+        }
+
+
+
+    function users_view() {
+      $('.camps').hide() 
+      $('.users').hide() 
+      let temp_html = `
+        <div class="users">
+            <div>유저정보 조회 페이지</div>
+            
+            <table id="usersinfo" class="table">
+            <!-- colspan="5" -->
+            <thead>
+              <th>고유번호</th>
+              <th>유저아이디</th>
+              <th>이름</th>
+              <th>핸드폰번호</th>
+              <th>이메일</th>
+              <th>수정</th>
+              <th>삭제</th>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+
+            <button onclick="location.replace('/view')">뒤로가기</button>
+          </div>
+        `
+      $('.mid').append(temp_html) 
+
+      $.ajax({
+            type: "GET",
+            url: `/api/users`,
+            data: {},
+            success: function (response) {
+              console.log(response)
+
+              for (let i = 0; i < response.length; i++) {
+              $('.users')
+              let id = response[i].id
+              let userId = response[i].userId
+              let name = response[i].name
+              let phone = response[i].phone
+              let email = response[i].email
+              
+              let temp_html =`
+              <tr class="users">
+                <td><a onclick="getUsersById(${id})">${id}</a></td>
+                <td><a onclick="getUsersById(${id})">${userId}</a></td>
+                <td><a onclick="getUsersById(${id})">${name}</a></td>
+                <td><a onclick="getUsersById(${id})">${phone}</a></td>
+                <td><a onclick="getUsersById(${id})">${email}</a></td>
+                <td><button type="button" class="btn btn-outline-primary"><a onclick="user_update_form(${id})">수정</a></button></td>
+                <td><button type="button" class="btn btn-outline-warning"><a onclick="deleteUser(${id})">삭제</a></button></td>
+
+              </tr>`
+              $('#usersinfo').append(temp_html)
+            }
+          }
+        })
+    }
+
+
+    // function getUsers(){
+    //   let users_get = $().val()
+    //     $.ajax({
+    //         type: "GET",
+    //         url: `/api/users`,
+    //         data: {},
+    //         success: function (response) {
+    //           console.log(response)
+
+    //           $('.users').hide()
+    //             let id = response[i].id
+    //             let userId = response[i].userId
+    //             let name = response[i].name
+    //             let phone = response[i].phone
+    //             let email = response[i].email
+
+    //             let temp_html =`
+    //             <div class="users">
+    //               <div >고유번호 : ${id}</div>
+    //               <div >유저아이디 : ${userId}</div>
+    //               <div >이름 : ${name}</div>
+    //               <div >핸드폰번호 : ${phone}</div>
+    //               <div >이메일 : ${email}</div>
+  
+    //             </div>`
+    //           $('.mid').append(temp_html)
+    //           }
+    //         })
+    //       }
+
+
+    function getUsersById(id){
+      console.log(id)
+      // let user_id = $(id).val()
+        $.ajax({
+            type: "GET",
+            url: `/api/users/${id}`,
+            data: {},
+            success: function (response) {
+              console.log(response)
+
+              $('.users').hide()
+              let id = response.id
+              let userId = response.userId
+              let name = response.name
+              let phone = response.phone
+              let email = response.email
+              let createdIdDate = response.createdIdDate
+              let birthday = response.birthday
+              
+              let temp_html =`
+              <div class="camps">
+                <div >고유번호 : ${id}</div>
+                <div >유저아이디 : ${userId}</div>
+                <div >이름 : ${name}</div>
+                <div >핸드폰번호 : ${phone}</div>
+                <div >이메일 : ${email}</div>
+                <div >생일 : ${birthday}</div>
+                <div >아이디생성일 : ${createdIdDate}</div>
+
+                <button onclick="users_view()">뒤로가기</button>
+              </div>`
+              $('.mid').append(temp_html)
+              }
+            })
+          }
+
+
+    function user_update_form(id){
+      // let user_id = $(user).val()
+      console.log(id)
+      // $.ajax({
+      //     type: "GET",
+      //     url: `/api/users/${id}`,
+      //     data: {},
+      //     success: function (response) {
+      //       $('.users').hide()
+      //       let userId = response[0].userId
+      //       let name = response[0].name
+      //       let phone = response[0].phone
+      //       let email = response[0].email
+      //       let password = response[0].password
+      //       let brithday = response[0].brithday
+            let temp_html = `
+            <div class="camps">
+              <div id="id" value="${id}">유저아이디 : ${id}</div>
+              이름 : <input type="text" id="name" /></br>
+              핸드폰번호 : <input type="string" id="phone" /></br>
+              이메일 : <input type="string" id="email" /> </br>
+              비밀번호 : <input type="string" id="password" /></br>
+              생일 : <input type="date" id="birthday" /></br>
+              
+              <button onclick="updateUser(${id})">수정하기</button>
+              <button onclick="getUsersById(${id})">뒤로가기</button>
+            </div>`
+            $('.mid').append(temp_html)
+          }
+      //   })
+      // }
+      
+        
+    function updateUser(id){
+      let name = $('#name').val()
+      let phone = $('#phone').val()
+      let email = $('#email').val()
+      let password = $('#password').val()
+      let birthday = $('#birthday').val()
+      
+      $.ajax({
+          type: "PUT",
+          url: `/api/users/${id}`,
+        //   beforeSend: function(xhrObj)
+        //   {     
+        //   xhrObj.setRequestHeader("Content-Type","application/json");     
+        //   xhrObj.setRequestHeader("Accept","application/json"); 
+        // },
+          // dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({
+            name:String(name),
+            phone:String(phone),
+            email:String(email),
+            password:Number(password),
+            birthday:new Date(birthday).toISOString().slice(0, 10),
+          }),
+          
+            success: function(result) {
+                    alert("유저정보 수정완료");
+            },
+            error: function(error) {
+                console.log(error);
+                // location.replace('/')
+            }
+        })
+      }
+                              
+
+      function deleteUser(id){
+        // let user_id = $(id).val()
+        let input = prompt('삭제하시려면 "삭제합니다" 를 입력해 주세요');
+        if(input === "삭제합니다"){
+          $.ajax({
+              type: "DELETE",
+              url: `/api/users/${id}`,
+              data: {},
+                success: function(result) {
+                  alert("삭제 완료");
+                    location.replace('/')
+                },
+                error: function() {
+                  alert("실패")       
+                }
+            })
+          }else{
+            alert("일치하지 않습니다")
+          }
+        }
             </script>
       </html>
 
