@@ -44,23 +44,25 @@ export class UsersService {
     });
 
     const newTypeuserobj: {
+      id: number;
+      userId: string;
       name: string;
       phone: string;
       email: string;
       // createdAt: Date;
-      createdIdDate: string;
       birthday: Date;
-      userId: string;
+      createdIdDate: string;
     } = {
+      id: userobj.id,
+      userId: userobj.userId,
       name: userobj.name,
       phone: userobj.phone,
       email: userobj.email,
+      birthday: userobj.birthday,
       // createdAt: userobj.createdAt,
       createdIdDate: `${userobj.createdAt.getFullYear()}-${
         userobj.createdAt.getMonth() + 1
       }-${userobj.createdAt.getDate()}`,
-      birthday: userobj.birthday,
-      userId: userobj.userId,
     };
 
     return newTypeuserobj;
@@ -74,11 +76,10 @@ export class UsersService {
     email: string,
     password: string,
     birthday: Date,
-    userId: string,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'createdAt', 'birthday', 'userId'],
+      select: ['name', 'phone', 'email', 'password', 'birthday'],
     });
 
     if (_.isNil(user)) {
@@ -91,7 +92,6 @@ export class UsersService {
       email,
       password,
       birthday,
-      userId,
     });
   }
 
@@ -110,20 +110,20 @@ export class UsersService {
 
   // 유저 정보 생성 API
   createUsersInformation(
+    userId: string,
     name: string,
     phone: string,
     email: string,
     password: string,
     birthday: Date,
-    userId: string,
   ) {
     this.userRepository.insert({
+      userId,
       name,
       phone,
       email,
       password,
       birthday,
-      userId,
     });
   }
 }

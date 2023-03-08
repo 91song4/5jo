@@ -10,7 +10,7 @@ export class OrderService {
     private readonly orderRepository: Repository<Order>,
   ) {}
 
-  // 주문 생성
+  // 주문 생성 ( POST )
   async createOrder(
     userId: number,
     campId: number,
@@ -31,5 +31,15 @@ export class OrderService {
     });
 
     return this.orderRepository.save(order);
+  }
+
+  // 주문 가져오기 ( GET )
+  async getAllOrders(): Promise<Order[]> {
+    return await this.orderRepository.find();
+  }
+
+  // 유저의 주문 목록 가져오기
+  async getOrdersByUserId(userId: number) {
+    return this.orderRepository.find({ where: { userId } });
   }
 }

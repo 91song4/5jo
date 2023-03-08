@@ -22,7 +22,7 @@ export class User {
   @Column('varchar', { select: false })
   readonly password: string;
 
-  @Index({ unique: true })
+  @Index()
   @Column('varchar', { length: 10 })
   readonly name: string;
 
