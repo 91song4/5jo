@@ -59,3 +59,9 @@ Content-Type: application/json
 "email":"test@gmail.com",
 "phone":"010-1234-7542"
 }
+###
+
+#  회원탈퇴 API
+DELETE  http://localhost:3000/api/auth/withdrawal
+Content-Type: application/json
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MjcwMjE4LCJleHAiOjE2NzgyNzM4MTh9.XykDjMWJDOb4l2O3bovg5vCrKzxeZr-FxG8GMXJfQTs;refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgyNzAyMTgsImV4cCI6MTY3ODM1MzAxOH0.C9mvpIIo-xyLZROjDaRSgXk4XqQsK_wlxU6sYzoxHr0;
