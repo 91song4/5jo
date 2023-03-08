@@ -44,7 +44,6 @@ export class CouponService {
   }
 
   // 쿠폰 정보 수정
-
   updateCoupon(
     id: number,
     name: string,
@@ -60,10 +59,9 @@ export class CouponService {
     });
   }
 
-  // // 캠프 삭제
-
-  // deleteCoupon(id: number) {
-  //   this.couponRepository.delete(id);
-  //   return id;
-  // }
+  // 쿠폰 삭제
+  deleteCoupon(id: number) {
+    this.couponRepository.delete(id);
+    return id;
+  }
 }
