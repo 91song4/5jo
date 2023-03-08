@@ -20,29 +20,17 @@ export class Coupon {
   name: string;
 
   @Column('bigint')
-  type: number;
+  discount: number;
 
   @Column('bigint')
-  headcount: number;
+  dateOfUse: Date;
 
   @Column('bigint')
-  price: number;
-
-  @Column('boolean')
-  isRepair: boolean;
-
-  @Column()
-  repairEndDate: Date | null;
+  maxDiscount: number;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: null | Date;
-
-  @OneToMany(() => Order, (order) => order.camp)
-  orders: Order[];
 }
