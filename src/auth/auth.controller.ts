@@ -53,7 +53,7 @@ export class AuthController {
     return await this.authService.findUserId(findUserDto);
   }
 
-  @Patch('/reset/password:userId')
+  @Patch('/reset/password/:userId')
   async resetPassword(
     @Param('userId') userId: string,
     @Body() { password }: ResetPasswordDto,
