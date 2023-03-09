@@ -101,6 +101,14 @@ export class AuthService {
     return { id: identifiers[0].id };
   }
 
+  /** 회원탈퇴
+   * @accesstoken
+   */
+  async deleteUser(accessToken: string) {
+    const { id } = await this.jwtService.verify(accessToken);
+    this.userRepository.softDelete(id);
+  }
+
   /**
    * 비밀번호 재설정
    * @password 비밀번호
