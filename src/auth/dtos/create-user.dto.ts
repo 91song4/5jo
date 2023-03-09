@@ -1,4 +1,10 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Matches,
+} from 'class-validator';
 
 export class CreateUserDto {
   /**
@@ -27,6 +33,7 @@ export class CreateUserDto {
    */
   @IsNotEmpty({ message: '빈 값이 들어있습니다' })
   @IsString()
+  @Matches(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/)
   readonly phone: string;
 
   /**

@@ -7,10 +7,9 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthMiddleware } from './auth/auth.middleware';
-import { AuthModule } from './auth/auth.module';
-import { CacheConfigService } from './config/cache.config.service';
 import { JwtConfigService } from './config/jwt.config.service';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { CacheConfigService } from './config/cache.config.service';
 
 // app
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -20,6 +19,9 @@ import { AppService } from './app.service';
 
 // TypeOrm
 import { TypeOrmConfigService } from './config/typeorm.config.service';
+
+// auth
+import { AuthModule } from './auth/auth.module';
 
 // camp
 import { CampModule } from './camp/camp.module';
@@ -34,11 +36,12 @@ import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
+// import { SmsService } from './sms/sms.service';
+// import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    CampModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
@@ -54,16 +57,17 @@ import { HomePage } from './views/controllers/main.page';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
-    AuthModule,
-
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    AuthModule,
+    CampModule,
     UsersModule,
     OrderModule,
     CouponModule,
     AdminModule,
+    // SmsModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
