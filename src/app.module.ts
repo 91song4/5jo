@@ -30,6 +30,7 @@ import { AuthPage } from './views/controllers/auth.page';
 // Order
 import { OrderModule } from './order/order.module';
 import { CouponModule } from './coupon/coupon.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { CouponModule } from './coupon/coupon.module';
     UsersModule,
     OrderModule,
     CouponModule,
+    AdminModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],

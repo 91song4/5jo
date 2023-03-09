@@ -1,3 +1,4 @@
+import { Admin } from 'src/admin/admin.entity';
 import { Order } from 'src/order/order.entity';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -48,4 +50,7 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToOne(() => Admin, (admin) => admin.user)
+  readonly admin: Admin;
 }
