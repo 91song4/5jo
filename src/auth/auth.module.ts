@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from '../config/jwt.config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheConfigService } from '../config/cache.config.service';
+import { SmsModule } from '../sms/sms.module';
 import { User } from 'src/users/users.entity';
 
 @Module({
@@ -21,6 +22,7 @@ import { User } from 'src/users/users.entity';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    // SmsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
