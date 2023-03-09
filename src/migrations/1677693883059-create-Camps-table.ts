@@ -67,7 +67,7 @@ export class createCampsTable1677693883059 implements MigrationInterface {
           {
             name: 'deletedAt',
             type: 'datetime',
-            isNullable: false,
+            isNullable: true,
             default: null,
           },
         ],
