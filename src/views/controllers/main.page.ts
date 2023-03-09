@@ -27,4 +27,10 @@ export class HomePage {
   async community() {
     return;
   }
+
+  @Get('/inquiry')
+  @Render('inquiry')
+  async inquiry() {
+    return;
+  }
 }
