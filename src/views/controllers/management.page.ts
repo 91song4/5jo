@@ -48,6 +48,12 @@ export class ManagementPage {
     const coupons = await this.couponService.getCoupons();
     return { component: 'coupons', coupons };
   }
+
+  @Get('/management/coupon/register')
+  @Render('management')
+  async couponForm() {
+    return { component: 'couponRegister' };
+  }
   @Get('/management/coupon/update/:id')
   @Render('management')
   async couponUpdateForm(@Param('id') couponId: number) {

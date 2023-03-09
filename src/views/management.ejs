@@ -35,12 +35,14 @@
         %> <%} %> <% if(component==='coupon'){ %>
         <%-include('./components/manager-coupon-detail') %> <%} %> <%
         if(component==='couponUpdateForm'){ %>
-        <%-include('./components/manager-coupon-update') %> <%} %>
+        <%-include('./components/manager-coupon-update') %> <%} %><%
+        if(component==='couponRegister'){ %>
+        <%-include('./components/manager-coupon-register') %> <%} %>
       </div>
     </section>
   </body>
 
-  <script src="/js/camp.js"></script>
+  <script src="/js/management.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
