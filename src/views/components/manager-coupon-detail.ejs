@@ -1,0 +1,15 @@
+<div class="coupons">
+  <div>쿠폰명: <%=coupon.name%></div>
+  <div>할인율: <%=coupon.discount%> %</div>
+  <div>사용기한: <%=coupon.dateOfUse%> 개월</div>
+  <div>최대할인액: <%=coupon.maxDiscount%> 원</div>
+  <button
+    onclick="location.replace('/view/management/coupon/update/<%=coupon.id%>')"
+  >
+    수정하기
+  </button>
+  <button onclick="deleteCoupon('<%=coupon.id%>')">삭제하기</button>
+  <button onclick="location.replace('/view/management/coupon')">
+    뒤로가기
+  </button>
+</div>

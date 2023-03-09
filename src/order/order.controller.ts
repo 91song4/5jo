@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ResOrderDto } from './dto/order-res.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './order.entity';
 import { OrderService } from './order.service';
 
@@ -38,7 +47,7 @@ export class OrderController {
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '유저의 주문 목록 가져오기' })
   @Get('/orders/user/:userId')
-  async getOrdersByUserId(@Param('userId') userId: number) {
+  async getOrdersByUserId(@Param('userId') userId: number): Promise<Order[]> {
     return this.orderService.getOrdersByUserId(userId);
   }
 
@@ -47,4 +56,27 @@ export class OrderController {
   //   const userId = req.user.id;
   //   return this.orderService.getOrdersByUserId(userId);
   // }
+
+  // 주문 업데이트 ( PUT )
+  @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
+  @ApiOperation({ summary: '주문 업데이트' })
+  @Put('/orders/:id')
+  updateOrder(@Param('id') orderId: number, @Body() body: UpdateOrderDto) {
+    return this.orderService.updateOrder(
+      orderId,
+      body.selectedDay,
+      body.headcount,
+      body.receipt,
+      body.isReview,
+      body.type,
+    );
+  }
+
+  // 주문 삭제 ( DELETE )
+  @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
+  @ApiOperation({ summary: '주문 삭제' })
+  @Delete('/orders/:id')
+  deleteOrder(@Param('id') orderId: number) {
+    return this.orderService.deleteOrder(orderId);
+  }
 }

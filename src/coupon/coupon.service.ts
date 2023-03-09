@@ -14,7 +14,10 @@ export class CouponService {
     return await this.couponRepository.find();
   }
 
-  // 쿠폰 상세 조회
+  /**
+   * @param id
+   * @returns coupon
+   */
   async getCouponById(id: number) {
     try {
       const coupon = await this.couponRepository.findOne({
@@ -26,7 +29,14 @@ export class CouponService {
     }
   }
 
-  // 쿠폰 등록
+  /**
+   * 쿠폰 생성
+   * @param name
+   * @param discount
+   * @param dateOfUse
+   * @param maxDiscount
+   * @returns
+   */
   createCoupon(
     name: string,
     discount: number,
@@ -39,7 +49,6 @@ export class CouponService {
       dateOfUse,
       maxDiscount,
     });
-    console.log(coupon);
     return coupon;
   }
 

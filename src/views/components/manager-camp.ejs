@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
-</head>
 <body>
     <div class="camps">
     <table>
@@ -23,19 +13,14 @@
         <td><%=camps[i].type%></td>
         <td><%=camps[i].headcount%></td>
         <td><%=camps[i].price%></td>
-        <% if (!camps[i].isRepair) { %> 
-          <td>정상</td>
-        <% } else {%>
-          <td>수리중</td>
-          <%}%>
-        <td><button value="
-          <%=camps[i].id%>
-          " 
-          onclick="getCampById(this)">상세보기</button></td>
+        <% if (!camps[i].isRepair) { %> <td>정상</td>
+        <% } else {%><td>수리중</td><%}%>
+        <td><button onclick="location.replace(`/view/management/camp/<%=camps[i].id%>`)">상세보기</button></td>
       </tr>
       <% } %>
     </table>
     </div>
+</body>
 
 </body>
 </html>

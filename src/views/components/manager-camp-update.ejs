@@ -1,0 +1,13 @@
+<div class="camps">
+    <div id="id">번호 : <%=camp.id%></div>
+    이름 : <input type="text" id="name" value="<%=camp.name%>"/></br>
+    최대인원 : <input type="number" id="headcount" value="<%=camp.headcount%>"/></br>
+    가격 : <input type="number" id="price" value="<%=camp.price%>"/> </br>
+    유형 : <input type="number" id="type" value="<%=camp.type%>"/></br>
+    <% if(!camp.isRepair)
+    {%> 점검상태 : <input type="checkbox" id="isRepair"/></br><%} 
+    else { %> 점검상태 : <input type="checkbox" checked id="isRepair"/></br><%} %>
+    점검종료일 : <input type="date" id="repairEndDate" value="<%=camp.repairEndDate%>"/></br>
+    <button onclick="updateCamp('<%=camp.id%>')">수정하기</button>
+    <button onclick="location.replace('/view/management/camp/<%=camp.id%>')">뒤로가기</button>
+</div>

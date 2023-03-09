@@ -30,6 +30,10 @@ import { AuthPage } from './views/controllers/auth.page';
 // Order
 import { OrderModule } from './order/order.module';
 import { CouponModule } from './coupon/coupon.module';
+import { AdminModule } from './admin/admin.module';
+import { CampController } from './camp/camp.controller';
+import { CouponController } from './coupon/coupon.controller';
+import { HomePage } from './views/controllers/main.page';
 
 @Module({
   imports: [
@@ -59,8 +63,9 @@ import { CouponModule } from './coupon/coupon.module';
     UsersModule,
     OrderModule,
     CouponModule,
+    AdminModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage],
+  controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
@@ -68,6 +73,13 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
-      .forRoutes({ path: 'auth/log-out', method: RequestMethod.POST });
+      .exclude({ path: 'camps', method: RequestMethod.GET })
+      .exclude({ path: 'coupon', method: RequestMethod.GET })
+      .forRoutes(
+        { path: 'auth/log-out', method: RequestMethod.POST },
+        { path: 'auth/withdrawal', method: RequestMethod.DELETE },
+        CampController,
+        CouponController,
+      );
   }
 }

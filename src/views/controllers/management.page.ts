@@ -1,12 +1,13 @@
 import { Controller, Get, Param, Render } from '@nestjs/common';
-import { number } from 'joi';
 import { CampService } from 'src/camp/camp.service';
+import { CouponService } from 'src/coupon/coupon.service';
 import { UsersService } from 'src/users/users.service';
 
 @Controller('view')
 export class ManagementPage {
   constructor(
     private readonly campService: CampService,
+    private readonly couponService: CouponService,
     private readonly usersService: UsersService,
   ) {}
 
@@ -20,8 +21,20 @@ export class ManagementPage {
   @Render('management')
   async camps() {
     const camps = await this.campService.getCamps();
-
     return { component: 'camps', camps };
+  }
+
+  @Get('/management/camp/register')
+  @Render('management')
+  async campForm() {
+    return { component: 'campRegister' };
+  }
+
+  @Get('/management/camp/update/:id')
+  @Render('management')
+  async campUpdateForm(@Param('id') campId: number) {
+    const camp = await this.campService.getCampById(campId);
+    return { component: 'campUpdateForm', camp };
   }
 
   @Get('/management/camp/:id')
@@ -31,10 +44,30 @@ export class ManagementPage {
     return { component: 'camp', camp };
   }
 
-  @Get('/management/camp/registe')
+  @Get('/management/coupon')
   @Render('management')
-  async campRegisteForm() {
-    return { component: 'campRegiste' };
+  async coupons() {
+    const coupons = await this.couponService.getCoupons();
+    return { component: 'coupons', coupons };
+  }
+
+  @Get('/management/coupon/register')
+  @Render('management')
+  async couponForm() {
+    return { component: 'couponRegister' };
+  }
+  @Get('/management/coupon/update/:id')
+  @Render('management')
+  async couponUpdateForm(@Param('id') couponId: number) {
+    const coupon = await this.couponService.getCouponById(couponId);
+    return { component: 'couponUpdateForm', coupon };
+  }
+
+  @Get('/management/coupon/:id')
+  @Render('management')
+  async coupon(@Param('id') couponId: number) {
+    const coupon = await this.couponService.getCouponById(couponId);
+    return { component: 'coupon', coupon };
   }
 
   @Get('/management/users')
@@ -57,11 +90,5 @@ export class ManagementPage {
   @Render('management')
   async usersUpdate(@Param('id') id: number) {
     return { component: 'usersUpdate' };
-  }
-
-  @Get('/management/coupon')
-  @Render('management')
-  async coupon() {
-    return { component: 'coupon' };
   }
 }

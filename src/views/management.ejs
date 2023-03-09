@@ -22,11 +22,22 @@
       <%-include('./components/manager-menu') %>
 
       <div class="mid">
-        <% if(component==='main'){ %> <%-include('./components/manager-main')
-        %><%} %> <% if(component==='camps'){ %>
+        <% if(component==='main'){ %> <%-include('./components/manager-main') %>
+        <%} %> <% if(component==='camps'){ %>
         <%-include('./components/manager-camp') %> <%} %> <%
-        if(component==='campRegiste'){ %>
-        <%-include('./components/manager-camp-registe') %> <%} %>
+        if(component==='campRegister'){ %>
+        <%-include('./components/manager-camp-register') %> <%} %> <%
+        if(component==='camp'){ %>
+        <%-include('./components/manager-camp-detail') %> <%} %> <%
+        if(component==='campUpdateForm'){ %>
+        <%-include('./components/manager-camp-update') %> <%} %> <%
+        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
+        %> <%} %> <% if(component==='coupon'){ %>
+        <%-include('./components/manager-coupon-detail') %> <%} %> <%
+        if(component==='couponUpdateForm'){ %>
+        <%-include('./components/manager-coupon-update') %> <%} %><%
+        if(component==='couponRegister'){ %>
+        <%-include('./components/manager-coupon-register') %> <%} %>
         <%if(component==='users'){ %> <%-include('./components/manager-users')
         %><%} %> <%if(component==='usersInfo'){ %>
         <%-include('./components/manager-usersInfo') %><%} %>
@@ -35,7 +46,8 @@
       </div>
     </section>
   </body>
-  <script src="/js/camp.js"></script>
+
+  <script src="/js/management.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
