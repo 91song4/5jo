@@ -14,5 +14,5 @@ export const ormConfig: DataSourceOptions = {
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   entities: [Camp, User, Order, Admin],
-  synchronize: true,
+  synchronize: false,
 };

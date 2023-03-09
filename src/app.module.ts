@@ -31,6 +31,8 @@ import { AuthPage } from './views/controllers/auth.page';
 import { OrderModule } from './order/order.module';
 import { CouponModule } from './coupon/coupon.module';
 import { AdminModule } from './admin/admin.module';
+import { CampController } from './camp/camp.controller';
+import { CouponController } from './coupon/coupon.controller';
 
 @Module({
   imports: [
@@ -70,9 +72,13 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
+      .exclude({ path: 'camps', method: RequestMethod.GET })
+      .exclude({ path: 'coupon', method: RequestMethod.GET })
       .forRoutes(
         { path: 'auth/log-out', method: RequestMethod.POST },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
+        CampController,
+        CouponController,
       );
   }
 }

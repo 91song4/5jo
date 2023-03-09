@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ResOrderDto } from './dto/order-res.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './order.entity';
 import { OrderService } from './order.service';
 
@@ -47,4 +48,19 @@ export class OrderController {
   //   const userId = req.user.id;
   //   return this.orderService.getOrdersByUserId(userId);
   // }
+
+  // 주문 업데이트 ( PUT )
+  @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
+  @ApiOperation({ summary: '주문 업데이트' })
+  @Put('/orders/:id')
+  updateOrder(@Param('id') orderId: number, @Body() body: UpdateOrderDto) {
+    return this.orderService.updateOrder(
+      orderId,
+      body.selectedDay,
+      body.headcount,
+      body.receipt,
+      body.isReview,
+      body.type,
+    );
+  }
 }
