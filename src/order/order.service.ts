@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
@@ -66,7 +66,7 @@ export class OrderService {
   async deleteOrder(id: number): Promise<number> {
     const order = await this.orderRepository.findOneBy({ id });
     if (!order) {
-      throw new NotFoundException(`주문번호 ${id}번은 없어용`);
+      throw new NotFoundException(`주문번호 ${id}번은 없습니다`);
     }
     await this.orderRepository.delete(id);
 
