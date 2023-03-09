@@ -30,7 +30,7 @@ import { AuthPage } from './views/controllers/auth.page';
 // Order
 import { OrderModule } from './order/order.module';
 import { CouponModule } from './coupon/coupon.module';
-import methods from 'cache-manager-ioredis';
+import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
 
@@ -62,6 +62,7 @@ import { CouponController } from './coupon/coupon.controller';
     UsersModule,
     OrderModule,
     CouponModule,
+    AdminModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage],
   providers: [AppService, AuthMiddleware],
