@@ -33,6 +33,7 @@ import { CouponModule } from './coupon/coupon.module';
 import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
+import { HomePage } from './views/controllers/main.page';
 
 @Module({
   imports: [
@@ -64,7 +65,7 @@ import { CouponController } from './coupon/coupon.controller';
     CouponModule,
     AdminModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage],
+  controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
