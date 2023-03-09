@@ -61,4 +61,21 @@ export class OrderService {
       type,
     });
   }
+
+  // 주문 정보 삭제 ( DELETE )
+  deleteOrder(id: number) {
+    this.orderRepository.delete(id);
+    return id;
+  }
+
+  //   async deleteOrder(id: number): Promise<number> {
+  //     const order = await this.orderRepository.findOne(id);
+  //     if (!order) {
+  //       throw new NotFoundException(`${id} 라는건 없어용`);
+  //     }
+  //     await this.orderRepository.delete(id);
+
+  //     return id;
+  //   }
+  //
 }
