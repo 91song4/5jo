@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <div class="camps">
+    <table>
+      <th>캠프명</th>
+      <th>캠프타입</th>
+      <th>최대인원수</th>
+      <th>가격</th>
+      <th>상태</th>
+      <th></th>
+      <% for(let i = 0; i<camps.length; i++){ %>
+      <tr> 
+        <td><%=camps[i].name%></td>
+        <td><%=camps[i].type%></td>
+        <td><%=camps[i].headcount%></td>
+        <td><%=camps[i].price%></td>
+        <% if (!camps[i].isRepair) { %> 
+          <td>정상</td>
+        <% } else {%>
+          <td>수리중</td>
+          <%}%>
+        <td><button value="
+          <%=camps[i].id%>
+          " 
+          onclick="getCampById(this)">상세보기</button></td>
+      </tr>
+      <% } %>
+    </table>
+    </div>
+
+</body>
+</html>

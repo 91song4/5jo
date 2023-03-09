@@ -38,15 +38,15 @@ export class UsersController {
   // 유저 정보 수정 API
   @Put('/:id')
   async updateUsersInformation(
-    @Param('id') Id: number,
+    @Param('id') id: number,
     @Body() data: UpdateUsersInformationDto,
   ) {
     // 해당 유저 정보를 어떤 내용으로 수정할까?
-
+    console.log(id);
     this.logger.log(JSON.stringify(data));
 
     return await this.usersService.updateUsersInformation(
-      Id,
+      id,
       data.name,
       data.phone,
       data.email,
