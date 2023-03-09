@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ResOrderDto } from './dto/order-res.dto';
@@ -62,5 +70,12 @@ export class OrderController {
       body.isReview,
       body.type,
     );
+  }
+
+  @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
+  @ApiOperation({ summary: '주문 삭제' })
+  @Delete('/orders/:id')
+  deleteOrder(@Param('id') orderId: number) {
+    return this.orderService.deleteOrder(orderId);
   }
 }
