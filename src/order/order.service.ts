@@ -63,19 +63,13 @@ export class OrderService {
   }
 
   // 주문 정보 삭제 ( DELETE )
-  deleteOrder(id: number) {
-    this.orderRepository.delete(id);
+  async deleteOrder(id: number): Promise<number> {
+    const order = await this.orderRepository.findOneBy({ id });
+    if (!order) {
+      throw new NotFoundException(`주문번호 ${id}번은 없어용`);
+    }
+    await this.orderRepository.delete(id);
+
     return id;
   }
-
-  //   async deleteOrder(id: number): Promise<number> {
-  //     const order = await this.orderRepository.findOne(id);
-  //     if (!order) {
-  //       throw new NotFoundException(`${id} 라는건 없어용`);
-  //     }
-  //     await this.orderRepository.delete(id);
-
-  //     return id;
-  //   }
-  //
 }

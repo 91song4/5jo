@@ -47,7 +47,7 @@ export class OrderController {
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '유저의 주문 목록 가져오기' })
   @Get('/orders/user/:userId')
-  async getOrdersByUserId(@Param('userId') userId: number) {
+  async getOrdersByUserId(@Param('userId') userId: number): Promise<Order[]> {
     return this.orderService.getOrdersByUserId(userId);
   }
 
@@ -72,6 +72,7 @@ export class OrderController {
     );
   }
 
+  // 주문 삭제 ( DELETE )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '주문 삭제' })
   @Delete('/orders/:id')
