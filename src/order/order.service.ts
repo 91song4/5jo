@@ -30,7 +30,7 @@ export class OrderService {
       type,
     });
 
-    return this.orderRepository.save(order);
+    return await this.orderRepository.save(order);
   }
 
   // 주문 가져오기 ( GET )
@@ -38,8 +38,44 @@ export class OrderService {
     return await this.orderRepository.find();
   }
 
-  // 유저의 주문 목록 가져오기
-  async getOrdersByUserId(userId: number) {
-    return this.orderRepository.find({ where: { userId } });
+  // 유저의 주문 목록 가져오기 ( GET )
+  async getOrdersByUserId(userId: number): Promise<Order[]> {
+    return await this.orderRepository.find({ where: { userId } });
   }
+
+  // 주문 정보 수정하기 ( PUT )
+  updateOrder(
+    id: number,
+    selectedDay: string,
+    headcount: number,
+    receipt: number,
+    isReview: boolean,
+    type: number,
+  ) {
+    return this.orderRepository.update(id, {
+      id,
+      selectedDay,
+      headcount,
+      receipt,
+      isReview,
+      type,
+    });
+  }
+
+  // 주문 정보 삭제 ( DELETE )
+  deleteOrder(id: number) {
+    this.orderRepository.delete(id);
+    return id;
+  }
+
+  //   async deleteOrder(id: number): Promise<number> {
+  //     const order = await this.orderRepository.findOne(id);
+  //     if (!order) {
+  //       throw new NotFoundException(`${id} 라는건 없어용`);
+  //     }
+  //     await this.orderRepository.delete(id);
+
+  //     return id;
+  //   }
+  //
 }
