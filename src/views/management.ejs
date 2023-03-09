@@ -16,7 +16,7 @@
     <link href="/css/management.css" rel="stylesheet" />
     <title>관리자 페이지</title>
   </head>
-
+  <!-- css/management.css -->
   <body>
     <section class="main">
       <%-include('./components/manager-menu') %>
@@ -38,6 +38,11 @@
         <%-include('./components/manager-coupon-update') %> <%} %><%
         if(component==='couponRegister'){ %>
         <%-include('./components/manager-coupon-register') %> <%} %>
+        <%if(component==='users'){ %> <%-include('./components/manager-users')
+        %><%} %> <%if(component==='usersInfo'){ %>
+        <%-include('./components/manager-usersInfo') %><%} %>
+        <%if(component==='usersUpdate'){ %>
+        <%-include('./components/manager-users-Update') %><%} %>
       </div>
     </section>
   </body>

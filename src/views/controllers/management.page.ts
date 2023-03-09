@@ -1,12 +1,14 @@
 import { Controller, Get, Param, Render } from '@nestjs/common';
 import { CampService } from 'src/camp/camp.service';
 import { CouponService } from 'src/coupon/coupon.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('view')
 export class ManagementPage {
   constructor(
     private readonly campService: CampService,
     private readonly couponService: CouponService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Get('/management')
@@ -66,5 +68,27 @@ export class ManagementPage {
   async coupon(@Param('id') couponId: number) {
     const coupon = await this.couponService.getCouponById(couponId);
     return { component: 'coupon', coupon };
+  }
+
+  @Get('/management/users')
+  @Render('management')
+  async users() {
+    const users = await this.usersService.getUsersInformation();
+
+    return { component: 'users', users };
+  }
+
+  @Get('/management/users/:id')
+  @Render('management')
+  async usersInfo(@Param('id') id: number) {
+    const usersInfo = await this.usersService.getUsersInformationById(id);
+
+    return { component: 'usersInfo', usersInfo };
+  }
+
+  @Get('/management/users/update/:id')
+  @Render('management')
+  async usersUpdate(@Param('id') id: number) {
+    return { component: 'usersUpdate' };
   }
 }

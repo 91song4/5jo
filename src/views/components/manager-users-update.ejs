@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>admin-users</title>
+  </head>
+
+
+  <body>
+    <h1>유저 정보 수정</h1>
+    <div class="updateform">
+      <!-- <div id="id" value="">유저아이디 : </div> -->
+        이름 : <input type="text" id="name" /></br>
+        핸드폰번호 : <input type="string" id="phone" /></br>
+        이메일 : <input type="string" id="email" /> </br>
+        비밀번호 : <input type="string" id="password" /></br>
+        생일 : <input type="date" id="birthday" /></br>
+
+      <button onclick="updateUser()">수정하기</button>
+    
+      <button onclick="location.replace('/view/management/users')">뒤로가기</button>
+    </div>
+  </body>
+
+
+
+
+  <script>
+    // const urlSearch = new URLSearchParams(location.search);
+    // const page = urlSearch.get("page") || 1;
+
+    
+    function updateUser() {
+      let name = $('#name').val();
+      let phone = $('#phone').val();
+      let email = $('#email').val();
+      let password = $('#password').val();
+      let birthday = $('#birthday').val();
+      
+      const id = location.pathname.split("update/")[1]
+
+      $.ajax({
+        type: 'PUT',
+        url: `/api/users/${id}`,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+          name: String(name),
+          phone: String(phone),
+          email: String(email),
+          password: Number(password),
+          birthday: new Date(birthday).toISOString().slice(0, 10),
+        }),
+
+        success: function (result) {
+          alert('유저정보 수정완료');
+
+          location.replace('/view/management/users');
+        },
+        error: function (error) {
+          console.log(error);
+          
+        },
+      });
+    }
+  </script>
+</html>
+
+
