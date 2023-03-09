@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>admin-users</title>
+  </head>
+  <body>
+    <div class="usersInfo">
+      <div>고유번호 : <%=usersInfo.id%></div>
+      <div>유저아이디 : <%=usersInfo.userId%></div>
+      <div>이름 : <%=usersInfo.name%></div>
+      <div>핸드폰번호 : <%=usersInfo.phone%></div>
+      <div>이메일 : <%=usersInfo.email%></div>
+      <div>생일 : <%=usersInfo.birthday%></div>
+      <div>아이디생성일 : <%=usersInfo.createdIdDate%></div>
+
+      <button onclick="location.replace('/view/management/users')">
+        뒤로가기
+      </button>
+    </div>
+  </body>
+</html>

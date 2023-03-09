@@ -35,8 +35,9 @@ import { CouponModule } from './coupon/coupon.module';
 import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
-import { SmsService } from './sms/sms.service';
-import { SmsModule } from './sms/sms.module';
+import { HomePage } from './views/controllers/main.page';
+// import { SmsService } from './sms/sms.service';
+// import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -66,9 +67,9 @@ import { SmsModule } from './sms/sms.module';
     OrderModule,
     CouponModule,
     AdminModule,
-    SmsModule,
+    // SmsModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage],
+  controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
