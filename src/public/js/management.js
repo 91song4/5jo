@@ -91,8 +91,40 @@ function updateCamp(camp_id) {
   });
 }
 
+function createCoupon() {
+  let name = $('#name').val();
+  let discount = $('#discount').val();
+  let dateOfUse = $('#dateOfUse').val();
+  let maxDiscount = $('#maxDiscount').val();
+  $.ajax({
+    type: 'POST',
+    url: `/api/coupon/`,
+    beforeSend: function (xhrObj) {
+      xhrObj.setRequestHeader('Content-Type', 'application/json');
+      xhrObj.setRequestHeader('Accept', 'application/json');
+    },
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({
+      name: name,
+      discount: Number(discount),
+      dateOfUse: Number(dateOfUse),
+      maxDiscount: Number(maxDiscount),
+    }),
+    success: function (result) {
+      if (result) {
+        alert('완료');
+      } else {
+        alert('전송된 값 없음');
+      }
+    },
+    error: function () {
+      alert('전송 실패');
+    },
+  });
+}
+
 function updateCoupon(coupon_id) {
-  console.log(coupon_id);
   let name = $('#name').val();
   let discount = $('#discount').val();
   let dateOfUse = $('#dateOfUse').val();

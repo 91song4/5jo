@@ -49,7 +49,6 @@ export class CouponService {
       dateOfUse,
       maxDiscount,
     });
-    console.log(coupon);
     return coupon;
   }
 
