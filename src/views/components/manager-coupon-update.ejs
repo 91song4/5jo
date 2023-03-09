@@ -1,0 +1,10 @@
+<div class="coupons">
+    <div id="id">번호 : <%=coupon.id%></div>
+    쿠폰명 : <input type="text" id="name" value="<%=coupon.name%>"/></br>
+    할인율 : <input type="number" id="discount" value="<%=coupon.discount%>"/> %</br>
+    사용기한 : <input type="number" id="dateOfUse" value="<%=coupon.dateOfUse%>"/> 개월</br>
+    최대할인액 : <input type="number" id="maxDiscount" value="<%=coupon.maxDiscount%>"/> 원</br>
+    
+    <button onclick="updateCoupon('<%=coupon.id%>')">수정하기</button>
+    <button onclick="location.replace('/view/management/coupon/<%=coupon.id%>')">뒤로가기</button>
+</div>
