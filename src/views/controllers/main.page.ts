@@ -4,33 +4,33 @@ import { Controller, Get, Param, Render } from '@nestjs/common';
 export class HomePage {
   constructor() {}
 
-  @Get('/home')
-  @Render('home')
-  async home() {
-    return;
-  }
+  // @Get('/home')
+  // @Render('index')
+  // async home() {
+  //   return { components: 'home' };
+  // }
 
   @Get('/reserve')
-  @Render('reserve')
+  @Render('index')
   async reserve() {
-    return;
+    return { components: 'reserve' };
   }
 
   @Get('/rooms')
-  @Render('rooms')
+  @Render('index')
   async rooms() {
-    return;
+    return { components: 'rooms' };
   }
 
   @Get('/community')
-  @Render('community')
+  @Render('index')
   async community() {
-    return;
+    return { components: 'community' };
   }
 
   @Get('/inquiry')
-  @Render('inquiry')
+  @Render('index')
   async inquiry() {
-    return;
+    return { components: 'inquiry' };
   }
 }

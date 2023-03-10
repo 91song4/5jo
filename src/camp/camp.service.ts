@@ -35,7 +35,7 @@ export class CampService {
       price,
       isRepair: false,
     });
-    console.log(camp);
+
     return camp;
   }
 
