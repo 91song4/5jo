@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <link href="/css/management.css" rel="stylesheet" />
+    <title>관리자 페이지</title>
+  </head>
+  <!-- css/management.css -->
+  <body>
+    <section class="main">
+      <%-include('./components/manager-menu') %>
+
+      <div class="mid">
+        <% if(component==='main'){ %> <%-include('./components/manager-main') %>
+        <%} %> <% if(component==='camps'){ %>
+        <%-include('./components/manager-camp') %> <%} %> <%
+        if(component==='campRegister'){ %>
+        <%-include('./components/manager-camp-register') %> <%} %> <%
+        if(component==='camp'){ %>
+        <%-include('./components/manager-camp-detail') %> <%} %> <%
+        if(component==='campUpdateForm'){ %>
+        <%-include('./components/manager-camp-update') %> <%} %> <%
+        if(component==='coupon'){ %>
+        <%-include('./components/manager-coupon-detail') %> <%} %> <%
+        if(component==='couponUpdateForm'){ %>
+        <%-include('./components/manager-coupon-update') %> <%} %><%
+        if(component==='couponRegister'){ %>
+        <%-include('./components/manager-coupon-register') %> <%} %>
+        <%if(component==='users'){ %> <%-include('./components/manager-users')
+        %><%} %> <%if(component==='usersInfo'){ %>
+        <%-include('./components/manager-usersInfo') %><%} %>
+        <%if(component==='usersUpdate'){ %>
+        <%-include('./components/manager-users-Update') %><%} %><%
+        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
+        %> <%} %>
+      </div>
+    </section>
+  </body>
+
+  <script src="/js/management.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/src/public/js/management.js"></script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+</html>

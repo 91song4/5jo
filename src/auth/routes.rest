@@ -1,0 +1,67 @@
+# 회원가입 API
+
+POST http://localhost:3000/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "userId":"test4848",
+  "password":"1234",
+  "passwordCheck":"1234",
+  "name":"song",
+  "phone":"4848",
+  "email":"test4848@gmail.com",
+  "birthDay": "1996-01-25"
+}
+
+###
+
+# 로그인
+POST http://localhost:3000/api/auth/log-in
+Content-Type: application/json
+
+{
+  "userId": "test4848",
+  "password": "1234"
+}
+
+###
+
+# 캐시 테스트용 getUsers
+GET http://localhost:3000/api/auth/test-auth
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDI1NTgxLCJleHAiOjE2NzgwMjkxODF9.8zdT2JpdqLWZ-lWlS07Ztjz9IxZhXUPNEvWxx4lIDcA; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMjU1ODEsImV4cCI6MTY3ODEwODM4MX0.nfVsigVfDskea4DxIqXHzlvZImYIMyyLZEmJ5qGiLbo; Path=/
+
+
+###
+
+# 로그아웃 API
+POST http://localhost:3000/api/auth/log-out
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MDM0NzQ4LCJleHAiOjE2NzgwMzgzNDh9.eZ0IHQYfZ4t-5HRVgqmjuA4CJcysAevFxm4Tv28U_PA; Path=/,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgwMzQ3NDgsImV4cCI6MTY3ODExNzU0OH0.BhHPxykKC0IFce8Z4YsZcWSJ9UzCokMy4Zjd2VRs5Ro; Path=/
+
+
+###
+
+# 비밀번호 재설정 API
+PATCH http://localhost:3000/api/auth/reset/password/91song4
+Content-Type: application/json
+
+{
+  "password": "123123"
+}
+
+###
+
+# 비밀번호 찾기 API
+POST http://localhost:3000/api/auth/lost/password
+Content-Type: application/json
+
+{
+"userId":"91song4",
+"email":"test@gmail.com",
+"phone":"010-1234-7542"
+}
+###
+
+#  회원탈퇴 API
+DELETE  http://localhost:3000/api/auth/withdrawal
+Content-Type: application/json
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwIiwiaWF0IjoxNjc4MjcwMjE4LCJleHAiOjE2NzgyNzM4MTh9.XykDjMWJDOb4l2O3bovg5vCrKzxeZr-FxG8GMXJfQTs;refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzgyNzAyMTgsImV4cCI6MTY3ODM1MzAxOH0.C9mvpIIo-xyLZROjDaRSgXk4XqQsK_wlxU6sYzoxHr0;

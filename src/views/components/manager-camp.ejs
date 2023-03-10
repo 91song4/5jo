@@ -1,0 +1,26 @@
+
+  <div>캠프 정보 조회 페이지</div>
+    <div class="common_form">
+    <table id="camps_info" class="table">
+    <thead>
+      <th>캠프명</th>
+      <th>캠프타입</th>
+      <th>최대인원수</th>
+      <th>가격</th>
+      <th>상태</th>
+      <th>상세정보</th>
+    </thead>
+    <tbody></tbody>
+      <% for(let i = 0; i<camps.length; i++){ %>
+      <tr> 
+        <td><%=camps[i].name%></td>
+        <td><%=camps[i].type%></td>
+        <td><%=camps[i].headcount%></td>
+        <td><%=camps[i].price%></td>
+        <% if (!camps[i].isRepair) { %> <td>정상</td>
+        <% } else {%><td>수리중</td><%}%>
+        <td><button class="btn btn-outline-dark" onclick="location.replace(`/view/management/camp/<%=camps[i].id%>`)">상세보기</button></td>
+      </tr>
+      <% } %>
+    </table>
+    </div>

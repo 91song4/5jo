@@ -1,0 +1,69 @@
+<header class="header_section">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+      <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" alt="" />
+        <span> 글래머와 캠핑 </span>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/"
+                >메인으로 <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/reserve"> 예약하기 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/rooms"> 캠프 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/community"> 리뷰 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/inquiry"> 문의하기 </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<script>
+  console.log(document.cookie);
+  let id = 2;
+  if (!document.cookie) {
+    let temp_html = `
+      <li class="nav-item">
+              <a class="nav-link" href="/view/login"> 로그인 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/sign-up"> 회원가입 </a>
+            </li>`;
+    $('.navbar-nav').append(temp_html);
+  } else {
+    let temp_html = `
+            <li class="nav-item">
+              <a class="nav-link" onclick="logout"> 로그아웃 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="view/mypage/${id}"> 마이페이지 </a>
+            </li>`;
+    $('.navbar-nav').append(temp_html);
+  }
+  function logout() {}
+</script>
