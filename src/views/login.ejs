@@ -1,5 +1,4 @@
 <body>
-  <%-include('./components/header.ejs') %>
   <%-include('./components/login-form.ejs') %>
 
   <script src="/js/main.js"></script>
@@ -23,6 +22,7 @@
           })
           .catch((error) => {
             alert(error.response.data.message);
+            password.value = '';
           });
       } catch (error) {
         console.error(error.message);

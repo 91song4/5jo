@@ -8,6 +8,6 @@ export class AppController {
   @Get()
   @Render('index')
   index() {
-    return { components: 'main' };
+    return { components: 'home' };
   }
 }
