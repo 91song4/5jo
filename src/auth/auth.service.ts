@@ -1,19 +1,25 @@
 import {
+  CACHE_MANAGER,
   ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from 'src/users/users.entity';
+import { SmsService } from '../sms/sms.service';
+
 import { CreateUserDto } from './dtos/create-user.dto';
+import { LoginUserDto } from './dtos/login-user.dto';
+import { FindUserPasswordDto } from './dtos/find-user-password.dto';
+
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
-import { LoginUserDto } from './dtos/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-
-import { User } from 'src/users/users.entity';
-import { FindUserIdDto } from './dtos/find-user-id.dto';
+import { Cache } from 'cache-manager';
 
 dotenv.config();
 
@@ -21,32 +27,19 @@ dotenv.config();
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly jwtService: JwtService, // private smsService: SmsService,
   ) {}
 
-  async testGetUsers() {
-    const users = await this.userRepository.find();
-    return users;
-  }
-
-  /**
-   * 이름과 이메일을 받아서 아이디를 찾아주는 함수
-   * @name 이름
-   * @email 이메일
-   */
-  async findUserId({ name, email }: FindUserIdDto) {
-    return await this.userRepository.findOne({
-      select: ['userId'],
-      where: { name, email, deletedAt: null },
-    });
-  }
-
-  /**
-   * 로그인
+  /** 로그인
    * @userId 로그인아이디
    * @password 비밀번호
    */
-  async login({ userId, password }: LoginUserDto) {
+  async login(
+    { userId, password }: LoginUserDto,
+    { refreshToken: refreshTokenCookie },
+  ) {
+    await this.cacheManager.del(refreshTokenCookie);
     const userData = await this.getUserSelect({ userId }, ['id', 'password']);
     if (!userData) {
       throw new NotFoundException('아이디가 존재하지 않습니다.');
@@ -60,11 +53,19 @@ export class AuthService {
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = this.createRefreshToken();
 
-    return { accessToken, refreshToken, id: userData.id };
+    await this.cacheManager.set(refreshToken, userData.id);
+
+    return { accessToken, refreshToken };
   }
 
-  /**
-   * 회원가입
+  /**로그아웃
+   * @refreshToken
+   */
+  async logout({ refreshToken }) {
+    await this.cacheManager.del(refreshToken);
+  }
+
+  /** 회원가입
    * @name 이름
    * @userId 로그인아이디
    * @password 비밀번호
@@ -98,15 +99,39 @@ export class AuthService {
       birthday,
     });
 
+    await this.cacheManager.del('users');
+
     return { id: identifiers[0].id };
   }
 
   /** 회원탈퇴
    * @accesstoken
    */
-  async deleteUser(accessToken: string) {
+  async deleteUser({ accessToken, refreshToken }) {
+    this.cacheManager.del(refreshToken);
     const { id } = await this.jwtService.verify(accessToken);
     this.userRepository.softDelete(id);
+  }
+
+  /** 비밀번호 찾기
+   * @userId 로그인 아이디
+   * @email 이메일
+   * @phone 휴대폰번호
+   */
+  async findUserPassword(findUserPasswordDto: FindUserPasswordDto) {
+    const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
+
+    if (!user) {
+      return user;
+    }
+
+    await this.cacheManager.set(user.userId, 1);
+    setTimeout(async () => {
+      if (await this.cacheManager.get(user.userId)) {
+        this.cacheManager.del(user.userId);
+      }
+    }, 1000 * 60 * 3);
+    return user;
   }
 
   /**
@@ -114,27 +139,67 @@ export class AuthService {
    * @password 비밀번호
    */
   async resetPassword(userId: string, password: string) {
+    if (!(await this.cacheManager.get(userId))) {
+      throw new NotFoundException('올바른 접근 경로가 아닙니다.');
+    }
+
     const saltRound = process.env.HASH_SALT_OR_ROUND;
     password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
     this.userRepository.update({ userId }, { password });
+
+    this.cacheManager.del(userId);
+    return { message: '비밀번호 재설정 완료' };
   }
 
   /** where로 원하는 컬럼 불러오기
-   * @userId 로그인아이디
-   * @selects select하고싶은 컬럼 string Array로 전달
+   * @whereColumns where에 설정할 컬럼 - {} 전달
+   * @selectColumns select하고싶은 컬럼 - string[] 전달
    */
-  async getUserSelect(where, selects?) {
+  async getUserSelect(whereColumns, selectColumns?) {
     const test = await this.userRepository.findOne({
-      select: [...selects],
-      where: { ...where, deletedAt: null },
+      select: [...selectColumns],
+      where: { ...whereColumns, deletedAt: null },
     });
     return test;
   }
 
+  async sendSMS() {
+    await this.cacheManager.set('01012341234', 123123);
+    return 123123;
+  }
+
+  // async sendSMS(phone: string) {
+  //   const certificationNumber = await this.smsService.sendSMS(phone);
+  //   await this.cacheManager.set(phone, certificationNumber);
+  //   setTimeout(async () => {
+  //     if (await this.cacheManager.get(phone)) {
+  //       this.cacheManager.del(phone);
+  //     }
+  //   }, 1000 * 60 * 3);
+
+  //   return certificationNumber;
+  // }
+
+  async certification({ certificationNumber, phone }) {
+    const certificationNumberDB = await this.cacheManager.get(phone);
+    const isAuthentication = certificationNumber === certificationNumberDB;
+
+    if (!isAuthentication) {
+      return false;
+    }
+
+    await this.cacheManager.del(phone);
+
+    return true;
+  }
+
+  /** JWT Access Token 생성 함수 */
   private async createAccessToken(id: number) {
     const accessToken = await this.jwtService.signAsync({ id });
     return accessToken;
   }
+
+  /** JWT Refresh Token 생성 함수 */
   private createRefreshToken() {
     const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;

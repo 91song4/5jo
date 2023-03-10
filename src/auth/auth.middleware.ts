@@ -40,13 +40,6 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     if (!isAccessTokenValidate) {
-      const accessTokenId = await this.cacheManager.get(refreshToken);
-
-      if (!accessTokenId) {
-        throw new UnauthorizedException(
-          'Refresh Token의 정보가 서버에 존재하지 않습니다.',
-        );
-      }
       try {
         const newAccessToken = await this.jwtService.signAsync({
           id: accessTokenId,
