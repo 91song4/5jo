@@ -31,8 +31,7 @@
         <%-include('./components/manager-camp-detail') %> <%} %> <%
         if(component==='campUpdateForm'){ %>
         <%-include('./components/manager-camp-update') %> <%} %> <%
-        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
-        %> <%} %> <% if(component==='coupon'){ %>
+        if(component==='coupon'){ %>
         <%-include('./components/manager-coupon-detail') %> <%} %> <%
         if(component==='couponUpdateForm'){ %>
         <%-include('./components/manager-coupon-update') %> <%} %><%
@@ -42,7 +41,9 @@
         %><%} %> <%if(component==='usersInfo'){ %>
         <%-include('./components/manager-usersInfo') %><%} %>
         <%if(component==='usersUpdate'){ %>
-        <%-include('./components/manager-users-Update') %><%} %>
+        <%-include('./components/manager-users-Update') %><%} %><%
+        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
+        %> <%} %>
       </div>
     </section>
   </body>

@@ -23,6 +23,7 @@
           })
           .catch((error) => {
             alert(error.response.data.message);
+            password.value = '';
           });
       } catch (error) {
         console.error(error.message);
