@@ -1,35 +1,35 @@
 @font-face {
-  font-family: "Ethnocentric";
-  src: url("../fonts/ethnocentric/ethnocentric rg.ttf") format("ttf");
+  font-family: 'Ethnocentric';
+  src: url('../fonts/ethnocentric/ethnocentric rg.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "Ethnocentric";
-  src: url("../fonts/ethnocentric/ethnocentric rg it.ttf") format("ttf");
+  font-family: 'Ethnocentric';
+  src: url('../fonts/ethnocentric/ethnocentric rg it.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "poppins";
-  src: url("../fonts/ethnocentric/Poppins-Regular.ttf") format("ttf");
+  font-family: 'poppins';
+  src: url('../fonts/ethnocentric/Poppins-Regular.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "poppins";
-  src: url("../fonts/ethnocentric/Poppins-Bold.ttf") format("ttf");
+  font-family: 'poppins';
+  src: url('../fonts/ethnocentric/Poppins-Bold.ttf') format('ttf');
   font-weight: bold;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Ethnocentric";
+  font-family: 'Ethnocentric';
 }
 
 body {
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
   color: #101010;
   background-color: #ffffff;
 }
@@ -64,7 +64,7 @@ body {
 
 .custom_heading::before {
   position: absolute;
-  content: "";
+  content: '';
   left: -45px;
   width: 37px;
   height: 32px;
@@ -119,7 +119,7 @@ a:focus {
 .btn:focus {
   outline: none !important;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .navbar-brand,
@@ -146,12 +146,12 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   align-items: center;
   margin-right: 0;
 }
@@ -164,7 +164,7 @@ a:focus {
   font-size: 24px;
   font-weight: 700;
   color: #ffffff;
-  font-family: "Ethnocentric";
+  font-family: 'Ethnocentric';
 }
 
 .custom_nav-container {
@@ -172,11 +172,11 @@ a:focus {
   padding: 15px 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .custom_nav-container .navbar-toggler {
@@ -197,11 +197,11 @@ a:focus {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   height: 75%;
 }
 
@@ -211,8 +211,8 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   width: 85%;
   margin: 0 auto;
 }
@@ -241,7 +241,7 @@ a:focus {
   margin-left: auto;
   margin-right: auto;
   padding: 75px 45px;
-  background-image: url(../images/about.jpg);
+  /* background-image: url(../images/about.jpg); */
   background-size: auto 100%;
   background-color: #fff;
   background-position: center;
@@ -256,8 +256,8 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .about_section .about_container .container > div {
@@ -285,11 +285,11 @@ a:focus {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
 }
 
 .product_section .container {
@@ -297,7 +297,7 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .product_section .img-box {
@@ -311,11 +311,13 @@ a:focus {
   width: 100%;
 }
 
-.product_section .img-box.box-1, .product_section .img-box.box-3 {
+.product_section .img-box.box-1,
+.product_section .img-box.box-3 {
   width: 43%;
 }
 
-.product_section .img-box.box-2, .product_section .img-box.box-4 {
+.product_section .img-box.box-2,
+.product_section .img-box.box-4 {
   width: 53%;
 }
 
@@ -423,8 +425,8 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .client_section .img_box {
@@ -432,15 +434,21 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   min-width: 225px;
   min-height: 225px;
   border-radius: 100%;
-  background: -webkit-gradient(linear, left top, right top, from(#afad04), to(#5da802));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#afad04),
+    to(#5da802)
+  );
   background: linear-gradient(to right, #afad04, #5da802);
   margin-right: 15px;
 }
@@ -451,15 +459,21 @@ a:focus {
 
 .client_section .detail_box {
   padding: 25px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#afad04), to(#5da802));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#afad04),
+    to(#5da802)
+  );
   background: linear-gradient(to bottom, #afad04, #5da802);
   color: #ffffff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .client_section .detail_box h5 {
@@ -469,18 +483,18 @@ a:focus {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   margin-right: 35px;
 }
 
 .client_section .carousel-indicators {
   -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
   width: 90%;
   margin: 0 auto;
   bottom: 30px;
@@ -521,14 +535,14 @@ a:focus {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .info_items .item {
@@ -537,11 +551,11 @@ a:focus {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   text-align: center;
   margin-bottom: 25px;
 }
