@@ -34,6 +34,9 @@ import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
+import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
+import { ReservationCalendarService } from './reservation_calendar/reservation_calendar.service';
+import { ReservationCalendarModule } from './reservation_calendar/reservation_calendar.module';
 
 @Module({
   imports: [
@@ -64,9 +67,16 @@ import { HomePage } from './views/controllers/main.page';
     OrderModule,
     CouponModule,
     AdminModule,
+    ReservationCalendarModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage, HomePage],
-  providers: [AppService, AuthMiddleware],
+  controllers: [
+    AppController,
+    ManagementPage,
+    AuthPage,
+    HomePage,
+    ReservationCalendarController,
+  ],
+  providers: [AppService, AuthMiddleware, ReservationCalendarService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

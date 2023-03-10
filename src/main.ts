@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
@@ -34,6 +34,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // 로거를 사용하도록 앱을 구성함
+  const logger = new Logger('Application');
+  app.useLogger(logger);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

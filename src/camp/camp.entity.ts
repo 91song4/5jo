@@ -1,10 +1,13 @@
 import { Order } from 'src/order/order.entity';
+import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +16,7 @@ import {
 
 @Entity({ schema: 'glamping', name: 'Camps' })
 export class Camp {
+  [x: string]: any;
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
@@ -45,4 +49,14 @@ export class Camp {
 
   @OneToMany(() => Order, (order) => order.camp)
   orders: Order[];
+
+  @OneToOne(
+    () => ReservationCalendar,
+    (reservationCalendar) => reservationCalendar.camp,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  @JoinColumn()
+  reservationCalendar: ReservationCalendar;
 }
