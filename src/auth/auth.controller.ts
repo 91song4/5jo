@@ -13,8 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
-import { Cache } from 'cache-manager';
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
@@ -43,6 +42,12 @@ export class AuthController {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
 
+  // 테스트용
+  @Post('/phone')
+  async sendSMS() {
+    return await this.authService.sendSMS();
+  }
+
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
   // @Post('/phnoe')
   // async sendSMS(@Body() { phone }: SendSMSDto) {
@@ -53,7 +58,7 @@ export class AuthController {
   // 비멀번호 찾기 - 인증번호 체크
   @Post('/phone/:certificationNumber')
   async certification(
-    @Param('certificationNumber') certificationNumber: string,
+    @Param('certificationNumber') certificationNumber: number,
     @Body() { phone }: SendSMSDto,
   ) {
     return this.authService.certification({ certificationNumber, phone });
@@ -70,9 +75,14 @@ export class AuthController {
 
   // 로그인
   @Post('/log-in')
-  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     const { accessToken, refreshToken } = await this.authService.login(
       loginUserDto,
+      req.cookies,
     );
 
     res.cookie('accessToken', accessToken);
