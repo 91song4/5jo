@@ -159,17 +159,17 @@ export class AuthService {
     return test;
   }
 
-  async sendSMS(phone: string) {
-    const certificationNumber = await this.smsService.sendSMS(phone);
-    await this.cacheManager.set(phone, certificationNumber);
-    setTimeout(async () => {
-      if (await this.cacheManager.get(phone)) {
-        this.cacheManager.del(phone);
-      }
-    }, 1000 * 60 * 3);
+  // async sendSMS(phone: string) {
+  //   const certificationNumber = await this.smsService.sendSMS(phone);
+  //   await this.cacheManager.set(phone, certificationNumber);
+  //   setTimeout(async () => {
+  //     if (await this.cacheManager.get(phone)) {
+  //       this.cacheManager.del(phone);
+  //     }
+  //   }, 1000 * 60 * 3);
 
-    return certificationNumber;
-  }
+  //   return certificationNumber;
+  // }
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);

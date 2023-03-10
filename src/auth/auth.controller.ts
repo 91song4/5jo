@@ -44,11 +44,11 @@ export class AuthController {
   }
 
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
-  @Post('/phnoe')
-  async sendSMS(@Body() { phone }: SendSMSDto) {
-    await this.authService.sendSMS(phone);
-    return { message: '인증번호를 발송하였습니다.' };
-  }
+  // @Post('/phnoe')
+  // async sendSMS(@Body() { phone }: SendSMSDto) {
+  //   await this.authService.sendSMS(phone);
+  //   return { message: '인증번호를 발송하였습니다.' };
+  // }
 
   // 비멀번호 찾기 - 인증번호 체크
   @Post('/phone/:certificationNumber')
