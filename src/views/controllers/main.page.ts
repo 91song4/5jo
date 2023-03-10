@@ -5,32 +5,32 @@ export class HomePage {
   constructor() {}
 
   @Get('/home')
-  @Render('home')
+  @Render('index')
   async home() {
-    return;
+    return { component: 'home' };
   }
 
   @Get('/reserve')
-  @Render('reserve')
+  @Render('index')
   async reserve() {
-    return;
+    return { component: 'reserve' };
   }
 
   @Get('/rooms')
-  @Render('rooms')
+  @Render('index')
   async rooms() {
-    return;
+    return { component: 'rooms' };
   }
 
   @Get('/community')
-  @Render('community')
+  @Render('index')
   async community() {
-    return;
+    return { component: 'community' };
   }
 
   @Get('/inquiry')
-  @Render('inquiry')
+  @Render('index')
   async inquiry() {
-    return;
+    return { component: 'inquiry' };
   }
 }
