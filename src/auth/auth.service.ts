@@ -168,7 +168,7 @@ export class AuthService {
       }
     }, 1000 * 60 * 3);
 
-    // return certificationNumber;
+    return certificationNumber;
   }
 
   async certification({ certificationNumber, phone }) {
