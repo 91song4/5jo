@@ -21,13 +21,15 @@ import { Request, Response } from 'express';
 import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { SmsService } from '../sms/sms.service';
+import { SendSMSDto } from './dtos/send-sms.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache, // private smsService: SmsService,
   ) {}
 
   @Get('/test-auth')
@@ -73,6 +75,36 @@ export class AuthController {
     }, 1000 * 60 * 3);
     return user;
   }
+
+  // @Post('/phnoe')
+  // async sendSMS(@Body() { phone }: SendSMSDto) {
+  // const certificationNumber = await this.smsService.sendSMS(phone);
+  // await this.cacheManager.set(phone, certificationNumber);
+  // setTimeout(async () => {
+  //   if (await this.cacheManager.get(phone)) {
+  //     this.cacheManager.del(phone);
+  //   }
+  // }, 1000 * 60 * 3);
+  // return certificationNumber;
+  // return { message: '인증번호를 발송하였습니다.' };
+  // }
+
+  // @Post('/phone/:certificationNumber')
+  // async certification(
+  //   @Param('certificationNumber') certificationNumber: string,
+  //   @Body() { phone }: SendSMSDto,
+  // ) {
+  //   const certificationNumberDB = await this.cacheManager.get(phone);
+  //   const isAuthentication = certificationNumber === certificationNumberDB;
+
+  //   if (!isAuthentication) {
+  //     return false;
+  //   }
+
+  //   await this.cacheManager.del(phone);
+
+  // return true;
+  // }
 
   @Patch('/reset/password/:userId')
   async resetPassword(

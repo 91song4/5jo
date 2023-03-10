@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -23,7 +24,10 @@ export class Admin {
   @DeleteDateColumn({ default: null })
   deletedAt: Date | null;
 
+  @Column()
+  userId: number;
+
   @OneToOne(() => User, (user) => user.admin)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user: User;
+  user: User[];
 }
