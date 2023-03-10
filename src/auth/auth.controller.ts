@@ -17,7 +17,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { Cache } from 'cache-manager';
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
