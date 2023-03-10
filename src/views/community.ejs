@@ -5,103 +5,33 @@
     <!-- client section -->
     <section class="client_section layout_padding">
       <div class="d-flex justify-content-center">
-        <h2 class="custom_heading">Testimonial</h2>
-      </div>
-      <div class="container">
-        <div
-          id="carouselExampleIndicators"
-          class="carousel slide"
-          data-ride="carousel"
-        >
-          <ol class="carousel-indicators">
-            <li
-              data-target="#carouselExampleIndicators"
-              data-slide-to="0"
-              class="active"
-            ></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="client_container layout_padding">
-                <div class="img_box">
-                  <img src="images/client.png" alt="" />
-                </div>
+        <h2 class="custom_heading">후기</h2>
+      </div></br>
+      <div class="client_container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">번호</th>
+              <th scope="col" colspan="2">제목</th>
+              <th scope="col">작성자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td colspan="2">예시 1번</td>
+              <td>상우</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td colspan="2">예시 2번</td>
+              <td>유</td>
+            </tr>
 
-                <div class="detail_box">
-                  <h5>
-                    <span> M </span>
-                    <span> o </span>
-                    <span> r </span>
-                    <span> s </span>
-                    <span> w </span>
-                  </h5>
-                  <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout. The point of using Lorem Ipsum is that it has a
-                    more-or-less normal distribution of letters,
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="client_container layout_padding">
-                <div class="img_box">
-                  <img src="images/client.png" alt="" />
-                </div>
-
-                <div class="detail_box">
-                  <h5>
-                    <span> M </span>
-                    <span> o </span>
-                    <span> r </span>
-                    <span> s </span>
-                    <span> w </span>
-                  </h5>
-                  <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout. The point of using Lorem Ipsum is that it has a
-                    more-or-less normal distribution of letters,
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="client_container layout_padding">
-                <div class="img_box">
-                  <img src="images/client.png" alt="" />
-                </div>
-
-                <div class="detail_box">
-                  <h5>
-                    <span> M </span>
-                    <span> o </span>
-                    <span> r </span>
-                    <span> s </span>
-                    <span> w </span>
-                  </h5>
-                  <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout. The point of using Lorem Ipsum is that it has a
-                    more-or-less normal distribution of letters,
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- end client section -->
-
-    <%-include('./components/footer') %>
-
-    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
   </body>
 </html>
