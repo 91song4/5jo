@@ -22,7 +22,6 @@ socket.on('message', (data) => {
   chatLi.querySelector('.sender span').textContent = data.senderName;
   chatLi.querySelector('.message span').textContent = data.message;
   document.querySelector('div.chat:not(.format) ul').append(chatLi);
-  document
-    .querySelector('div.chat')
-    .scrollTop(document.querySelector('div.chat').prop('scrollHeight'));
+  document.querySelector('div.chat').scrollTop =
+    document.querySelector('div.chat').scrollHeight;
 });
