@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/users.entity';
 import { SmsService } from '../sms/sms.service';
+import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
@@ -29,7 +30,16 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly jwtService: JwtService, // private smsService: SmsService,
+    private readonly configService: ConfigService,
   ) {}
+
+  public getCookieWithJwtToken(id: number) {
+    const payload: TokenPayload = { id };
+    const token = this.jwtService.sign(payload);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_EXPIRATION_TIME',
+    )}`;
+  }
 
   /** 로그인
    * @userId 로그인아이디

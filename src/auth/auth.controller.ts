@@ -8,6 +8,7 @@ import {
   Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -18,6 +19,7 @@ import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
+import { LocalAuthenticationGuard } from './localAuthentication.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -74,6 +76,7 @@ export class AuthController {
   }
 
   // 로그인
+  @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(
     @Body() loginUserDto: LoginUserDto,

@@ -8,6 +8,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheConfigService } from '../config/cache.config.service';
 import { SmsModule } from '../sms/sms.module';
 import { User } from 'src/users/users.entity';
+import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
@@ -25,6 +28,12 @@ import { User } from 'src/users/users.entity';
     // SmsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    ConfigService,
+    UsersService,
+  ],
 })
 export class AuthModule {}
