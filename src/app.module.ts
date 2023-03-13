@@ -42,6 +42,7 @@ import { HomePage } from './views/controllers/main.page';
 
 // import { SmsService } from './sms/sms.service';
 // import { SmsModule } from './sms/sms.module';
+import { ReservationCalendarModule } from './reservation_calendar/reservation_calendar.module';
 import { ReviewModule } from './review/review.module';
 
 @Module({
@@ -75,6 +76,7 @@ import { ReviewModule } from './review/review.module';
     EventsModule,
     // SmsModule,
     ReviewModule,
+    ReservationCalendarModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
