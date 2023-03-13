@@ -14,6 +14,7 @@ import { CacheConfigService } from './config/cache.config.service';
 // app
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -38,6 +39,7 @@ import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
 // import { SmsService } from './sms/sms.service';
 // import { SmsModule } from './sms/sms.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -68,6 +70,8 @@ import { HomePage } from './views/controllers/main.page';
     CouponModule,
     AdminModule,
     // SmsModule,
+    ReviewModule
+
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
