@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manager-orderlist</title>
+  </head>
+  <body>
+    <div class="orders">
+      <div><h2>예약/결제 내역 조회</h2></div>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">유저고유번호</th>
+            <th scope="col">캠프번호</th>
+            <th scope="col">예약일</th>
+            <th scope="col">총인원</th>
+            <th scope="col">총가격</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+
+        <% for (let i = 0; i < orderlist.length; i++) { %>
+        <tr>
+          <td><%=orderlist[i].id%></td>
+          <td><%=orderlist[i].userId%></td>
+          <td><%=orderlist[i].campId%></td>
+          <td><%=orderlist[i].selectedDay%></td>
+          <td><%=orderlist[i].headcount%></td>
+          <td><%=orderlist[i].receipt%></td>
+        </tr>
+
+        <% } %>
+      </table>
+    </div>
+  </body>
+</html>
