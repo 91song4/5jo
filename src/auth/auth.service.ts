@@ -36,21 +36,7 @@ export class AuthService {
     private readonly userService: UsersService,
   ) {}
 
-  async validateUser(userId: string, password: string): Promise<any> {
-    const user = await this.getUserSelect({ userId, password }, {});
-    if (!user || (user && !compare(password, user.password))) return null;
-    return await this.userService.getUsersInformationById(user.id);
-  }
-
-  /** 로그인
-   * @userId 로그인아이디
-   * @password 비밀번호
-   */
-  async login(
-    { userId, password }: LoginUserDto,
-    { refreshToken: refreshTokenCookie = undefined },
-  ) {
-    await this.cacheManager.del(refreshTokenCookie);
+  async validateUser(userId: string, password: string) {
     const userData = await this.getUserSelect({ userId }, ['id', 'password']);
     if (!userData) {
       throw new NotFoundException('아이디가 존재하지 않습니다.');
@@ -60,13 +46,24 @@ export class AuthService {
     if (isEqual === false) {
       throw new UnauthorizedException('비밀번호가 다릅니다.');
     }
+    return userData;
+  }
+
+  /** 로그인
+   * @userId 로그인아이디
+   * @password 비밀번호
+   */
+  async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
+    if (refreshTokenCookie) {
+      await this.cacheManager.del(refreshTokenCookie);
+    }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = this.createRefreshToken();
-
+    const refreshToken = await this.createRefreshToken();
+    console.log(accessToken, refreshToken, userData);
     await this.cacheManager.set(refreshToken, userData.id);
 
-    return { accessToken, refreshToken, userData };
+    return { accessToken, refreshToken, userId: userData.id };
   }
 
   /**로그아웃
@@ -211,8 +208,8 @@ export class AuthService {
   }
 
   /** JWT Refresh Token 생성 함수 */
-  private createRefreshToken() {
-    const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
+  private async createRefreshToken() {
+    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;
   }
 }

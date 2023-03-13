@@ -17,16 +17,10 @@ import { Request, Response } from 'express';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super();
+    super({ usernameField: 'userId', passwordField: 'password' });
   }
-  async validate(
-    @Body() loginUserDto: LoginUserDto,
-    @Req() req: Request,
-  ): Promise<any> {
-    const { accessToken, refreshToken, userData } = await this.authService.login(
-      loginUserDto,
-      req.cookies,
-    );
+  async validate(userId: string, password: string): Promise<any> {
+    const userData = await this.authService.validateUser(userId, password);
     if (!userData) {
       throw new UnauthorizedException();
     }

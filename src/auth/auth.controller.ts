@@ -77,21 +77,22 @@ export class AuthController {
   }
 
   // 로그인
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(
     @Body() loginUserDto: LoginUserDto,
     @Req() req: Request,
     @Res() res: Response,
   ) {
+    const userData: any = req.user;
     const { accessToken, refreshToken } = await this.authService.login(
-      loginUserDto,
+      userData,
       req.cookies,
     );
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.send({ message: '로그인 성공' });
+    res.send({ accessToken, refreshToken, userId: userData.id });
   }
 
   // 로그아웃
