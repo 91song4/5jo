@@ -51,7 +51,6 @@ export class UsersController {
       data.phone,
       data.email,
       data.password,
-      data.birthday,
     );
   }
 
@@ -59,7 +58,7 @@ export class UsersController {
   @Delete('/:id')
   async deleteUsersInformation(
     @Param('id') Id: number,
-    @Body() data: DeleteUsersInformationDto,
+    // @Body() data: DeleteUsersInformationDto,
   ) {
     return await this.usersService.deleteUsersInformation(Id);
   }

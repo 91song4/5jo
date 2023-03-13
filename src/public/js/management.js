@@ -218,7 +218,7 @@ function updateUser() {
       name: String(name),
       phone: String(phone),
       email: String(email),
-      password: Number(password),
+      password: String(password),
       birthday: new Date(birthday).toISOString().slice(0, 10),
     }),
 
