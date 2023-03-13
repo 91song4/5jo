@@ -10,6 +10,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/users.entity';
+import { UsersService } from 'src/users/users.service';
 import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -19,6 +20,7 @@ import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 
@@ -31,14 +33,13 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly jwtService: JwtService, // private smsService: SmsService,
     private readonly configService: ConfigService,
+    private readonly userService: UsersService,
   ) {}
 
-  public getCookieWithJwtToken(id: number) {
-    const payload: TokenPayload = { id };
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_EXPIRATION_TIME',
-    )}`;
+  async validateUser(userId: string, password: string): Promise<any> {
+    const user = await this.getUserSelect({ userId, password }, {});
+    if (!user || (user && !compare(password, user.password))) return null;
+    return await this.userService.getUsersInformationById(user.id);
   }
 
   /** 로그인
@@ -65,7 +66,7 @@ export class AuthService {
 
     await this.cacheManager.set(refreshToken, userData.id);
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, userData };
   }
 
   /**로그아웃

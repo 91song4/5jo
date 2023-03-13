@@ -10,6 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -76,6 +77,7 @@ export class AuthController {
   }
 
   // 로그인
+  @UseGuards(AuthGuard('local'))
   @Post('/log-in')
   async login(
     @Body() loginUserDto: LoginUserDto,
