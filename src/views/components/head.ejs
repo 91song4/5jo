@@ -34,10 +34,28 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  <!-- socket.io -->
   <script
     src="https://cdn.socket.io/4.3.2/socket.io.min.js"
     integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
     crossorigin="anonymous"
   ></script>
   <script src="/js/main.js" defer></script>
+
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS-->
+
+  <script>
+    function really() {
+      $('#real_update_button').hide();
+      let temp_html = `<button onclick="real_update()" type="button" class="btn btn-outline-danger">확인</button>`;
+      $('.user_form').append(temp_html);
+    }
+    function real_update() {}
+    function my_coupons() {}
+    function my_reviews() {}
+    function my_orders() {}
+  </script>
 </head>

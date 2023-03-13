@@ -21,7 +21,8 @@
         <%-include('reserve')%> <%}%> <%if(components ==='rooms'){%>
         <%-include('rooms')%> <%}%> <%if(components ==='community'){%>
         <%-include('community')%> <%}%> <%if(components ==='chatting'){%>
-        <%-include('chatting')%> <%}%>
+        <%-include('chatting')%> <%}%> <%-include('community')%> <%}%>
+        <%if(components ==='mypage'){%> <%-include('mypage')%> <%}%>
       </section>
       <!-- end hero section -->
     </div>

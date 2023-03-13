@@ -61,3 +61,27 @@
     </nav>
   </div>
 </header>
+<script>
+  console.log(document.cookie);
+  let id = 2;
+  if (!document.cookie) {
+    let temp_html = `
+      <li class="nav-item">
+              <a class="nav-link" href="/view/login"> 로그인 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/sign-up"> 회원가입 </a>
+            </li>`;
+    $('.navbar-nav').append(temp_html);
+  } else {
+    let temp_html = `
+            <li class="nav-item">
+              <a class="nav-link" onclick="logout"> 로그아웃 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="view/mypage/${id}"> 마이페이지 </a>
+            </li>`;
+    $('.navbar-nav').append(temp_html);
+  }
+  function logout() {}
+</script>
