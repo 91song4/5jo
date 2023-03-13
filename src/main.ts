@@ -41,7 +41,7 @@ async function bootstrap() {
   const logger = new Logger('Application');
   app.useLogger(logger);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT ?? 3000;
   await app.listen(port);
 
   // DTO의 유효성 검사 코드
