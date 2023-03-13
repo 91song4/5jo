@@ -12,8 +12,8 @@ export class ReservationCalendarController {
   @Get('/reservation')
   @Render('reservation_calendar')
   async getReservationCalendarData(@Query('year') year: number) {
-    const reservationCalendarData =
-      await this.reservationCalendarService.getReservationCalendarData(year);
-    return { reservationCalendarData };
+    // const reservationCalendarData =
+    // await this.reservationCalendarService.getReservationCalendarData(year);
+    // return { reservationCalendarData };
   }
 }

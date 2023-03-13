@@ -17,6 +17,12 @@ export class createReservationCalendarTable1677696522790
             generationStrategy: 'increment',
           },
           {
+            name: 'year',
+            type: 'int',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
             name: 'month',
             type: 'int',
             unsigned: true,

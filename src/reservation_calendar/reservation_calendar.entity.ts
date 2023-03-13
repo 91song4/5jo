@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'glamping', name: 'reservation_calendar' })
 export class ReservationCalendar {
   @PrimaryGeneratedColumn()
   id: number;

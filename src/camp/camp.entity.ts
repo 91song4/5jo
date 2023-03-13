@@ -16,7 +16,6 @@ import {
 
 @Entity({ schema: 'glamping', name: 'Camps' })
 export class Camp {
-  [x: string]: any;
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
