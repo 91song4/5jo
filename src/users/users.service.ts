@@ -75,7 +75,6 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
-    birthday: Date,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
@@ -91,7 +90,6 @@ export class UsersService {
       phone,
       email,
       password,
-      birthday,
     });
   }
 
