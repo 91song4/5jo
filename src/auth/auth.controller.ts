@@ -76,7 +76,6 @@ export class AuthController {
   }
 
   // 로그인
-  @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(
     @Body() loginUserDto: LoginUserDto,
