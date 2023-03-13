@@ -33,4 +33,10 @@ export class HomePage {
   async inquiry() {
     return { components: 'inquiry' };
   }
+
+  @Get('/chatting')
+  @Render('index')
+  async chatting() {
+    return { components: 'chatting' };
+  }
 }

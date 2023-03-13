@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <%-include('components/head') %>
-
   <body>
     <div class="hero_area">
       <!-- header section strats -->
       <%-include('./components/header') %>
       <!-- end header section -->
+
       <!-- hero section -->
       <section class="hero_section">
         <% if(components === 'main'){ %> <%-include('main') %> <%} %>
@@ -20,7 +20,8 @@
         <%-include('inquiry')%> <%}%> <%if(components ==='reserve'){%>
         <%-include('reserve')%> <%}%> <%if(components ==='rooms'){%>
         <%-include('rooms')%> <%}%> <%if(components ==='community'){%>
-        <%-include('community')%> <%}%>
+        <%-include('community')%> <%}%> <%if(components ==='chatting'){%>
+        <%-include('chatting')%> <%}%>
       </section>
       <!-- end hero section -->
     </div>
