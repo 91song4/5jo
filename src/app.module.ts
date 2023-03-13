@@ -39,8 +39,8 @@ import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
 // import { SmsService } from './sms/sms.service';
 // import { SmsModule } from './sms/sms.module';
-import { ReviewModule } from './review/review.module';
 import { ReservationCalendarModule } from './reservation_calendar/reservation_calendar.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -71,9 +71,8 @@ import { ReservationCalendarModule } from './reservation_calendar/reservation_ca
     CouponModule,
     AdminModule,
     // SmsModule,
-    ReviewModule
-
     ReservationCalendarModule,
+    ReviewModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage],
   providers: [AppService, AuthMiddleware],
