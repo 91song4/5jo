@@ -37,6 +37,24 @@
             <li class="nav-item">
               <a class="nav-link" href="/view/inquiry"> 문의하기 </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/chatting"> 실시간문의 </a>
+            </li>
+            <%if (true){%>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/login"> 로그인 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/sign-up"> 회원가입 </a>
+            </li>
+            <%} else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/login"> 로그아웃 </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/sign-up"> 마이페이지 </a>
+            </li>
+            <%} %>
           </ul>
         </div>
       </div>
