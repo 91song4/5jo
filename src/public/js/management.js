@@ -178,3 +178,57 @@ function deleteCoupon(coupon_id) {
     alert('일치하지 않습니다');
   }
 }
+
+function deleteUser(id) {
+  console.log(id);
+  let input = prompt('삭제하시려면 "삭제합니다" 를 입력해 주세요');
+  if (input === '삭제합니다') {
+    $.ajax({
+      type: 'DELETE',
+      url: `/api/users/${id}`,
+      data: {},
+      success: function (result) {
+        alert('삭제 완료');
+        location.replace('/view/management/users');
+      },
+      error: function (error) {
+        console.log(error);
+        alert('실패');
+      },
+    });
+  } else {
+    alert('일치하지 않습니다');
+  }
+}
+
+function updateUser() {
+  let name = $('#name').val();
+  let phone = $('#phone').val();
+  let email = $('#email').val();
+  let password = $('#password').val();
+  let birthday = $('#birthday').val();
+
+  const id = location.pathname.split('update/')[1];
+
+  $.ajax({
+    type: 'PUT',
+    url: `/api/users/${id}`,
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({
+      name: String(name),
+      phone: String(phone),
+      email: String(email),
+      password: Number(password),
+      birthday: new Date(birthday).toISOString().slice(0, 10),
+    }),
+
+    success: function (result) {
+      alert('유저정보 수정완료');
+
+      location.replace('/view/management/users');
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
+}

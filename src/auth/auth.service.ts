@@ -35,7 +35,11 @@ export class AuthService {
    * @userId 로그인아이디
    * @password 비밀번호
    */
-  async login({ userId, password }: LoginUserDto) {
+  async login(
+    { userId, password }: LoginUserDto,
+    { refreshToken: refreshTokenCookie },
+  ) {
+    await this.cacheManager.del(refreshTokenCookie);
     const userData = await this.getUserSelect({ userId }, ['id', 'password']);
     if (!userData) {
       throw new NotFoundException('아이디가 존재하지 않습니다.');
@@ -49,7 +53,7 @@ export class AuthService {
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = this.createRefreshToken();
 
-    this.cacheManager.set(refreshToken, userData.id);
+    await this.cacheManager.set(refreshToken, userData.id);
 
     return { accessToken, refreshToken };
   }
@@ -159,6 +163,11 @@ export class AuthService {
     return test;
   }
 
+  async sendSMS() {
+    await this.cacheManager.set('01012341234', 123123);
+    return 123123;
+  }
+
   // async sendSMS(phone: string) {
   //   const certificationNumber = await this.smsService.sendSMS(phone);
   //   await this.cacheManager.set(phone, certificationNumber);
@@ -168,7 +177,7 @@ export class AuthService {
   //     }
   //   }, 1000 * 60 * 3);
 
-  //   // return certificationNumber;
+  //   return certificationNumber;
   // }
 
   async certification({ certificationNumber, phone }) {
