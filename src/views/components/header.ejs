@@ -60,13 +60,28 @@
   } else {
     let temp_html = `
             <li class="nav-item">
-              <a class="nav-link" onclick="logout()"> 로그아웃 </a>
+              <a type="button" class="nav-link" onclick="logout()"> 로그아웃 </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" onclick="mypage()"> 마이페이지 </a>
+              <a id="mypage-btn" type="button" class="nav-link" > 마이페이지 </a>
             </li>`;
     $('.navbar-nav').append(temp_html);
   }
-  function logout() {}
-  function mypage() {}
+
+  function logout() {
+    axios
+      .post('/api/auth/log-out')
+      .then((response) => {
+        console.log('zzz');
+        window.location.href = '/';
+      })
+      .catch((error) => console.log(error.message));
+  }
+
+  const mypageBtn = document.querySelector('#mypage-btn');
+
+  mypageBtn.addEventListener('click', () => {
+    const userId = localStorage.getItem('userId');
+    window.location.href = `/view/mypage/${userId}`;
+  });
 </script>

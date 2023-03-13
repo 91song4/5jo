@@ -20,7 +20,11 @@ import { AuthGuard } from '@nestjs/passport';
 // routing path is /users -> http://localhost:3000/api
 export class UsersController {
   // 서비스 주입을 해야됨.
-  constructor(private readonly usersService: UsersService, private logger: Logger) {}
+  // eslint-disable-next-line prettier/prettier
+  constructor(
+    private readonly usersService: UsersService,
+    private logger: Logger,
+  ) {}
 
   // 유저 정보 조회 API
   @UseGuards(AuthGuard('jwt'))
