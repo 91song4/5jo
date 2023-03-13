@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Render } from '@nestjs/common';
 import { CampService } from 'src/camp/camp.service';
 import { CouponService } from 'src/coupon/coupon.service';
+import { OrderService } from 'src/order/order.service';
 import { UsersService } from 'src/users/users.service';
 
 @Controller('view')
@@ -9,6 +10,7 @@ export class ManagementPage {
     private readonly campService: CampService,
     private readonly couponService: CouponService,
     private readonly usersService: UsersService,
+    private readonly orderService: OrderService,
   ) {}
 
   @Get('/management')
@@ -90,5 +92,13 @@ export class ManagementPage {
   @Render('management')
   async usersUpdate(@Param('id') id: number) {
     return { component: 'usersUpdate' };
+  }
+
+  @Get('/management/orders')
+  @Render('management')
+  async orderlist() {
+    const orderlist = await this.orderService.getAllOrders();
+
+    return { component: 'orderlist', orderlist };
   }
 }

@@ -1,0 +1,40 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messageBtn = document.querySelector('#message-btn');
+    messageBtn.addEventListener('keyup', function (e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        socket.emit('message', { message: this.value, senderName: socket.id });
+        this.value = '';
+      }
+    });
+  });
+</script>
+<div class="chat_wrap">
+  <div class="header">CHAT</div>
+  <div class="chat">
+    <ul>
+      <!-- 동적 생성 -->
+    </ul>
+  </div>
+  <div class="input-div">
+    <textarea
+      id="message-btn"
+      placeholder="Press Enter for send message."
+    ></textarea>
+  </div>
+
+  <!-- format -->
+
+  <div class="chat format">
+    <ul>
+      <li>
+        <div class="sender">
+          <span></span>
+        </div>
+        <div class="message">
+          <span></span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

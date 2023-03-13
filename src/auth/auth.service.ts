@@ -47,7 +47,7 @@ export class AuthService {
    */
   async login(
     { userId, password }: LoginUserDto,
-    { refreshToken: refreshTokenCookie },
+    { refreshToken: refreshTokenCookie = undefined },
   ) {
     await this.cacheManager.del(refreshTokenCookie);
     const userData = await this.getUserSelect({ userId }, ['id', 'password']);
