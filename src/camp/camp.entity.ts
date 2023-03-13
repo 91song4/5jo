@@ -46,7 +46,7 @@ export class Camp {
   @DeleteDateColumn()
   deletedAt: null | Date;
 
-  @OneToMany(() => Order, (order) => order.camp)
+  @OneToMany(() => Order, (order) => order.camp, { onDelete: 'CASCADE' })
   orders: Order[];
 
   @OneToOne(
@@ -56,6 +56,5 @@ export class Camp {
       onDelete: 'CASCADE',
     },
   )
-  @JoinColumn()
   reservationCalendar: ReservationCalendar;
 }
