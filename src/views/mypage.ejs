@@ -1,66 +1,167 @@
 <body class="sub_page">
-    <!-- about section -->
-    <section class="about_section layout_padding">
-      <div class="about_container">
-        <div class="d-flex justify-content-center">
-            <h2 style="color: black" class="custom_heading">내 정보</h2>
-          </div></br>
-        
-        <div class="wrap_one">
-            <div class="user_form">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-default">이름</span>
-                    <input value="<%=userInfo.name%>" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-default">이메일</span>
-                    <input value="<%=userInfo.email%>" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-default">휴대폰</span>
-                    <input value="<%=userInfo.phone%>" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-default">비밀번호</span>
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <button type="button" class="btn btn-outline-danger">탈퇴</button>
-                  <button id="real_update_button" onclick="really()" type="button"  class="btn btn-outline-dark">수정</button>
-              </div>
-              
-            
-        </div>
-        <div class="wrap_two">
-            <div></div>
-            <div class="buttons">
-                <button type="button" class="btn btn-outline-dark">쿠폰</button>
-                <button type="button" class="btn btn-outline-dark">내 리뷰</button>
-                <button type="button" class="btn btn-outline-dark">예약확인</button>
-            </div>
-        </div>
-        <div class="wrap_three">
-            
-        </div>
-        
-          
-          
+  <!-- about section -->
+  <section class="about_section layout_padding">
+    <div class="about_container">
+      <div class="d-flex justify-content-center">
+        <h2 style="color: black" class="custom_heading">내 정보</h2>
+      </div>
+      <br />
+
+      <div class="wrap_one">
+        <div class="user_form">
+          <div class="input-group mb-3">
+            <span class="input-group-text">이름</span>
+            <input
+              id="mypage-name"
+              value="<%=userInfo.name%>"
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">이메일</span>
+            <input
+              id="mypage-email"
+              value="<%=userInfo.email%>"
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">휴대폰</span>
+            <input
+              id="mypage-phone"
+              value="<%=userInfo.phone%>"
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">생일</span>
+            <input
+              id="mypage-birthday"
+              value="<%=userInfo.birthday%>"
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">비밀번호</span>
+            <input
+              id="mypage-password"
+              type="password"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+            />
+          </div>
+          <button
+            id="mypage-withdrawal"
+            type="button"
+            class="btn btn-outline-danger"
+          >
+            탈퇴
+          </button>
+          <button
+            id="real_update_button"
+            type="button"
+            class="btn btn-outline-dark"
+          >
+            수정
+          </button>
         </div>
       </div>
-    </section>
-    
-  </body>
-  <style>
-    .wrap_one{
-        display: flex;
-        margin: 5px;
-        width: 100%; height: 500px; border: 1px black solid;
-    }
-    .wrap_two > .buttons{
-        
-        margin: 2px;
-        float: right;
-        
-    }
+      <div class="wrap_two">
+        <div></div>
+        <div class="buttons">
+          <button type="button" class="btn btn-outline-dark">쿠폰</button>
+          <button type="button" class="btn btn-outline-dark">내 리뷰</button>
+          <button type="button" class="btn btn-outline-dark">예약확인</button>
+        </div>
+      </div>
+      <div class="wrap_three"></div>
+    </div>
+  </section>
+</body>
+<style>
+  .wrap_one {
+    display: flex;
+    margin: 5px;
+    width: 100%;
+    height: 500px;
+    border: 1px black solid;
+  }
+  .wrap_two > .buttons {
+    margin: 2px;
+    float: right;
+  }
+</style>
 
-    
-  </style>
+<script src="/js/mypage.js"></script>
+<script>
+  console.log('mypage.ejs');
+  // 데이터
+  const mypageName = document.querySelector('#mypage-name');
+  const mypageEmail = document.querySelector('#mypage-email');
+  const mypagePhone = document.querySelector('#mypage-phone');
+  const mypageBirthday = document.querySelector('#mypage-birthday');
+  const mypagePassword = document.querySelector('#mypage-password');
+  const mypageInputs = document.querySelectorAll('input');
+
+  mypageInputs.forEach((input) => (input.disabled = true));
+
+  // 버튼
+  const mypageWithdrawalBtn = document.querySelector('#mypage-withdrawal');
+  const realUpdateBtn = document.querySelector('#real_update_button');
+
+  realUpdateBtn.addEventListener('click', () => {
+    const updateBtn = really();
+    mypageInputs.forEach((input) => {
+      if (input.id !== 'mypage-birthday') {
+        input.disabled = false;
+      }
+    });
+
+    updateBtn.addEventListener('click', () => {
+      const userId = localStorage.getItem('userId');
+      console.log(typeof mypagePassword.value);
+      try {
+        axios
+          .put(`/api/users/${userId}`, {
+            name: mypageName.value,
+            phone: mypagePhone.value,
+            email: mypageEmail.value,
+            password: mypagePassword.value,
+          })
+          .then((response) => {
+            alert('유저정보 업데이트 완료');
+            window.location.href = `/view/mypage/${userId}`;
+          })
+          .catch((error) => alert(error.response.data.message));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+  });
+
+  mypageWithdrawalBtn.addEventListener('click', () => {
+    try {
+      axios
+        .delete('/api/auth/withdrawal')
+        .then((response) => {
+          window.location.href = '/';
+        })
+        .catch((error) => alert(error.response.data.message));
+    } catch (error) {
+      console.erroe(error.message);
+    }
+  });
+</script>

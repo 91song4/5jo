@@ -164,11 +164,11 @@ export class AuthService {
    * @selectColumns select하고싶은 컬럼 - string[] 전달
    */
   async getUserSelect(whereColumns, selectColumns?) {
-    const test = await this.userRepository.findOne({
+    const userData = await this.userRepository.findOne({
       select: [...selectColumns],
-      where: { ...whereColumns, deletedAt: null },
+      where: { ...whereColumns },
     });
-    return test;
+    return userData;
   }
 
   async sendSMS() {

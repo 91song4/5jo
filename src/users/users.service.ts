@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 // import { GetUsersInformationDto } from './dto/get-users.dto';
 // import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
 import { User } from './users.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 // DI를 위해서 자동적으로 생성되는 데코레이터
@@ -75,23 +76,24 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
-    birthday: Date,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'password', 'birthday'],
+      select: ['name', 'phone', 'email', 'password'],
     });
 
     if (_.isNil(user)) {
       throw new Error(`user not found. id: + ${id}`);
     }
 
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
+
     this.userRepository.update(id, {
       name,
       phone,
       email,
       password,
-      birthday,
     });
   }
 

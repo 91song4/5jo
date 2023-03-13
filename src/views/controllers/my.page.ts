@@ -15,6 +15,7 @@ export class MyPage {
   @Render('index')
   async mypage(@Param('id') userId: number) {
     const userInfo = await this.usersService.getUsersInformationById(userId);
+    console.log({ userInfo, message: 'mypage co' });
     return { components: 'mypage', userInfo };
   }
 }
