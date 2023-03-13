@@ -1,14 +1,3 @@
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const messageBtn = document.querySelector('#message-btn');
-    messageBtn.addEventListener('keyup', function (e) {
-      if (e.keyCode === 13 && !e.shiftKey) {
-        socket.emit('message', { message: this.value, senderName: socket.id });
-        this.value = '';
-      }
-    });
-  });
-</script>
 <div class="chat_wrap">
   <div class="header">CHAT</div>
   <div class="chat">
@@ -38,3 +27,15 @@
     </ul>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messageBtn = document.querySelector('#message-btn');
+    messageBtn.addEventListener('keyup', function (e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        socket.emit('message', { message: this.value, senderName: socket.id });
+        this.value = '';
+      }
+    });
+  });
+</script>

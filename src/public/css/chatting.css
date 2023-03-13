@@ -13,6 +13,11 @@
 
 .chat_wrap .chat {
   padding-bottom: 80px;
+  margin: auto;
+  width: 800px;
+  height: 800px;
+  overflow: scroll;
+  background-color: wheat;
 }
 .chat_wrap .chat ul {
   width: 100%;

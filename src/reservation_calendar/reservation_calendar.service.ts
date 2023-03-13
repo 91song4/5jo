@@ -32,7 +32,9 @@ export class ReservationCalendarService {
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
 
-    const cachedData = await this.cache.get(`reservation-calendar-${year}-${month}`);
+    const cachedData = await this.cache.get(
+      `reservation-calendar-${year}-${month}`,
+    );
 
     if (cachedData) {
       // return cachedData;
@@ -65,7 +67,9 @@ export class ReservationCalendarService {
     const calendarData = [];
 
     for (let i = 0; i < camps.length; i++) {
-      const campReservations = reservations.filter((r) => r.camp.id === camps[i].id);
+      const campReservations = reservations.filter(
+        (r) => r.camp.id === camps[i].id,
+      );
 
       const calendar = Array.from({ length: 31 }, (_, index) => {
         const day = index + 1;
