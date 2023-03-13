@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <%-include('components/head') %>
-
   <body>
     <div class="hero_area">
       <!-- header section strats -->
       <%-include('./components/header') %>
       <!-- end header section -->
+
       <!-- hero section -->
       <section class="hero_section">
-        <% if(components === 'main'){ %> <%-include('main') %> <%} %>
+        <!-- 홈페이지 -->
+        <%if(components === 'home'){ %> <%-include('home')%> <%}%>
+        <!-- 회원가입 -->
         <%if(components === 'signup'){ %> <%-include('sign-up') %> <%} %>
+        <!-- 로그인 -->
         <%if(components === 'login' ){ %> <%-include('login') %> <%} %>
+        <!-- 아이디 찾기 -->
         <%if(components === 'lostId'){ %> <%-include('lost-id') %> <%} %>
-        <%if(components === 'lostPassword'){ %> <%-include('lost-password') %>
-        <%}%> <%if(components === 'resetPassword'){ %>
-        <%-include('reset-password')%><%}%> <%if(components ==='home'){%>
-        <%-include('home')%> <%}%> <%if(components ==='inquiry'){%>
-        <%-include('inquiry')%> <%}%> <%if(components ==='reserve'){%>
-        <%-include('reserve')%> <%}%> <%if(components ==='rooms'){%>
-        <%-include('rooms')%> <%}%> <%if(components ==='community'){%>
-        <%-include('community')%> <%}%> <%if(components ==='mypage'){%>
-        <%-include('mypage')%> <%}%>
+        <!-- 비밀번호 찾기 -->
+        <%if(components === 'lostPassword'){ %> <%-include('lost-password') %> <%}%>
+        <!-- 비밀번호 재설정 -->
+        <%if(components === 'resetPassword'){ %> <%-include('reset-password')%> <%}%>
+        <!-- 문의사항 -->
+        <%if(components ==='inquiry'){%> <%-include('inquiry')%> <%}%>
+        <!-- 예약 -->
+        <%if(components ==='reserve'){%> <%-include('reserve')%> <%}%>
+        <!-- 캠핑장 정보 -->
+        <%if(components ==='rooms'){%> <%-include('rooms')%> <%}%>
+        <!-- 리뷰 -->
+        <%if(components ==='community'){%> <%-include('community')%> <%}%>
+        <!-- 실시간 채팅방 -->
+        <%if(components ==='chatting'){%> <%-include('chatting')%> <%}%>
+        <!-- 마이페이지 -->
+        <%if(components ==='mypage'){%> <%-include('mypage')%><%}%>
+        <!-- 관리자 메인 -->
+        <% if(components === 'main'){ %> <%-include('main') %> <%} %>
       </section>
       <!-- end hero section -->
     </div>

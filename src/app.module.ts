@@ -10,6 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { CacheConfigService } from './config/cache.config.service';
+// import { SmsModule } from './sms/sms.module';
+import { EventsModule } from './events/events.module';
 
 // app
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -37,9 +39,13 @@ import { AdminModule } from './admin/admin.module';
 import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
+
 // import { SmsService } from './sms/sms.service';
 // import { SmsModule } from './sms/sms.module';
+import { ReservationCalendarModule } from './reservation_calendar/reservation_calendar.module';
 import { ReviewModule } from './review/review.module';
+import { MyPage } from './views/controllers/my.page';
+import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
@@ -69,11 +75,12 @@ import { ReviewModule } from './review/review.module';
     OrderModule,
     CouponModule,
     AdminModule,
+    EventsModule,
     // SmsModule,
-    ReviewModule
-
+    ReviewModule,
+    ReservationCalendarModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage, HomePage],
+  controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
@@ -84,6 +91,7 @@ export class AppModule implements NestModule {
       .exclude({ path: 'camps', method: RequestMethod.GET })
       .exclude({ path: 'coupon', method: RequestMethod.GET })
       .forRoutes(
+        { path: 'view/mypage', method: RequestMethod.ALL },
         { path: 'auth/log-out', method: RequestMethod.POST },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,

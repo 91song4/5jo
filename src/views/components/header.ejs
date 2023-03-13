@@ -37,6 +37,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/view/inquiry"> 문의하기 </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/chatting"> 실시간문의 </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -45,7 +48,6 @@
 </header>
 <script>
   console.log(document.cookie);
-  let id = 2;
   if (!document.cookie) {
     let temp_html = `
       <li class="nav-item">
@@ -58,12 +60,13 @@
   } else {
     let temp_html = `
             <li class="nav-item">
-              <a class="nav-link" onclick="logout"> 로그아웃 </a>
+              <a class="nav-link" onclick="logout()"> 로그아웃 </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="view/mypage/${id}"> 마이페이지 </a>
+              <a class="nav-link" onclick="mypage()"> 마이페이지 </a>
             </li>`;
     $('.navbar-nav').append(temp_html);
   }
   function logout() {}
+  function mypage() {}
 </script>

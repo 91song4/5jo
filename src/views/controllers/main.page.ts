@@ -40,10 +40,4 @@ export class HomePage {
   async inquiry() {
     return { components: 'inquiry' };
   }
-  @Get('/mypage/:id')
-  @Render('index')
-  async mypage(@Param('id') userId: number) {
-    const userInfo = await this.usersService.getUsersInformationById(userId);
-    return { components: 'mypage', userInfo };
-  }
 }
