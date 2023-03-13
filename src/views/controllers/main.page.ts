@@ -40,17 +40,4 @@ export class HomePage {
   async inquiry() {
     return { components: 'inquiry' };
   }
-
-  @Get('/chatting')
-  @Render('index')
-  async chatting() {
-    return { components: 'chatting' };
-  }
-
-  @Get('/mypage/:id')
-  @Render('index')
-  async mypage(@Param('id') userId: number) {
-    const userInfo = await this.usersService.getUsersInformationById(userId);
-    return { components: 'mypage', userInfo };
-  }
 }
