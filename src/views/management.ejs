@@ -43,7 +43,8 @@
         <%if(component==='usersUpdate'){ %>
         <%-include('./components/manager-users-Update') %><%} %><%
         if(component==='coupons'){ %> <%-include('./components/manager-coupon')
-        %> <%} %>
+        %> <%} %> <% if(component==='orderlist'){ %>
+        <%-include('./components/manager-orderlist') %> <%} %>
       </div>
     </section>
   </body>
