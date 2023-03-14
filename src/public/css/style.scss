@@ -3,39 +3,36 @@ $cream: #f2d8b9;
 $blue: #f2d8b9;
 $white: #ffffff;
 
-
-
 @font-face {
-  font-family: "Ethnocentric";
-  src: url("../fonts/ethnocentric/ethnocentric rg.ttf") format("ttf");
+  font-family: 'Ethnocentric';
+  src: url('../fonts/ethnocentric/ethnocentric rg.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "Ethnocentric";
-  src: url("../fonts/ethnocentric/ethnocentric\ rg\ it.ttf") format("ttf");
+  font-family: 'Ethnocentric';
+  src: url('../fonts/ethnocentric/ethnocentric\ rg\ it.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "poppins";
-  src: url("../fonts/ethnocentric/Poppins-Regular.ttf") format("ttf");
+  font-family: 'poppins';
+  src: url('../fonts/ethnocentric/Poppins-Regular.ttf') format('ttf');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "poppins";
-  src: url("../fonts/ethnocentric/Poppins-Bold.ttf") format("ttf");
+  font-family: 'poppins';
+  src: url('../fonts/ethnocentric/Poppins-Bold.ttf') format('ttf');
   font-weight: bold;
 }
 
-
 @mixin main-font {
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
 }
 
 @mixin secondary-font {
-  font-family: "Ethnocentric";
+  font-family: 'Ethnocentric';
 }
 
 h1,
@@ -56,7 +53,6 @@ h3 {
     color: $col2;
   }
 }
-
 
 @mixin upperBold {
   text-transform: uppercase;
@@ -98,7 +94,7 @@ body {
 
   &::before {
     position: absolute;
-    content: "";
+    content: '';
     left: -45px;
     width: 37px;
     height: 32px;
@@ -125,7 +121,8 @@ body {
   height: auto;
 }
 
-.header_section {}
+.header_section {
+}
 
 .header_section .container-fluid {
   padding-right: 25px;
@@ -209,8 +206,6 @@ a:focus {
   }
 }
 
-
-
 .custom_nav-container .navbar-toggler .navbar-toggler-icon {
   background-image: url(../images/menu.png);
   background-size: 35px;
@@ -242,7 +237,6 @@ a:focus {
       text-transform: uppercase;
     }
   }
-
 }
 
 // end hero section
@@ -254,12 +248,9 @@ a:focus {
       margin-top: 0;
     }
   }
-
 }
 
 .about_section {
-
-
   .about_container {
     width: 85%;
     margin-left: auto;
@@ -279,8 +270,7 @@ a:focus {
       display: flex;
       justify-content: space-between;
 
-
-      &>div {
+      & > div {
         width: 46%;
       }
     }
@@ -310,7 +300,6 @@ a:focus {
   .container {
     display: flex;
     flex-wrap: wrap;
-
   }
 
   .img-box {
@@ -319,7 +308,6 @@ a:focus {
 
     img {
       width: 100%;
-
     }
 
     &.box-1,
@@ -359,8 +347,6 @@ a:focus {
     color: #3cff3c;
   }
 }
-
-
 
 // end why section
 
@@ -425,7 +411,6 @@ a:focus {
     margin: 0 auto;
     display: flex;
     align-items: center;
-
   }
 
   .img_box {
@@ -440,7 +425,6 @@ a:focus {
 
     img {
       width: 75%;
-
     }
   }
 
@@ -477,10 +461,8 @@ a:focus {
         background-color: #46a102;
       }
     }
-
   }
 }
-
 
 // end client section
 
@@ -491,7 +473,6 @@ a:focus {
   background-attachment: fixed;
 
   .logo-box {
-
     width: 200px;
     margin: 0 auto 75px auto;
 
@@ -508,7 +489,6 @@ a:focus {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
 
   .item {
     display: flex;
@@ -527,7 +507,6 @@ a:focus {
       img {
         width: 100%;
       }
-
     }
 
     .detail-box {
@@ -543,10 +522,7 @@ a:focus {
   a {
     position: relative;
   }
-
 }
-
-
 
 // end info section
 

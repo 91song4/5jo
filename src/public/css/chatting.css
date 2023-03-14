@@ -3,6 +3,18 @@
   padding: 0;
 }
 
+.chat-form {
+  display: flex;
+}
+
+.users {
+  width: 300px;
+  height: 600px;
+  background-color: white;
+  margin-left: 17%;
+  overflow: scroll;
+}
+
 .chat_wrap .header {
   font-size: 14px;
   padding: 15px 0;
@@ -13,9 +25,9 @@
 
 .chat_wrap .chat {
   padding-bottom: 80px;
-  margin: auto;
+  /* margin: auto; */
   width: 800px;
-  height: 800px;
+  height: 600px;
   overflow: scroll;
   background-color: wheat;
 }
