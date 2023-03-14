@@ -12,7 +12,7 @@ socket.on('close', () => {
 socket.on('message', (data) => {
   console.log('front socket message on: ', data.message);
 
-  const LR = data.senderName === socket.id ? 'right' : 'left';
+  const LR = data.id === socket.id ? 'right' : 'left';
 
   const chatLi = document
     .querySelector('div.chat.format ul li')

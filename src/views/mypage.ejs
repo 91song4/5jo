@@ -157,6 +157,7 @@
       axios
         .delete('/api/auth/withdrawal')
         .then((response) => {
+          localStorage.clear();
           window.location.href = '/';
         })
         .catch((error) => alert(error.response.data.message));
