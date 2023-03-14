@@ -49,7 +49,7 @@
     }
 
     const messageBtn = document.querySelector('#message-btn');
-    messageBtn.addEventListener('keyup', async function (e) {
+    messageBtn.addEventListener('keyup', function (e) {
       if (e.keyCode === 13 && !e.shiftKey) {
         if (this.value === '\n') {
           return (this.value = '');
