@@ -30,10 +30,37 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const userId = localStorage.getItem('userId');
+    let userName;
+    if (userId) {
+      axios
+        .get('/api/auth/user', {
+          params: {
+            whereColumns: { id: userId },
+            selectColumns: ['name'],
+          },
+        })
+        .then((response) => {
+          userName = response.data.name;
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
+    }
+
     const messageBtn = document.querySelector('#message-btn');
-    messageBtn.addEventListener('keyup', function (e) {
+    messageBtn.addEventListener('keyup', async function (e) {
       if (e.keyCode === 13 && !e.shiftKey) {
-        socket.emit('message', { message: this.value, senderName: socket.id });
+        if (this.value === '\n') {
+          return (this.value = '');
+        }
+
+        const senderName = userName ?? '익명의 사용자';
+        socket.emit('message', {
+          message: this.value,
+          senderName,
+          id: socket.id,
+        });
         this.value = '';
       }
     });
