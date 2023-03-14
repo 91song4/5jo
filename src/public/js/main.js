@@ -19,7 +19,10 @@ socket.on('message', (data) => {
     .cloneNode(true);
 
   chatLi.classList.add(LR);
+
+  const fontColor = data.admin ? 'red' : 'white';
   chatLi.querySelector('.sender span').textContent = data.senderName;
+  chatLi.querySelector('.sender span').style.color = fontColor;
   chatLi.querySelector('.message span').textContent = data.message;
   document.querySelector('div.chat:not(.format) ul').append(chatLi);
   document.querySelector('div.chat').scrollTop =

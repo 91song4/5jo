@@ -1,5 +1,5 @@
 <div class="chat_wrap">
-  <div class="header">CHAT</div>
+  <div class="header"></div>
   <div class="chat">
     <ul>
       <!-- 동적 생성 -->
@@ -32,6 +32,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const userId = localStorage.getItem('userId');
     let userName;
+    let isAdmin;
     if (userId) {
       axios
         .get('/api/auth/user', {
@@ -46,6 +47,14 @@
         .catch((error) => {
           alert(error.response.data.message);
         });
+
+      axios
+        .get(`/api/admin/${userId}`)
+        .then((response) => {
+          console.log(response);
+          isAdmin = response.data;
+        })
+        .catch((error) => alert(error.response.data.message));
     }
 
     const messageBtn = document.querySelector('#message-btn');
@@ -60,6 +69,7 @@
           message: this.value,
           senderName,
           id: socket.id,
+          admin: isAdmin,
         });
         this.value = '';
       }
