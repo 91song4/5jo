@@ -8,7 +8,6 @@ import {
 import { Server, Socket } from 'socket.io';
 
 interface ExtendedSocket extends Socket {
-  namespace: string | string[];
   name: string | string[];
   admin: boolean | boolean[];
 }
@@ -17,38 +16,40 @@ interface ExtendedSocket extends Socket {
   cors: {
     origin: '*',
   },
+  namespace: '/chat',
+  // path: '/chat',
 })
-export class EventsGateway {
+export class ChatGateway {
   @WebSocketServer()
   server: Server;
-  users = 0;
+  private users = {};
+  private userCount = 0;
 
   handleConnection(@ConnectedSocket() socket: ExtendedSocket) {
-    console.log('connection users: ', ++this.users);
-
-    ///////////////////////////////////////////
-
     socket.name = socket.handshake.query.name;
-    socket.namespace = socket.handshake.query.namespace;
     socket.admin = socket.handshake.query.admin === 'true' ? true : false;
 
     console.log(`${socket.name} is connected!`);
+    console.log(`COUNT: ${++this.userCount}`);
 
-    if (socket.namespace === 'chatting' && socket.admin) {
+    this.users[socket.id] = socket.name;
+
+    if (socket.admin) {
       this.server.emit('joinAdmin');
     }
+    this.server.emit('joinUsers', this.users, socket.id);
   }
 
   handleDisconnect(@ConnectedSocket() socket: ExtendedSocket) {
-    console.log(`${socket.id} is disconnected...`);
-    console.log('connection users: ', --this.users);
+    console.log(`${socket.name} is disconnected...`);
+    console.log(`COUNT: ${--this.userCount}`);
 
-    //////////////////////////////////////////
+    delete this.users[socket.id];
 
-    // console.log('@@@@@@@@@@@@@@', socket.user);
-    if (socket.namespace === 'chatting' && socket.admin) {
+    if (socket.admin) {
       this.server.emit('exitAdmin');
     }
+    this.server.emit('exitUsers', { id: socket.id });
   }
 
   @SubscribeMessage('message')
