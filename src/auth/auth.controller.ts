@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -21,11 +22,21 @@ import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
+import { GetUserSelectDto } from './dtos/get-user-select.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  // 유저 선택해서 가져오기
+  @Get('/user')
+  async getUserSelect(
+    @Query() { whereColumns, selectColumns }: GetUserSelectDto,
+  ) {
+    console.log(whereColumns, selectColumns);
+    return this.authService.getUserSelect(whereColumns, selectColumns);
+  }
 
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
