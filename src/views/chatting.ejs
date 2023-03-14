@@ -29,33 +29,31 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     const userId = localStorage.getItem('userId');
-    let userName;
-    let isAdmin;
-    if (userId) {
-      axios
-        .get('/api/auth/user', {
-          params: {
-            whereColumns: { id: userId },
-            selectColumns: ['name'],
-          },
-        })
-        .then((response) => {
-          userName = response.data.name;
-        })
-        .catch((error) => {
-          alert(error.response.data.message);
-        });
+    /**
+     * 유저 이름 가져오기 API
+     * return {then: response.data.name = userName, catch: response.data.name = undefined}
+     */
+    const {
+      data: { name: userName },
+    } = await axios.get('/api/auth/user', {
+      params: {
+        whereColumns: { id: userId },
+        selectColumns: ['name'],
+      },
+    });
 
-      axios
-        .get(`/api/admin/${userId}`)
-        .then((response) => {
-          console.log(response);
-          isAdmin = response.data;
-        })
-        .catch((error) => alert(error.response.data.message));
+    let isAdmin = false;
+    if (userId) {
+      // 어드민 체크 API
+      const { data } = await axios.get(`/api/admin/${userId}`);
+      isAdmin = data;
     }
+    const socket = io('ws://127.0.0.1:8080', {
+      // query: { namespace: 'chatting', name: userName },
+      query: { namespace: 'chatting', name: userName, admin: isAdmin },
+    });
 
     const messageBtn = document.querySelector('#message-btn');
     messageBtn.addEventListener('keyup', function (e) {
@@ -73,6 +71,46 @@
         });
         this.value = '';
       }
+    });
+
+    socket.on('message', (data) => {
+      console.log('front socket message on: ', data.message);
+
+      const LR = data.id === socket.id ? 'right' : 'left';
+
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+
+      chatLi.classList.add(LR);
+
+      const fontColor = data.admin ? 'red' : 'white';
+      chatLi.querySelector('.sender span').textContent = data.senderName;
+      chatLi.querySelector('.sender span').style.color = fontColor;
+      chatLi.querySelector('.message span').textContent = data.message;
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
+      document.querySelector('div.chat').scrollTop =
+        document.querySelector('div.chat').scrollHeight;
+    });
+
+    socket.on('joinAdmin', () => {
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+      chatLi.querySelector('.sender span').style.color = 'black';
+      chatLi.querySelector('.message span').textContent =
+        '관리자가 입장하였습니다.';
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
+    });
+
+    socket.on('exitAdmin', () => {
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+      chatLi.querySelector('.sender span').style.color = 'black';
+      chatLi.querySelector('.message span').textContent =
+        '관리자가 퇴장하였습니다.';
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
     });
   });
 </script>

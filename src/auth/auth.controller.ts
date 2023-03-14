@@ -34,7 +34,6 @@ export class AuthController {
   async getUserSelect(
     @Query() { whereColumns, selectColumns }: GetUserSelectDto,
   ) {
-    console.log(whereColumns, selectColumns);
     return this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
@@ -87,6 +86,7 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
