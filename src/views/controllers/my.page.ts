@@ -1,8 +1,9 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import { Controller, Get, Param, Render, UseGuards, Req } from '@nestjs/common';
 import { CampService } from 'src/camp/camp.service';
 import { CouponService } from 'src/coupon/coupon.service';
 import { UsersService } from 'src/users/users.service';
-
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 @Controller('view')
 export class MyPage {
   constructor(
@@ -12,10 +13,11 @@ export class MyPage {
   ) {}
 
   @Get('/mypage/:id')
+  @UseGuards(AuthGuard('jwt'))
   @Render('index')
-  async mypage(@Param('id') userId: number) {
-    const userInfo = await this.usersService.getUsersInformationById(userId);
-    console.log({ userInfo, message: 'mypage co' });
+  async mypage(@Req() req: Request) {
+    const userInfo = req.user;
+    console.log(userInfo);
     return { components: 'mypage', userInfo };
   }
 }

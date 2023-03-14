@@ -27,13 +27,14 @@ export class UsersController {
   ) {}
 
   // 유저 정보 조회 API
-  @UseGuards(AuthGuard('jwt'))
+
   @Get('/')
   async getUsersInformation() {
     return await this.usersService.getUsersInformation();
   }
 
   // 유저 정보 상세조회 API
+
   @Get('/:id')
   async getUsersInformationById(@Param('id') Id: number) {
     return await this.usersService.getUsersInformationById(Id);

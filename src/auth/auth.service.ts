@@ -60,7 +60,6 @@ export class AuthService {
 
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = await this.createRefreshToken();
-    console.log(accessToken, refreshToken, userData);
     await this.cacheManager.set(refreshToken, userData.id);
 
     return { accessToken, refreshToken, userId: userData.id };

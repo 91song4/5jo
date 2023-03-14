@@ -1,29 +1,35 @@
-import { Strategy } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
+import { UsersService } from '../users/users.service';
+import { TokenPayload } from './tokenPayload.interface';
+import { AuthService } from './auth.service';
 
-const fromAuthCookie = function () {
-  return function (request) {
-    let token = null;
-    if (request && request.cookies) {
-      token = request.cookies['Authorization'];
-    }
-    return token;
-  };
+const cookieExtracter = (req) => {
+  let jwt = null;
+  if (req?.cookies) {
+    jwt = req.cookies['accessToken'];
+  }
+  console.log(jwt);
+  return jwt;
 };
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly userService: UsersService,
+    private readonly authService: AuthService,
+  ) {
     super({
-      jwtFromRequest: fromAuthCookie(),
-      ignoreExpiration: false,
-      secretOrKey: 'jwt secret key',
+      jwtFromRequest: cookieExtracter,
+      secretOrKey: configService.get('JWT_SECRET'),
     });
   }
 
-  async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+  async validate(payload: TokenPayload) {
+    const userInfo = this.userService.getUsersInformationById(payload.id);
+    return userInfo;
   }
 }
