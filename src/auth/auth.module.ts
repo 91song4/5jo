@@ -13,6 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersService } from 'src/users/users.service';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from 'src/users/users.module';
+import { JwtGoogleStrategy } from './jwt-social-google.strategy';
 
 @Module({
   imports: [
@@ -33,7 +34,14 @@ import { UsersModule } from 'src/users/users.module';
     // SmsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService, UsersService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtGoogleStrategy,
+    JwtStrategy,
+    ConfigService,
+    UsersService,
+  ],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

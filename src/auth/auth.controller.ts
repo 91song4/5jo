@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -21,11 +22,21 @@ import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
+import { GetUserSelectDto } from './dtos/get-user-select.dto';
+import { IOAuthUser } from './social.login.interface';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  // 유저 선택해서 가져오기
+  @Get('/user')
+  async getUserSelect(
+    @Query() { whereColumns, selectColumns }: GetUserSelectDto,
+  ) {
+    return this.authService.getUserSelect(whereColumns, selectColumns);
+  }
 
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
@@ -76,6 +87,19 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // 구글 로그인
+  @Get('/login/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req: Request) {}
+
+  @Get('/login/google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
+    this.authService.OAuthLogin({ req, res });
+  }
+
+  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
+
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
@@ -92,7 +116,7 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.send({ accessToken, refreshToken, userId: userData.id });
+    res.send({ accessToken, refreshToken });
   }
 
   // 로그아웃

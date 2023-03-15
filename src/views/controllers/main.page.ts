@@ -1,16 +1,7 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
-import { CampService } from 'src/camp/camp.service';
-import { CouponService } from 'src/coupon/coupon.service';
-import { UsersService } from 'src/users/users.service';
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller('view')
 export class HomePage {
-  constructor(
-    private readonly campService: CampService,
-    private readonly couponService: CouponService,
-    private readonly usersService: UsersService,
-  ) {}
-
   // @Get('/home')
   // @Render('index')
   // async home() {
@@ -39,5 +30,11 @@ export class HomePage {
   @Render('index')
   async inquiry() {
     return { components: 'inquiry' };
+  }
+
+  @Get('/chatting')
+  @Render('index')
+  async chatting() {
+    return { components: 'chatting' };
   }
 }
