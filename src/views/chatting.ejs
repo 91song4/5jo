@@ -64,7 +64,7 @@
     }
 
     // 소켓 접속
-    const socket = io('ws://glamping.blackpaper.shop:8080/chat', {
+    const socket = io('<%- socketChat %>', {
       query: { name: userName, admin: isAdmin },
     });
 
