@@ -54,12 +54,11 @@ export class AuthService {
   async OAuthLogin({ req, res }) {
     let name = req.user.name;
     let email = req.user.email;
-    let phone = req.user.phnoe;
+    let phone = req.user.phone;
     let birthday = req.user.birthDay;
     console.log(name, email, phone, birthday);
     // 1. 회원조회
     let user = await this.userService.getUserByEmail(email);
-
     // 2, 회원가입이 안되어있다면? 자동회원가입
     if (!user) {
       await this.createSocialUser({ name, email, phone, birthday });
