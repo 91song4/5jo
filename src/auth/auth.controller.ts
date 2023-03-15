@@ -23,6 +23,7 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import { GetUserSelectDto } from './dtos/get-user-select.dto';
+import { IOAuthUser } from './social.login.interface';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -86,7 +87,19 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // 구글 로그인
+  @Get('/login/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req: Request) {}
+
+  @Get('/login/google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
+    this.authService.OAuthLogin({ req, res });
+  }
+
   // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
+
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
@@ -103,7 +116,7 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.send({ accessToken, refreshToken, userId: userData.id });
+    res.send({ accessToken, refreshToken });
   }
 
   // 로그아웃

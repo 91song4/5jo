@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 // import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
 import { User } from './users.entity';
 import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 
 @Injectable()
 // DI를 위해서 자동적으로 생성되는 데코레이터
@@ -27,6 +28,13 @@ export class UsersService {
       where: { deletedAt: null },
       select: ['id', 'userId', 'name', 'phone', 'email'],
     });
+  }
+
+  async getUserByEmail(email: any) {
+    const userobj = await this.userRepository.findOne({
+      where: { email, deletedAt: null },
+    });
+    return userobj;
   }
 
   // 유저 정보 상세조회 API
