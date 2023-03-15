@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Camp } from 'src/camp/camp.entity';
-import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
 import { User } from 'src/users/users.entity';
 import {
   Column,

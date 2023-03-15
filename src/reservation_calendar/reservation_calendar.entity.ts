@@ -3,8 +3,11 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'glamping', name: 'reservation_calendar' })
@@ -13,15 +16,21 @@ export class ReservationCalendar {
   id: number;
 
   @Column()
-  year: number;
+  reservedDate: Date;
 
   @Column()
-  day: number;
+  isReserved: boolean;
 
-  @Column()
-  isReserve: boolean;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @OneToOne(() => Camp, (camp) => camp.reservationCalendar, {
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: null | Date;
+
+  @ManyToOne(() => Camp, (camp) => camp.reservationCalendar, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
