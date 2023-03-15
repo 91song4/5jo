@@ -205,6 +205,9 @@ export class AuthService {
    * @selectColumns select하고싶은 컬럼 - string[] 전달
    */
   async getUserSelect(whereColumns, selectColumns?) {
+    if (!whereColumns) {
+      return null;
+    }
     const userData = await this.userRepository.findOne({
       select: [...selectColumns],
       where: { ...whereColumns },
