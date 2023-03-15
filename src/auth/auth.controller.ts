@@ -116,7 +116,7 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.send({ accessToken, refreshToken });
+    res.send({ accessToken, refreshToken, userId: userData.id });
   }
 
   // 로그아웃
