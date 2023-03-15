@@ -54,14 +54,11 @@ export class AuthService {
   async OAuthLogin({ req, res }) {
     let name = req.user.name;
     let email = req.user.email;
-    let phone = req.user.phone;
-    let birthday = req.user.birthDay;
-    console.log(name, email, phone, birthday);
     // 1. 회원조회
     let user = await this.userService.getUserByEmail(email);
     // 2, 회원가입이 안되어있다면? 자동회원가입
     if (!user) {
-      await this.createSocialUser({ name, email, phone, birthday });
+      await this.createSocialUser({ name, email });
       user = await this.userService.getUserByEmail(email);
     }
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
@@ -74,19 +71,14 @@ export class AuthService {
     res.redirect('http://localhost:3000');
   }
 
-  async createSocialUser({
-    name,
-    email,
-    phone,
-    birthday,
-  }: CreateSocialUserDto) {
+  async createSocialUser({ name, email }) {
     const user = await this.userRepository.insert({
       name,
-      userId: email,
+      userId: email.split('@')[0],
       password: 'social_login',
       email,
-      phone,
-      birthday,
+      phone: email.split('@')[0],
+      birthday: 'social_login',
     });
   }
 
