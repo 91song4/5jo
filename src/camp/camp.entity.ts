@@ -50,9 +50,6 @@ export class Camp {
   @OneToMany(
     () => ReservationCalendar,
     (reservationCalendar) => reservationCalendar.camp,
-    {
-      onDelete: 'CASCADE',
-    },
   )
   reservationCalendar: ReservationCalendar[];
 }
