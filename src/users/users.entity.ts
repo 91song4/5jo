@@ -18,7 +18,7 @@ export class User {
   readonly id: number;
 
   @Index({ unique: true })
-  @Column('varchar', { length: 10 })
+  @Column('varchar')
   readonly userId: string;
 
   @Column('varchar', { select: false })
