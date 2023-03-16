@@ -64,7 +64,7 @@
     }
 
     // 소켓 접속
-    const socket = io('ws://127.0.0.1:8080/chat', {
+    const socket = io('<%- socketChat %>', {
       query: { name: userName, admin: isAdmin },
     });
 
