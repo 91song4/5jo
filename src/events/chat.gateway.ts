@@ -37,6 +37,7 @@ export class ChatGateway {
     if (socket.admin) {
       this.server.emit('joinAdmin');
     }
+
     this.server.emit('joinUsers', this.users, socket.id);
   }
 
