@@ -47,26 +47,57 @@
   </div>
 </header>
 <script>
-  console.log(document.cookie);
+  // function mypage() {
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: `/api/camps/`,
+
+  //     success: function (result) {
+  //       if (result) {
+  //         alert('완료');
+  //       } else {
+  //         alert('전송된 값 없음');
+  //       }
+  //     },
+  //     error: function () {
+  //       alert('전송 실패');
+  //     },
+  //   });
+  // }
   if (!document.cookie) {
     let temp_html = `
-      <li class="nav-item">
-              <a class="nav-link" href="/view/login"> 로그인 </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/view/sign-up"> 회원가입 </a>
-            </li>`;
+        <li class="nav-item">
+                <a class="nav-link" href="/view/login"> 로그인 </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/view/sign-up"> 회원가입 </a>
+              </li>`;
     $('.navbar-nav').append(temp_html);
   } else {
     let temp_html = `
-            <li class="nav-item">
-              <a class="nav-link" onclick="logout()"> 로그아웃 </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" onclick="mypage()"> 마이페이지 </a>
-            </li>`;
+              <li class="nav-item">
+                <a type="button" class="nav-link" onclick="logout()"> 로그아웃 </a>
+              </li>
+              <li class="nav-item">
+                <a id="mypage-btn" type="button" class="nav-link" > 마이페이지 </a>
+              </li>`;
     $('.navbar-nav').append(temp_html);
   }
-  function logout() {}
-  function mypage() {}
+
+  function logout() {
+    axios
+      .post('/api/auth/log-out')
+      .then((response) => {
+        localStorage.clear();
+        window.location.href = '/';
+      })
+      .catch((error) => console.log(error.message));
+  }
+
+  const mypageBtn = document.querySelector('#mypage-btn');
+
+  mypageBtn.addEventListener('click', () => {
+    const userId = localStorage.getItem('userId');
+    window.location.href = `/view/mypage/${userId}`;
+  });
 </script>

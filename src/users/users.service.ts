@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 // import { GetUsersInformationDto } from './dto/get-users.dto';
 // import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
 import { User } from './users.entity';
+import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 
 @Injectable()
 // DI를 위해서 자동적으로 생성되는 데코레이터
@@ -31,6 +33,13 @@ export class UsersService {
       skip: (page - 1) * 13,
       take: 13,
     });
+  }
+
+  async getUserByEmail(email: any) {
+    const userobj = await this.userRepository.findOne({
+      where: { email, deletedAt: null },
+    });
+    return userobj;
   }
 
   // 유저 정보 상세조회 API
@@ -83,12 +92,15 @@ export class UsersService {
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'password', 'birthday'],
+      select: ['name', 'phone', 'email', 'password'],
     });
 
     if (_.isNil(user)) {
       throw new Error(`user not found. id: + ${id}`);
     }
+
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
 
     this.userRepository.update(id, {
       name,

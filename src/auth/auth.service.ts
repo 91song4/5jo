@@ -17,12 +17,14 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
+import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import { use } from 'passport';
 
 dotenv.config();
 
@@ -49,21 +51,52 @@ export class AuthService {
     return userData;
   }
 
+  async OAuthLogin({ req, res }) {
+    let name = req.user.name;
+    let email = req.user.email;
+    // 1. 회원조회
+    let user = await this.userService.getUserByEmail(email);
+    // 2, 회원가입이 안되어있다면? 자동회원가입
+    if (!user) {
+      await this.createSocialUser({ name, email });
+      user = await this.userService.getUserByEmail(email);
+    }
+    // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
+    const accessToken = await this.createAccessToken(user.id);
+    const refreshToken = await this.createRefreshToken();
+    await this.cacheManager.set(refreshToken, user.id);
+
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
+    res.redirect('http://localhost:3000');
+  }
+
+  async createSocialUser({ name, email }) {
+    const user = await this.userRepository.insert({
+      name,
+      userId: email.split('@')[0],
+      password: 'social_login',
+      email,
+      phone: email.split('@')[0],
+      birthday: 'social_login',
+    });
+  }
+
   /** 로그인
    * @userId 로그인아이디
    * @password 비밀번호
    */
   async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
+    console.log(userData);
     if (refreshTokenCookie) {
       await this.cacheManager.del(refreshTokenCookie);
     }
 
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = await this.createRefreshToken();
-    console.log(accessToken, refreshToken, userData);
     await this.cacheManager.set(refreshToken, userData.id);
 
-    return { accessToken, refreshToken, userId: userData.id };
+    return { accessToken, refreshToken };
   }
 
   /**로그아웃
@@ -164,11 +197,14 @@ export class AuthService {
    * @selectColumns select하고싶은 컬럼 - string[] 전달
    */
   async getUserSelect(whereColumns, selectColumns?) {
-    const test = await this.userRepository.findOne({
+    if (!whereColumns) {
+      return null;
+    }
+    const userData = await this.userRepository.findOne({
       select: [...selectColumns],
-      where: { ...whereColumns, deletedAt: null },
+      where: { ...whereColumns },
     });
-    return test;
+    return userData;
   }
 
   async sendSMS() {
