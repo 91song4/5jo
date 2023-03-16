@@ -8,6 +8,7 @@ import {
   Param,
   Logger,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { json } from 'stream/consumers';
 import { CreateUsersInformationDto } from './dto/create-users.dto';
@@ -20,7 +21,6 @@ import { AuthGuard } from '@nestjs/passport';
 // routing path is /users -> http://localhost:3000/api
 export class UsersController {
   // 서비스 주입을 해야됨.
-  // eslint-disable-next-line prettier/prettier
   constructor(
     private readonly usersService: UsersService,
     private logger: Logger,
@@ -29,8 +29,8 @@ export class UsersController {
   // 유저 정보 조회 API
 
   @Get('/')
-  async getUsersInformation() {
-    return await this.usersService.getUsersInformation();
+  async getUsersInformation(@Query() query) {
+    return await this.usersService.getUsersInformation(query.page);
   }
 
   // 유저 정보 상세조회 API
