@@ -68,7 +68,7 @@ export class AuthService {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.redirect('http://localhost:3000');
+    res.redirect(`http://localhost:3000/view/mypage`);
   }
 
   async createSocialUser({ name, email }) {
