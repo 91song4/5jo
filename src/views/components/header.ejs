@@ -97,7 +97,6 @@
   const mypageBtn = document.querySelector('#mypage-btn');
 
   mypageBtn.addEventListener('click', () => {
-    const userId = localStorage.getItem('userId');
-    window.location.href = `/view/mypage/${userId}`;
+    window.location.href = `/view/mypage`;
   });
 </script>
