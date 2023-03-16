@@ -57,59 +57,89 @@
 
 # :runner: **팀원 및 역할 분담**
 
-**박현민**
-
-```
-- 회원가입 및 로그인 / 로그아웃
-- 카카오 소셜 로그인
-- 이메일 찾기 / 비밀번호 찾기
-- 인증 미들웨어
-- 관리자 페이지
-```
-
 - **이진석**
 
 ```
-- 마이 페이지
+- 리더
 ```
 
-- **오영환**
+- **송지훈**
 
 ```
-- 메인 페이지
-- 주문 페이지
-- socket.io 채팅방
+- 부리더
 ```
 
-- **주민석**
+- **유상우**
 
 ```
-- 장바구니 페이지
-- 상품 상세 페이지
-- 관리자 페이지
+- 팀원1
+```
+
+- **이호승**
+
+```
+- 팀원2
+```
+
+- **김재원**
+
+```
+- 팀원3
 ```
 
 <br/> <br/>
 
 # :file_folder: **사용 도구**
 
-<div>
+<div> <!-- 프론트 -->
+  <!-- HTML -->
 	<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+  <!-- CSS -->
 	<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <!-- JS -->
 	<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <!-- JQuery -->
 	<img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
+  <!-- bootstrap -->
 	<img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
-<br/>
-	<img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
-	<img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=Express&logoColor=white">
+  <!-- ejs -->
+	<img src="https://img.shields.io/badge/ejs-ED2B88?style=for-the-badge&logo=EJS&logoColor=white">
+  <!-- Ajax -->
+	<img src="https://img.shields.io/badge/ajax-FF6B00?style=for-the-badge&logo=AJax&logoColor=white">
+  <!-- Axios -->
+	<img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
+<br/> <!-- 백엔드 -->
+  <!-- Node.JS -->
+  <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=black">
+  <!-- Nest.JS -->
+  <img src="https://img.shields.io/badge/nest.js-E0234E?style=for-the-badge&logo=nestjs&logoColor=black">
+  <!-- MySQL -->
 	<img src="https://img.shields.io/badge/mySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
-	<img src="https://img.shields.io/badge/sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white">
-<br/>
-	<img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">
-	<img src="https://img.shields.io/badge/Naver-03C75A?style=for-the-badge&logo=Naver&logoColor=white">
-<br/>
+  <!-- TypeORM -->
+	<img src="https://img.shields.io/badge/typeorm-52B0E7?style=for-the-badge&logo=TypeORM&logoColor=white">
+  <!-- Socket.IO -->
+	<img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=Socket.IO&logoColor=white">
+<br/> <!-- 데브옵스 -->
+  <!-- amazon EC2 -->
+	<img src="https://img.shields.io/badge/Amazonec2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
+  <!-- amazon RDS -->
+	<img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">
+  <!-- amazon S3 -->
+	<img src="https://img.shields.io/badge/AmazonS3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">
+  <!-- amazon CloudFront -->
+	<img src="https://img.shields.io/badge/AmazonCloudFront-7F2B7B?style=for-the-badge&logo=Amazon CloudFront&logoColor=white">
+  <!-- amazon Certificate Manager -->
+	<img src="https://img.shields.io/badge/AWSCertificateManager-FFDC0F?style=for-the-badge&logo=AWS Certificate Manager&logoColor=white">
+  <!-- amazon Gabia -->
+	<img src="https://img.shields.io/badge/Gabia-3EAAAF?style=for-the-badge&logo= Gabia&logoColor=white">
+  <!-- amazon RedisCloud -->
+	<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white">
+<br/> <!-- 툴 -->
+  <!-- git -->
 	<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <!-- github -->
 	<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <!-- vsc -->
 	<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=Visual Studio Code&logoColor=white">
 </div>
 
@@ -125,11 +155,14 @@
 - Back
   - Node.js (Nest.JS)
   - MySQL (TypeORM)
+  - Socket.IO
 - DevOps
   - Amazon EC2
   - Amazon RDS
-  - Amazon R3
+  - Amazon S3
   - Amazon CloudFront
+  - AWS Certificate Manager
+  - Gabia
   - RedisCloud
 - Tools
   - Git
