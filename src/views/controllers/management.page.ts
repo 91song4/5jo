@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import { Controller, Get, Param, Query, Render } from '@nestjs/common';
 import { CampService } from 'src/camp/camp.service';
 import { CouponService } from 'src/coupon/coupon.service';
 import { OrderService } from 'src/order/order.service';
@@ -74,8 +74,12 @@ export class ManagementPage {
 
   @Get('/management/users')
   @Render('management')
-  async users() {
-    const users = await this.usersService.getUsersInformation();
+  async users(@Query() query) {
+    if (query.page === undefined) {
+      query['page'] = 1;
+    }
+
+    const users = await this.usersService.getUsersInformation(query.page);
 
     return { component: 'users', users };
   }
@@ -96,8 +100,12 @@ export class ManagementPage {
 
   @Get('/management/orders')
   @Render('management')
-  async orderlist() {
-    const orderlist = await this.orderService.getAllOrders();
+  async orderlist(@Query() query) {
+    if (query.page === undefined) {
+      query['page'] = 1;
+    }
+
+    const orderlist = await this.orderService.getAllOrders(query.page);
 
     return { component: 'orderlist', orderlist };
   }

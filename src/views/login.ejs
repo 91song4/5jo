@@ -28,5 +28,11 @@
         console.error(error.message);
       }
     });
+
+    password.addEventListener('keyup', (e) => {
+      if (e.keyCode === 13) {
+        loginBtn.click();
+      }
+    });
   </script>
 </body>

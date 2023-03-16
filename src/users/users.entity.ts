@@ -18,11 +18,14 @@ export class User {
   readonly id: number;
 
   @Index({ unique: true })
-  @Column('varchar', { length: 10 })
+  @Column('varchar')
   readonly userId: string;
 
   @Column('varchar', { select: false })
   readonly password: string;
+
+  @Column('varchar', { nullable: true, default: null })
+  readonly socialType: string;
 
   @Index()
   @Column('varchar', { length: 10 })

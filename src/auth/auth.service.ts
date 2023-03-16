@@ -10,16 +10,23 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/users.entity';
+import { UsersService } from 'src/users/users.service';
 import { SmsService } from '../sms/sms.service';
+import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
+import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import { use } from 'passport';
+import e from 'express';
+import { em } from '@fullcalendar/core/internal-common';
 
 dotenv.config();
 
@@ -29,17 +36,11 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly jwtService: JwtService, // private smsService: SmsService,
+    private readonly configService: ConfigService,
+    private readonly userService: UsersService,
   ) {}
 
-  /** 로그인
-   * @userId 로그인아이디
-   * @password 비밀번호
-   */
-  async login(
-    { userId, password }: LoginUserDto,
-    { refreshToken: refreshTokenCookie = undefined },
-  ) {
-    await this.cacheManager.del(refreshTokenCookie);
+  async validateUser(userId: string, password: string) {
     const userData = await this.getUserSelect({ userId }, ['id', 'password']);
     if (!userData) {
       throw new NotFoundException('아이디가 존재하지 않습니다.');
@@ -49,10 +50,59 @@ export class AuthService {
     if (isEqual === false) {
       throw new UnauthorizedException('비밀번호가 다릅니다.');
     }
+    return userData;
+  }
+
+  async OAuthLogin({ req, res }) {
+    let id = req.user.id;
+    let name = req.user.name;
+    let email = req.user.email;
+    // 1. 회원조회
+    let user = await this.userService.getUserByEmail(email);
+    // 2, 회원가입이 안되어있다면? 회원가입페이지로 이동
+    if (!user) {
+      return res.render('index', {
+        components: 'socialsignup',
+        id: id,
+        name: name,
+        email: email,
+      });
+    }
+    // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
+    const accessToken = await this.createAccessToken(user.id);
+    const refreshToken = await this.createRefreshToken();
+    await this.cacheManager.set(refreshToken, user.id);
+
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
+    res.redirect(process.env.BASIC_ORIGIN);
+  }
+
+  async createSocialUser(userData) {
+    await this.userRepository.insert({
+      userId: userData.userId,
+      password: userData.password,
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      birthday: userData.birthday,
+      socialType: userData.socialType,
+    });
+    return { message: '환영합니다 고객님!' };
+  }
+
+  /** 로그인
+   * @userId 로그인아이디
+   * @password 비밀번호
+   */
+  async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
+    console.log(userData);
+    if (refreshTokenCookie) {
+      await this.cacheManager.del(refreshTokenCookie);
+    }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = this.createRefreshToken();
-
+    const refreshToken = await this.createRefreshToken();
     await this.cacheManager.set(refreshToken, userData.id);
 
     return { accessToken, refreshToken };
@@ -156,11 +206,14 @@ export class AuthService {
    * @selectColumns select하고싶은 컬럼 - string[] 전달
    */
   async getUserSelect(whereColumns, selectColumns?) {
-    const test = await this.userRepository.findOne({
+    if (!whereColumns) {
+      return null;
+    }
+    const userData = await this.userRepository.findOne({
       select: [...selectColumns],
-      where: { ...whereColumns, deletedAt: null },
+      where: { ...whereColumns },
     });
-    return test;
+    return userData;
   }
 
   async sendSMS() {
@@ -200,8 +253,8 @@ export class AuthService {
   }
 
   /** JWT Refresh Token 생성 함수 */
-  private createRefreshToken() {
-    const refreshToken = this.jwtService.sign({}, { expiresIn: '23h' });
+  private async createRefreshToken() {
+    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
     return refreshToken;
   }
 }

@@ -8,9 +8,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheConfigService } from '../config/cache.config.service';
 import { SmsModule } from '../sms/sms.module';
 import { User } from 'src/users/users.entity';
+import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
+import { UsersService } from 'src/users/users.service';
+import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from 'src/users/users.module';
+import { JwtGoogleStrategy } from './jwt-social-google.strategy';
 
 @Module({
   imports: [
+    UsersModule,
+    PassportModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -22,9 +30,18 @@ import { User } from 'src/users/users.entity';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    PassportModule,
     // SmsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtGoogleStrategy,
+    JwtStrategy,
+    ConfigService,
+    UsersService,
+  ],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

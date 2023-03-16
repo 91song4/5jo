@@ -10,12 +10,16 @@
     <div class="orders">
       <div><h2>예약/결제 내역 조회</h2></div>
 
-      <table class="table table-striped">
+      <% for (let i = 0; i < orderlist.length; i++) { %>
+      <table
+        class="table table-secondary"
+        style="width: 90%; margin: 25px auto"
+      >
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">유저고유번호</th>
-            <th scope="col">캠프번호</th>
+            <th scope="col">캠프이름</th>
             <th scope="col">예약일</th>
             <th scope="col">총인원</th>
             <th scope="col">총가격</th>
@@ -23,15 +27,21 @@
         </thead>
 
         <tbody></tbody>
-
-        <% for (let i = 0; i < orderlist.length; i++) { %>
         <tr>
           <td><%=orderlist[i].id%></td>
           <td><%=orderlist[i].userId%></td>
-          <td><%=orderlist[i].campId%></td>
-          <td><%=orderlist[i].selectedDay%></td>
+          <td><%=orderlist[i].CampName%></td>
+          <td><%=orderlist[i].selectedDay.toLocaleString()%></td>
           <td><%=orderlist[i].headcount%></td>
           <td><%=orderlist[i].receipt%></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>리뷰여부:</td>
+          <td><%=orderlist[i].isReview%></td>
+          <td></td>
+          <td>결제방식:</td>
+          <td><%=orderlist[i].type%></td>
         </tr>
 
         <% } %>

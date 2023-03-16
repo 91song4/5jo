@@ -30,6 +30,12 @@ export class createUsersTable1677675287152 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'socialType',
+            type: 'varchar',
+            isNullable: true,
+            default: null,
+          },
+          {
             name: 'email',
             type: 'varchar(30)',
             isUnique: true,

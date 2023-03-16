@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { NotFoundError } from 'rxjs';
@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 // import { GetUsersInformationDto } from './dto/get-users.dto';
 // import { GetUsersInformationByIdDto } from './dto/get-usersbyid.dto';
 import { User } from './users.entity';
+import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 
 @Injectable()
 // DI를 위해서 자동적으로 생성되는 데코레이터
@@ -21,11 +23,23 @@ export class UsersService {
   // private usersinformationPasswords = new Map();
 
   // 유저 정보 조회 API
-  async getUsersInformation() {
+  async getUsersInformation(page) {
+    console.log(page);
     return await this.userRepository.find({
       where: { deletedAt: null },
       select: ['id', 'userId', 'name', 'phone', 'email'],
+      // 페이지네이션 구현 코드
+      // relations: ['category'],
+      skip: (page - 1) * 13,
+      take: 13,
     });
+  }
+
+  async getUserByEmail(email: any) {
+    const userobj = await this.userRepository.findOne({
+      where: { email, deletedAt: null },
+    });
+    return userobj;
   }
 
   // 유저 정보 상세조회 API
@@ -75,23 +89,24 @@ export class UsersService {
     phone: string,
     email: string,
     password: string,
-    birthday: Date,
   ) {
     const user = await this.userRepository.findOne({
       where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'password', 'birthday'],
+      select: ['name', 'phone', 'email', 'password'],
     });
 
     if (_.isNil(user)) {
       throw new Error(`user not found. id: + ${id}`);
     }
 
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
+
     this.userRepository.update(id, {
       name,
       phone,
       email,
       password,
-      birthday,
     });
   }
 

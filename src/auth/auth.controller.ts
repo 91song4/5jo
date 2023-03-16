@@ -6,9 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -18,11 +21,22 @@ import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
+import { LocalAuthenticationGuard } from './localAuthentication.guard';
+import { GetUserSelectDto } from './dtos/get-user-select.dto';
+import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  // 유저 선택해서 가져오기
+  @Get('/user')
+  async getUserSelect(
+    @Query() { whereColumns, selectColumns }: GetUserSelectDto,
+  ) {
+    return this.authService.getUserSelect(whereColumns, selectColumns);
+  }
 
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
@@ -73,21 +87,41 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // 구글 로그인
+  @Get('/login/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req: Request) {}
+
+  @Get('/login/google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
+    this.authService.OAuthLogin({ req, res });
+  }
+
+  @Post('/social-sign-up')
+  async socialSignUp(@Body() createSocialUserDto: CreateSocialUserDto) {
+    this.authService.createSocialUser(createSocialUserDto);
+  }
+
+  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
+
   // 로그인
+  @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(
     @Body() loginUserDto: LoginUserDto,
     @Req() req: Request,
     @Res() res: Response,
   ) {
+    const userData: any = req.user;
     const { accessToken, refreshToken } = await this.authService.login(
-      loginUserDto,
+      userData,
       req.cookies,
     );
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.send({ message: '로그인 성공' });
+    res.send({ accessToken, refreshToken, userId: userData.id });
   }
 
   // 로그아웃

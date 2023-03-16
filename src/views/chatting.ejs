@@ -1,20 +1,16 @@
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const messageBtn = document.querySelector('#message-btn');
-    messageBtn.addEventListener('keyup', function (e) {
-      if (e.keyCode === 13 && !e.shiftKey) {
-        socket.emit('message', { message: this.value, senderName: socket.id });
-        this.value = '';
-      }
-    });
-  });
-</script>
 <div class="chat_wrap">
   <div class="header">CHAT</div>
-  <div class="chat">
-    <ul>
-      <!-- 동적 생성 -->
-    </ul>
+  <div class="chat-form">
+    <div class="users">
+      <ul>
+        <!-- 유저목록 -->
+      </ul>
+    </div>
+    <div class="chat">
+      <ul>
+        <!-- 채팅 동적 생성 -->
+      </ul>
+    </div>
   </div>
   <div class="input-div">
     <textarea
@@ -38,3 +34,122 @@
     </ul>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const userId = localStorage.getItem('userId');
+
+    /**
+     * 유저 이름 가져오기 API
+     * return {then: response.data.name = userName, catch: response.data.name = undefined}
+     */
+    let {
+      data: { name: userName },
+    } = await axios.get('/api/auth/user', {
+      params: {
+        whereColumns: { id: userId },
+        selectColumns: ['name'],
+      },
+    });
+
+    if (!userName) {
+      userName = '익명의 사용자';
+    }
+
+    let isAdmin = false;
+    if (userId) {
+      // 어드민 체크 API
+      const { data } = await axios.get(`/api/admin/${userId}`);
+      isAdmin = data;
+    }
+
+    // 소켓 접속
+    const socket = io('<%- socketChat %>', {
+      query: { name: userName, admin: isAdmin },
+    });
+
+    const messageBtn = document.querySelector('#message-btn');
+    messageBtn.addEventListener('keyup', function (e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        if (this.value === '\n') {
+          return (this.value = '');
+        }
+
+        const senderName = userName;
+        // 소켓통신
+        socket.emit('message', {
+          message: this.value,
+          senderName,
+          id: socket.id,
+          admin: isAdmin,
+        });
+        this.value = '';
+      }
+    });
+
+    // 소켓통신
+    socket.on('message', (data) => {
+      console.log('front socket message on: ', data.message);
+      const LR = data.id === socket.id ? 'right' : 'left';
+
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+
+      chatLi.classList.add(LR);
+
+      const fontColor = data.admin ? 'red' : 'white';
+      chatLi.querySelector('.sender span').textContent = data.senderName;
+      chatLi.querySelector('.sender span').style.color = fontColor;
+      chatLi.querySelector('.message span').textContent = data.message;
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
+      document.querySelector('div.chat').scrollTop =
+        document.querySelector('div.chat').scrollHeight;
+    });
+
+    socket.on('joinAdmin', () => {
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+      chatLi.querySelector('.sender span').style.color = 'black';
+      chatLi.querySelector('.message span').textContent =
+        '관리자가 입장하였습니다.';
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
+    });
+
+    socket.on('exitAdmin', () => {
+      const chatLi = document
+        .querySelector('div.chat.format ul li')
+        .cloneNode(true);
+      chatLi.querySelector('.sender span').style.color = 'black';
+      chatLi.querySelector('.message span').textContent =
+        '관리자가 퇴장하였습니다.';
+      document.querySelector('div.chat:not(.format) ul').append(chatLi);
+    });
+
+    socket.on('joinUsers', (data, socketId) => {
+      if (socketId === socket.id) {
+        Object.keys(data).forEach((element) => {
+          const userLi = document.createElement('li');
+          userLi.style.color = 'black';
+          userLi.id = element;
+          userLi.textContent = data[element];
+
+          document.querySelector('.users').append(userLi);
+        });
+      } else {
+        const userLi = document.createElement('li');
+        userLi.style.color = 'black';
+        userLi.id = socketId;
+        userLi.textContent = data[socketId];
+
+        document.querySelector('.users').append(userLi);
+      }
+    });
+
+    socket.on('exitUsers', ({ id }) => {
+      const deleteElement = document.querySelector(`#${id}`);
+      deleteElement.parentElement.removeChild(deleteElement);
+    });
+  });
+</script>

@@ -7,12 +7,15 @@ import {
   Body,
   Param,
   Logger,
+  UseGuards,
+  Query,
 } from '@nestjs/common';
 import { json } from 'stream/consumers';
 import { CreateUsersInformationDto } from './dto/create-users.dto';
 import { DeleteUsersInformationDto } from './dto/delete-users.dto';
 import { UpdateUsersInformationDto } from './dto/update-users.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 // routing path is /users -> http://localhost:3000/api
@@ -24,12 +27,14 @@ export class UsersController {
   ) {}
 
   // 유저 정보 조회 API
+
   @Get('/')
-  async getUsersInformation() {
-    return await this.usersService.getUsersInformation();
+  async getUsersInformation(@Query() query) {
+    return await this.usersService.getUsersInformation(query.page);
   }
 
   // 유저 정보 상세조회 API
+
   @Get('/:id')
   async getUsersInformationById(@Param('id') Id: number) {
     return await this.usersService.getUsersInformationById(Id);
@@ -51,7 +56,6 @@ export class UsersController {
       data.phone,
       data.email,
       data.password,
-      data.birthday,
     );
   }
 
@@ -59,7 +63,7 @@ export class UsersController {
   @Delete('/:id')
   async deleteUsersInformation(
     @Param('id') Id: number,
-    @Body() data: DeleteUsersInformationDto,
+    // @Body() data: DeleteUsersInformationDto,
   ) {
     return await this.usersService.deleteUsersInformation(Id);
   }
