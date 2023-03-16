@@ -69,13 +69,12 @@
 - **송지훈**
 
 ```
-- 회원가입, 회원탈퇴
-- 로그인, 로그아웃
+- 회원가입, 회원탈퇴, 로그인, 로그아웃
 - 아이디 찾기, 비밀번호 찾기, 비밀번호 재설정
 - 검증 미들웨어
 - RedisCloud
 - Twilio
-- ERD에 근거하여 migration 작성
+- migration
 - 실시간채팅
 - Amazon EC2, RDS, S3, CloudFront
 ```
