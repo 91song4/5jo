@@ -32,13 +32,25 @@
           </tr>
         </tbody>
       </table>
-      <div style=" color: black">
-        ※ 입실·퇴실 안내</br> 
-        입실 : 15:00 이후, 퇴실 : 11:00 이전</br>
-        22시 이후 입실하실
-        경우 펜션으로 사전 연락 부탁드립니다.
+      <div style="color: black">
+        ※ 입실·퇴실 안내<br />
+        입실 : 15:00 이후, 퇴실 : 11:00 이전 22시 이후 입실하실 경우 펜션으로<br />
+        사전 연락 부탁드립니다.
       </div>
     </div>
-    
   </section>
 </body>
+<script>
+  // 소켓 접속
+  const reserveDay = '<%- day %>';
+  const socket = io('<%- socketReserve %>', {
+    query: {
+      day: reserveDay,
+    },
+  });
+
+  // 소켓 통신
+  socket.on(reserveDay, (data) => {
+    console.log(`접속중인 유저: ${data}`);
+  });
+</script>

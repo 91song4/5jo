@@ -64,7 +64,7 @@
     }
 
     // 소켓 접속
-    const socket = io('ws://127.0.0.1:8080/chat', {
+    const socket = io('<%- socketChat %>', {
       query: { name: userName, admin: isAdmin },
     });
 
@@ -76,6 +76,7 @@
         }
 
         const senderName = userName;
+        // 소켓통신
         socket.emit('message', {
           message: this.value,
           senderName,
@@ -85,6 +86,8 @@
         this.value = '';
       }
     });
+
+    // 소켓통신
     socket.on('message', (data) => {
       console.log('front socket message on: ', data.message);
       const LR = data.id === socket.id ? 'right' : 'left';

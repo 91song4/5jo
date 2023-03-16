@@ -132,7 +132,6 @@
 
     updateBtn.addEventListener('click', () => {
       const userId = localStorage.getItem('userId');
-      console.log(typeof mypagePassword.value);
       try {
         axios
           .put(`/api/users/${userId}`, {
