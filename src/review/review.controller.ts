@@ -1,60 +1,56 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { CreateArticleDto } from './create-article.dto';
-import { DeleteArticleDto } from './delete-article.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
-import { UpdateArticleDto } from './update-article.dto';
-   
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+//dto
+import { CreateReviewDto } from './dto/create-review.dto';
+import { DeleteReviewDto } from './dto/delete-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 
-@Controller('review')
+@ApiTags('review')
+@Controller('')
 export class ReviewController {
-    constructor(private readonly reviewService : ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) {}
 
-    
- // 리뷰조회 API
- @Get('/articles')
- getArticles() {
-    return this.reviewService.getArticles();
- }
+  // 리뷰목록 조회
+  @Get('/reviews')
+  async getReviews() {
+    return await this.reviewService.getReviews();
+  }
 
- // 리뷰 상세보기 ->  id 로 확인
- @Get('/articles/:id')
- getArticleById(@Param('id') articleId: number) {
-   //number 는 원래 string 이여야한다
-   // class-validator, class-transformer
-    return this.reviewService.getArticleById(articleId);
- }
+  //리뷰 상세 조회
+  @Get('/reviews/:id')
+  getReviewById(@Param('id') reviewId: number) {
+    return this.reviewService.getReviewById(Number(reviewId));
+  }
 
- // 리뷰 작성
- @Post('/articles')
- createArticle(@Body() data: CreateArticleDto) {
-    return this.reviewService.createArticle(
-   data.title,
-   data.content, 
-   data.password,
-  );
- }
+  // 리뷰 작성
+  @Post('/reviews')
+  createReview(@Body() data: CreateReviewDto) {
+    return this.reviewService.createReview(
+      data.orderId,
+      data.userId,
+      data.title,
+      data.content,
+    );
+  }
 
-// 리뷰 수정
-@Put('/articles/:id')
- updateArticle(
-   @Param('id') articleId: number,
-   @Body() data: UpdateArticleDto
-) {
-   return this.reviewService.updateArticle(
-   articleId,
-   data.title,
-   data.content,
-   data.password,
-   );
- }
+  // 리뷰 수정
+  @Put('/reviews/:id')
+  updateReview(@Param('id') reviewId: number, @Body() data: UpdateReviewDto) {
+    return this.reviewService.updateReview(reviewId, data.title, data.content);
+  }
 
-// 리뷰 삭제
-@Delete('/articles/:id')
- deleteArticle(
-   @Param('id') articleId: number,
-   @Body() data: DeleteArticleDto
-) {
-   return this.reviewService.deleteArticle(articleId, data.password);
- }
+  // 리뷰 삭제
+  @Delete('/reviews/:id')
+  deleteReview(@Param('id') reviewId: number) {
+    return this.reviewService.deleteReview(reviewId);
+  }
 }
-
