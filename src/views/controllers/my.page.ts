@@ -12,7 +12,7 @@ export class MyPage {
     private readonly usersService: UsersService,
   ) {}
 
-  @Get('/mypage')
+  @Get('/mypage/:id')
   @UseGuards(AuthGuard('jwt'))
   @Render('index')
   async mypage(@Req() req: Request) {

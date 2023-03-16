@@ -98,6 +98,6 @@
 
   mypageBtn.addEventListener('click', () => {
     const userId = localStorage.getItem('userId');
-    window.location.href = `/view/mypage/`;
+    window.location.href = `/view/mypage/${userId}`;
   });
 </script>
