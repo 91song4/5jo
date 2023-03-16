@@ -8,8 +8,12 @@
   </head>
   <body>
     <div class="users">
-      <div>유저정보 조회 페이지</div>
-      <table id="usersinfo" class="table">
+      <div><h2>유저정보 조회 페이지</h2></div>
+      <table
+        id="usersinfo"
+        class="table table-secondary"
+        style="width: 90%; margin: 25px auto"
+      >
         <!-- colspan="5" -->
         <thead>
           <th>고유번호</th>
@@ -25,7 +29,7 @@
         <tbody></tbody>
 
         <% for (let i = 0; i < users.length; i++) { %>
-        <tr>
+        <tr class="table-light">
           <td><%=users[i].id%></td>
           <td><%=users[i].userId%></td>
           <td><%=users[i].name%></td>

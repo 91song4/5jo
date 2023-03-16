@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -39,8 +40,8 @@ export class OrderController {
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '모든 주문정보 확인' })
   @Get('/orders')
-  async getAllOrders(): Promise<Order[]> {
-    return await this.orderService.getAllOrders();
+  async getAllOrders(@Query() query): Promise<Order[]> {
+    return await this.orderService.getAllOrders(query.page);
   }
 
   // 유저의 주문 목록 가져오기 ( GET )

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { NotFoundError } from 'rxjs';
@@ -23,10 +23,15 @@ export class UsersService {
   // private usersinformationPasswords = new Map();
 
   // 유저 정보 조회 API
-  async getUsersInformation() {
+  async getUsersInformation(page) {
+    console.log(page);
     return await this.userRepository.find({
       where: { deletedAt: null },
       select: ['id', 'userId', 'name', 'phone', 'email'],
+      // 페이지네이션 구현 코드
+      // relations: ['category'],
+      skip: (page - 1) * 13,
+      take: 13,
     });
   }
 
