@@ -23,7 +23,7 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import { GetUserSelectDto } from './dtos/get-user-select.dto';
-import { IOAuthUser } from './social.login.interface';
+import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -96,6 +96,11 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
     this.authService.OAuthLogin({ req, res });
+  }
+
+  @Post('/social-sign-up')
+  async socialSignUp(@Body() createSocialUserDto: CreateSocialUserDto) {
+    this.authService.createSocialUser(createSocialUserDto);
   }
 
   // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기

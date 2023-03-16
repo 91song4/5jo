@@ -24,6 +24,9 @@ export class User {
   @Column('varchar', { select: false })
   readonly password: string;
 
+  @Column('varchar', { nullable: true, default: null })
+  readonly socialType: string;
+
   @Index()
   @Column('varchar', { length: 10 })
   readonly name: string;
