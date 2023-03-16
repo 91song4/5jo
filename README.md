@@ -66,7 +66,15 @@
 - **송지훈**
 
 ```
--
+- 회원가입, 회원탈퇴
+- 로그인, 로그아웃
+- 아이디 찾기, 비밀번호 찾기, 비밀번호 재설정
+- 검증 미들웨어
+- RedisCloud
+- Twilio
+- ERD에 근거하여 migration 작성
+- 실시간채팅
+- Amazon EC2, RDS, S3, CloudFront
 ```
 
 - **유상우**
@@ -132,8 +140,10 @@
 	<img src="https://img.shields.io/badge/AWSCertificateManager-FFDC0F?style=for-the-badge&logo=AWS Certificate Manager&logoColor=white">
   <!-- amazon Gabia -->
 	<img src="https://img.shields.io/badge/Gabia-3EAAAF?style=for-the-badge&logo= Gabia&logoColor=white">
-  <!-- amazon RedisCloud -->
+  <!-- RedisCloud -->
 	<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white">
+  <!-- Twilio -->
+	<img src="https://img.shields.io/badge/twilio-F22F46?style=for-the-badge&logo=Twilio&logoColor=white">
 <br/> <!-- 툴 -->
   <!-- git -->
 	<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
@@ -164,6 +174,7 @@
   - AWS Certificate Manager
   - Gabia
   - RedisCloud
+  - Twilio
 - Tools
   - Git
   - GitHub
