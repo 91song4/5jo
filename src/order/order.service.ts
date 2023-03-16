@@ -34,8 +34,55 @@ export class OrderService {
   }
 
   // 주문 가져오기 ( GET )
-  async getAllOrders(): Promise<Order[]> {
-    return await this.orderRepository.find();
+  async getAllOrders(page): Promise<Order[]> {
+    console.log(page);
+
+    // await this.orderRepository.find({
+    //   skip: (page - 1) * 5,
+    //   take: 5,
+    // });
+
+    // const orders = await this.orderRepository
+    //   .query(
+    //     `SELECT O.id, O.selectedDay, O.headcount, O.receipt, O.isReview, O.type,  O.userId AS orderuserId, U.USERID AS userId, O.CAMPID AS ordercampId ,C.NAME AS CampName
+    // FROM ORDERS O INNER JOIN USERS U
+    // ON O.USERID = U.ID
+    // INNER JOIN CAMPS C
+    // ON O.CAMPID = C.ID `,
+    //   )
+    //   .then();
+
+    // return orders;
+
+    const orders = await this.orderRepository.query(`
+      SELECT
+        O.id,
+        O.selectedDay,
+        O.headcount,
+        O.receipt,
+        O.isReview,
+        O.type,
+        U.USERID AS userId,
+        O.CAMPID AS ordercampId,
+        C.NAME AS CampName
+      FROM ORDERS O
+        INNER JOIN USERS U ON O.USERID = U.ID
+        INNER JOIN CAMPS C ON O.CAMPID = C.ID
+      ORDER BY O.id
+      LIMIT ${5} OFFSET ${(page - 1) * 5}
+    `);
+
+    return orders.map((order) => ({
+      id: order.id,
+      selectedDay: order.selectedDay,
+      headcount: order.headcount,
+      receipt: order.receipt,
+      isReview: order.isReview,
+      type: order.type,
+      userId: order.userId,
+      ordercampId: order.ordercampId,
+      CampName: order.CampName,
+    }));
   }
 
   // 유저의 주문 목록 가져오기 ( GET )
