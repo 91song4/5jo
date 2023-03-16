@@ -13,14 +13,19 @@
         <%if(components === 'home'){ %> <%-include('home')%> <%}%>
         <!-- 회원가입 -->
         <%if(components === 'signup'){ %> <%-include('sign-up') %> <%} %>
+        <!-- 구글 회원가입 -->
+        <%if(components === 'socialsignup'){ %> <%-include('social-sign-up') %>
+        <%} %>
         <!-- 로그인 -->
         <%if(components === 'login' ){ %> <%-include('login') %> <%} %>
         <!-- 아이디 찾기 -->
         <%if(components === 'lostId'){ %> <%-include('lost-id') %> <%} %>
         <!-- 비밀번호 찾기 -->
-        <%if(components === 'lostPassword'){ %> <%-include('lost-password') %> <%}%>
+        <%if(components === 'lostPassword'){ %> <%-include('lost-password') %>
+        <%}%>
         <!-- 비밀번호 재설정 -->
-        <%if(components === 'resetPassword'){ %> <%-include('reset-password')%> <%}%>
+        <%if(components === 'resetPassword'){ %> <%-include('reset-password')%>
+        <%}%>
         <!-- 문의사항 -->
         <%if(components ==='inquiry'){%> <%-include('inquiry')%> <%}%>
         <!-- 예약 -->

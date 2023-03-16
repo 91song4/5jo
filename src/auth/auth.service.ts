@@ -25,6 +25,8 @@ import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { use } from 'passport';
+import e from 'express';
+import { em } from '@fullcalendar/core/internal-common';
 
 dotenv.config();
 
@@ -52,14 +54,19 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
+    let id = req.user.id;
     let name = req.user.name;
     let email = req.user.email;
     // 1. 회원조회
     let user = await this.userService.getUserByEmail(email);
-    // 2, 회원가입이 안되어있다면? 자동회원가입
+    // 2, 회원가입이 안되어있다면? 회원가입페이지로 이동
     if (!user) {
-      await this.createSocialUser({ name, email });
-      user = await this.userService.getUserByEmail(email);
+      return res.render('index', {
+        components: 'socialsignup',
+        id: id,
+        name: name,
+        email: email,
+      });
     }
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
     const accessToken = await this.createAccessToken(user.id);
@@ -68,18 +75,20 @@ export class AuthService {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.redirect('http://localhost:3000');
+    res.redirect(`http://localhost:3000/view/mypage/${user.id}`);
   }
 
-  async createSocialUser({ name, email }) {
-    const user = await this.userRepository.insert({
-      name,
-      userId: email.split('@')[0],
-      password: 'social_login',
-      email,
-      phone: email.split('@')[0],
-      birthday: 'social_login',
+  async createSocialUser(userData) {
+    await this.userRepository.insert({
+      userId: userData.userId,
+      password: userData.password,
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      birthday: userData.birthday,
+      socialType: userData.socialType,
     });
+    return { message: '환영합니다 고객님!' };
   }
 
   /** 로그인

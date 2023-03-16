@@ -17,7 +17,6 @@ export class MyPage {
   @Render('index')
   async mypage(@Req() req: Request) {
     const userInfo = req.user;
-    console.log(userInfo);
     return { components: 'mypage', userInfo };
   }
 }

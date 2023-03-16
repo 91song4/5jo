@@ -1,7 +1,14 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('view')
 export class AuthPage {
+  // @Get('social-sign-up')
+  // @Render('index')
+  // async socialsignup(@Req() req: Request) {
+  //   return { components: 'socialsignup' };
+  // }
+
   @Get('sign-up')
   @Render('index')
   signup() {
