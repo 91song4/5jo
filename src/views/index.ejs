@@ -40,6 +40,10 @@
         <%if(components ==='mypage'){%> <%-include('mypage')%><%}%>
         <!-- 관리자 메인 -->
         <% if(components === 'main'){ %> <%-include('main') %> <%} %>
+        <!-- 개인정보처리방침 -->
+        <% if(components === 'pipp'){ %> <%-include('pipp') %> <%} %>
+        <!-- 서비스약관 -->
+        <% if(components === 'tos'){ %> <%-include('tos') %> <%} %>
       </section>
       <!-- end hero section -->
     </div>
