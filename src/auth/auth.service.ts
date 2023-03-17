@@ -236,7 +236,7 @@ export class AuthService {
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === certificationNumberDB;
+    const isAuthentication = certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;
