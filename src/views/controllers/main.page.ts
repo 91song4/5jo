@@ -43,6 +43,7 @@ export class HomePage {
   }
 
   @Get('/chatting')
+  @UseGuards(AuthGuard('jwt'))
   @Render('index')
   async chatting(@Req() req) {
     return {
