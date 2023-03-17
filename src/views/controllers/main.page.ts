@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import { Controller, Get, Param, Render, Req, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('view')
 export class HomePage {
@@ -43,9 +44,10 @@ export class HomePage {
 
   @Get('/chatting')
   @Render('index')
-  async chatting() {
+  async chatting(@Req() req) {
     return {
       components: 'chatting',
+      userId: req.user.id,
       socketChat: this.configService.get('SOCKET_NAMESPACE_CHAT'),
     };
   }
