@@ -1,14 +1,9 @@
 <div class="hero_detail">
-  <img
-    src="/images/campphoto1.jpg"
-    class="rounded float-start"
-    style="width: 40rem"
-    alt="..."
-  />
-  <img
-    src="/images/campphoto1.jpg"
-    class="rounded float-end"
-    style="width: 40rem"
-    alt="..."
-  />
+  <img class="rounded float-start" style="width: 40rem" alt="..." />
+  <img class="rounded float-end" style="width: 40rem" alt="..." />
 </div>
+<script>
+  const imgs = document.querySelectorAll('div.hero_detail img');
+  imgs[0].src = `${BASIC_CDN}/campphoto1.jpg`;
+  imgs[1].src = `${BASIC_CDN}/campphoto1.jpg`;
+</script>
