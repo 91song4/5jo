@@ -35,7 +35,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    private readonly jwtService: JwtService, // private smsService: SmsService,
+    private readonly jwtService: JwtService,
+    private smsService: SmsService,
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {}
@@ -54,11 +55,11 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
-    let id = req.user.id;
-    let name = req.user.name;
-    let email = req.user.email;
+    const id = req.user.id;
+    const name = req.user.name;
+    const email = req.user.email;
     // 1. 회원조회
-    let user = await this.userService.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     // 2, 회원가입이 안되어있다면? 회원가입페이지로 이동
     if (!user) {
       return res.render('index', {
@@ -216,26 +217,26 @@ export class AuthService {
     return userData;
   }
 
-  async sendSMS() {
-    await this.cacheManager.set('01012341234', 123123);
-    return 123123;
-  }
-
-  // async sendSMS(phone: string) {
-  //   const certificationNumber = await this.smsService.sendSMS(phone);
-  //   await this.cacheManager.set(phone, certificationNumber);
-  //   setTimeout(async () => {
-  //     if (await this.cacheManager.get(phone)) {
-  //       this.cacheManager.del(phone);
-  //     }
-  //   }, 1000 * 60 * 3);
-
-  //   return certificationNumber;
+  // async sendSMS() {
+  //   await this.cacheManager.set('01012341234', 123123);
+  //   return 123123;
   // }
+
+  async sendSMS(phone: string) {
+    const certificationNumber = await this.smsService.sendSMS(phone);
+    await this.cacheManager.set(phone, certificationNumber);
+    setTimeout(async () => {
+      if (await this.cacheManager.get(phone)) {
+        this.cacheManager.del(phone);
+      }
+    }, 1000 * 60 * 3);
+
+    return certificationNumber;
+  }
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === certificationNumberDB;
+    const isAuthentication = certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;
