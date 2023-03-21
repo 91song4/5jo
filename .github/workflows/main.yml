@@ -23,5 +23,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd 5jo
-            touch test_song
+            git pull origin dev
   
