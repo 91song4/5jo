@@ -1,7 +1,7 @@
 name: glamping-CICD
 
 on:
-  pull_request:
+  merge:
     branches: main
 
 jobs:
