@@ -191,7 +191,7 @@
   - Twilio
 - Tools
   - Git
-  - GitHub
+  - GitHub 
   - VSCode
 
 <br/>
