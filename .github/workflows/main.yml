@@ -22,3 +22,4 @@ jobs:
           script: |
             cd 5jo
             touch SONG
+            touch SONG2
