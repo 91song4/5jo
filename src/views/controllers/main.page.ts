@@ -27,7 +27,7 @@ export class HomePage {
   @Get('/rooms')
   @Render('index')
   async rooms() {
-    return { components: 'home' };
+    return { components: 'rooms' };
   }
 
   @Get('/community')
