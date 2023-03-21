@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(

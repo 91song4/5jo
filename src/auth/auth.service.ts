@@ -15,18 +15,12 @@ import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LoginUserDto } from './dtos/login-user.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
-import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
-import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { use } from 'passport';
-import e from 'express';
-import { em } from '@fullcalendar/core/internal-common';
 
 dotenv.config();
 
@@ -97,16 +91,23 @@ export class AuthService {
    * @password 비밀번호
    */
   async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
-    console.log(userData);
     if (refreshTokenCookie) {
       await this.cacheManager.del(refreshTokenCookie);
     }
 
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = await this.createRefreshToken();
-    await this.cacheManager.set(refreshToken, userData.id);
 
-    return { accessToken, refreshToken };
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      Number.parseInt(saltRound) ?? 10,
+    );
+    console.log('auth.service', { refreshToken, hashedRefreshToken });
+
+    await this.cacheManager.set(hashedRefreshToken, userData.id);
+
+    return { accessToken, hashedRefreshToken };
   }
 
   /**로그아웃

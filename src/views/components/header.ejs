@@ -90,7 +90,6 @@
     axios
       .post('/api/auth/log-out')
       .then((response) => {
-        localStorage.clear();
         window.location.href = '/';
       })
       .catch((error) => console.log(error.message));
