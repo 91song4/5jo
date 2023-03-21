@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { CampController } from './camp.controller';
@@ -15,9 +16,10 @@ describe('CatsController', () => {
     const module = await Test.createTestingModule({
       controllers: [CampController],
       providers: [CampService],
+      // imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([Camp])],
     }).compile();
 
-    campService = module.get(CampService);
+    // campService = module.get(CampService);
     campController = module.get(CampController);
   });
 
