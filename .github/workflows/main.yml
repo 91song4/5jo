@@ -22,4 +22,4 @@ jobs:
           script: |
             cd 5jo
             git pull origin main
-            touch SONG
+            npm run deploy
