@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "deploy": "npm i && npm run build && pm2 restart dist/main.js",
+    "deploy": "pm2 stop main && npm i && npm run build && pm2 start dist/main.js",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
