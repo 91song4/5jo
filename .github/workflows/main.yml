@@ -9,10 +9,10 @@ on:
 jobs:
   AUTO_DEPLOY:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Run scripts in server
         uses: appleboy/ssh-action@master
         with:
@@ -24,4 +24,4 @@ jobs:
           script: |
             cd 5jo
             git pull origin dev
-  
+            npm run deploy
