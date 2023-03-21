@@ -26,18 +26,6 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     const isAccessTokenValidate = await this.validateToken(accessToken);
-    const saltRound = process.env.HASH_SALT_OR_ROUND;
-    const hashedRefreshToken = await bcrypt.hash(
-      refreshToken,
-      Number.parseInt(saltRound) ?? 10,
-    );
-    console.log('auth.middleware', { refreshToken, hashedRefreshToken });
-    if (hashedRefreshToken !== refreshToken) {
-      throw new UnauthorizedException(
-        'Refresh Token의 정보가 서버에 존재하지 않습니다.',
-      );
-    }
-
     const isRefreshTokenValidate = await this.validateToken(refreshToken);
 
     const accessTokenId = await this.cacheManager.get(refreshToken);

@@ -107,7 +107,7 @@ export class AuthService {
 
     await this.cacheManager.set(hashedRefreshToken, userData.id);
 
-    return { accessToken, refreshToken };
+    return { accessToken, hashedRefreshToken };
   }
 
   /**로그아웃
