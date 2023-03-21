@@ -1,26 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Repository } from 'typeorm';
+import { Camp } from './camp.entity';
 import { CampService } from './camp.service';
-import { CampRepository } from './camp.repository';
 
 const mockCampRepository = () => {
   return { getCamps: jest.fn(), createCamp: jest.fn };
 };
 describe('CampService', () => {
   let campsService: CampService;
-  let campsReposirory: jest.Mocked<CampRepository>;
+  // let campsReposirory: jest.Mocked<Repository<Camp>>;
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         CampService,
-        {
-          provide: CampRepository,
-          useFactory: mockCampRepository,
-        },
+        // {
+        //   provide: Repository<Camp>,
+        //   useFactory: mockCampRepository,
+        // },
       ],
     }).compile();
 
     campsService = module.get<CampService>(CampService);
-    campsReposirory = module.get(CampRepository);
+    // campsReposirory = module.get(Repository<Camp>);
   });
   describe('create camp', () => {
     it('should create camp', async () => {

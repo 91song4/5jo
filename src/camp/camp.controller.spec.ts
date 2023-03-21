@@ -1,21 +1,30 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { Repository } from 'typeorm';
+
 import { CampController } from './camp.controller';
-import { CampRepository } from './camp.repository';
+import { Camp } from './camp.entity';
 import { CampService } from './camp.service';
 
-describe('CampController', () => {
-  let campRepository: CampRepository;
-  let campController: CampController;
-  let campService: CampService;
+// const mockCampRepository = () => {
+//   return {};
+// };
+describe('CatsController', () => {
+  let campController;
+  let campService;
+  beforeEach(async () => {
+    const module = await Test.createTestingModule({
+      controllers: [CampController],
+      providers: [CampService],
+    }).compile();
 
-  beforeEach(() => {
-    campService = new CampService(campRepository);
-    campController = new CampController(campService);
+    campService = module.get(CampService);
+    campController = module.get(CampController);
   });
 
   describe('getCamps', () => {
     it('should return an array of Camp', async () => {
       const result = campController.getCamps();
-      expect(result).toBe(result);
+      expect(campController.getCamps()).toBe(result);
     });
   });
 });
