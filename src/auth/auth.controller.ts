@@ -103,25 +103,20 @@ export class AuthController {
     this.authService.createSocialUser(createSocialUserDto);
   }
 
-  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
-
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(
-    @Body() loginUserDto: LoginUserDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async login(@Body() loginUserDto: LoginUserDto, @Req() req: Request) {
     const userData: any = req.user;
-    const { accessToken, refreshToken } = await this.authService.login(
+    const { accessToken, hashedRefreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken);
-    res.send({ accessToken, refreshToken, userId: userData.id });
+    return {
+      accessToken,
+      refreshToken: hashedRefreshToken,
+    };
   }
 
   // 로그아웃

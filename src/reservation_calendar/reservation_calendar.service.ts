@@ -22,7 +22,6 @@ export class ReservationCalendarService {
     private readonly campRepository: Repository<Camp>,
     private configService: ConfigService,
   ) {
-    // TODO - 하드코딩 되어있음
     this.cache = cacheManager.caching({
       store: redisStore,
       host: this.configService.get('REFRESHTOKEN_HOST'),

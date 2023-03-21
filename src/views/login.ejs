@@ -18,6 +18,9 @@
             password: password.value,
           })
           .then((response) => {
+            const { accessToken, refreshToken } = response.data;
+            document.cookie = `accessToken=${accessToken}; path=/`;
+            document.cookie = `refreshToken=${refreshToken}; path=/`;
             window.location.href = '/';
           })
           .catch((error) => {
