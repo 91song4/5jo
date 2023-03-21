@@ -104,8 +104,8 @@ export class AuthService {
       Number.parseInt(saltRound) ?? 10,
     );
 
-    await this.cacheManager.set(hashedRefreshToken, {
-      refreshToken,
+    await this.cacheManager.set(accessToken, {
+      hashedRefreshToken,
       userId: userData.id,
     });
 
@@ -115,8 +115,8 @@ export class AuthService {
   /**로그아웃
    * @refreshToken
    */
-  async logout({ refreshToken }) {
-    await this.cacheManager.del(refreshToken);
+  async logout({ accessToken }) {
+    await this.cacheManager.del(accessToken);
   }
 
   /** 회원가입
