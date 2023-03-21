@@ -1,7 +1,7 @@
 name: glamping-CICD
 
 on:
-  pull_request:
+  push:
     branches: main
 
 jobs:
@@ -21,5 +21,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd 5jo
-            touch SONG
-            touch SONG2
+            git pull origin main
+            npm run deploy
