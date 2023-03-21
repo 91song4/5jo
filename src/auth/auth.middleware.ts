@@ -25,12 +25,17 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Access Token이 존재하지 않습니다.');
     }
 
+    const {
+      refreshToken: getRefreshToken,
+      userId,
+    }: { refreshToken: string; userId: string } = await this.cacheManager.get(
+      refreshToken,
+    );
+
     const isAccessTokenValidate = await this.validateToken(accessToken);
-    const isRefreshTokenValidate = await this.validateToken(refreshToken);
+    const isRefreshTokenValidate = await this.validateToken(getRefreshToken);
 
-    const accessTokenId = await this.cacheManager.get(refreshToken);
-
-    if (!accessTokenId) {
+    if (!userId) {
       throw new UnauthorizedException(
         'Refresh Token의 정보가 서버에 존재하지 않습니다.',
       );
@@ -43,7 +48,7 @@ export class AuthMiddleware implements NestMiddleware {
     if (!isAccessTokenValidate) {
       try {
         const newAccessToken = await this.jwtService.signAsync({
-          id: accessTokenId,
+          id: userId,
         });
         res.cookie('accessToken', newAccessToken);
       } catch (error) {
