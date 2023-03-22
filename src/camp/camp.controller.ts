@@ -27,6 +27,7 @@ export class CampController {
   // 캠프 상세 조회
   @Get('/camps/:id')
   getCampById(@Param('id') campId: number) {
+    console.log({ campId });
     return this.campService.getCampById(Number(campId));
   }
 
