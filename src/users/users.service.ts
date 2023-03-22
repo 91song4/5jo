@@ -25,13 +25,17 @@ export class UsersService {
   // 유저 정보 조회 API
   async getUsersInformation(page) {
     console.log(page);
-    return await this.userRepository.find({
+    if (page === undefined) {
+      page = 1;
+    }
+
+    return await this.userRepository.findAndCount({
       where: { deletedAt: null },
       select: ['id', 'userId', 'name', 'phone', 'email'],
       // 페이지네이션 구현 코드
       // relations: ['category'],
-      skip: (page - 1) * 13,
-      take: 13,
+      skip: (page - 1) * 12,
+      take: 12,
     });
   }
 
