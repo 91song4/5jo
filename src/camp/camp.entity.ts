@@ -35,7 +35,7 @@ export class Camp {
   isRepair: boolean;
 
   @Column()
-  repairEndDate: Date | null;
+  repairEndDate: null | Date;
 
   @CreateDateColumn()
   createdAt: Date;

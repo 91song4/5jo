@@ -1,47 +1,67 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+import { CampController } from './camp.controller';
 import { Camp } from './camp.entity';
+import { CampModule } from './camp.module';
 import { CampService } from './camp.service';
 
-const mockCampRepository = () => {
-  return { getCamps: jest.fn(), createCamp: jest.fn };
-};
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
+
 describe('CampService', () => {
-  let campsService: CampService;
-  // let campsReposirory: jest.Mocked<Repository<Camp>>;
+  let service: CampService;
+  let campRepository: Repository<Camp>;
+  const USER_REPOSITORY_TOKEN = getRepositoryToken(Camp);
+
   beforeEach(async () => {
-    const module = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       providers: [
         CampService,
-        // {
-        //   provide: Repository<Camp>,
-        //   useFactory: mockCampRepository,
-        // },
+        {
+          provide: USER_REPOSITORY_TOKEN,
+          useValue: {
+            create: jest.fn(),
+            save: jest.fn(),
+            findOne: jest.fn(),
+            insert: jest.fn(),
+          },
+        },
       ],
     }).compile();
-
-    campsService = module.get<CampService>(CampService);
-    // campsReposirory = module.get(Repository<Camp>);
+    service = module.get<CampService>(CampService);
+    campRepository = module.get<Repository<Camp>>(getRepositoryToken(Camp));
   });
-  describe('create camp', () => {
-    it('should create camp', async () => {
-      const result = await campsService.createCamp('A1', 1, 4, 50000);
-      expect(result).toBe({ name: 'A1', type: 1, headcount: 4, price: 50000 });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+  it('campRepository should be defined', () => {
+    expect(campRepository).toBeDefined();
+  });
+  describe('createCamp', () => {
+    it('새로운 캠프 생성', async () => {
+      await service.createCamp('B3', 2, 8, 200000);
+      expect(campRepository.insert).toHaveBeenCalledWith({
+        name: 'B3',
+        type: 2,
+        headcount: 8,
+        price: 200000,
+        isRepair: false,
+      });
     });
   });
-
-  // it('should create camp', () => {
-  //   const result = campsService.createCamp('A1', 1, 4, 50000);
-  //   expect(campsService.createCamp('A1', 1, 4, 50000)).toBe('A1');
-  // });
-
-  // // 그룹
-  // describe('캠프 관련 API', () => {
-  //   // 테스트 하나
-  //   it('캠프등록', async () => {
-  // //given
-  // //when
-  // //then
-  // });
-  // });
+  describe('createCamp', () => {
+    it('새로운 캠프 생성', async () => {
+      await service.createCamp('B3', 2, 8, 200000);
+      expect(campRepository.insert).toHaveBeenCalledWith({
+        name: 'B3',
+        type: 2,
+        headcount: 8,
+        price: 200000,
+        isRepair: false,
+      });
+    });
+  });
 });
