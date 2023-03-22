@@ -26,6 +26,9 @@ describe('CampService', () => {
             save: jest.fn(),
             findOne: jest.fn(),
             insert: jest.fn(),
+            find: jest.fn(),
+            update: jest.fn(),
+            softDelete: jest.fn(),
           },
         },
       ],
@@ -52,16 +55,35 @@ describe('CampService', () => {
       });
     });
   });
-  describe('createCamp', () => {
-    it('새로운 캠프 생성', async () => {
-      await service.createCamp('B3', 2, 8, 200000);
-      expect(campRepository.insert).toHaveBeenCalledWith({
-        name: 'B3',
-        type: 2,
-        headcount: 8,
-        price: 200000,
-        isRepair: false,
+  describe('getCamps', () => {
+    it('전체 캠프 조회', async () => {
+      await service.getCamps();
+      expect(campRepository.find).toHaveBeenCalledWith();
+    });
+  });
+  describe('getCampById', () => {
+    it('캠프 상세 조회', async () => {
+      await service.getCampById(4);
+      expect(campRepository.findOne).toHaveBeenCalledWith({ where: { id: 4 } });
+    });
+  });
+  describe('updateCamp', () => {
+    it('캠프 정보 수정', async () => {
+      await service.updateCamp(4, 'BBB', 4, 12, 150000, true, '2023-04-04');
+      expect(campRepository.update).toHaveBeenCalledWith(4, {
+        name: 'BBB',
+        type: 4,
+        headcount: 12,
+        price: 150000,
+        isRepair: true,
+        repairEndDate: '2023-04-04',
       });
+    });
+  });
+  describe('deleteCamp', () => {
+    it('캠프 삭제', async () => {
+      await service.deleteCamp(4);
+      expect(campRepository.softDelete).toHaveBeenCalledWith(4);
     });
   });
 });
