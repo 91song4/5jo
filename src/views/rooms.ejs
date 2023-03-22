@@ -3,12 +3,12 @@
     <div class="d-flex justify-content-center">
       <h2 class="custom_heading">전체 위성도</h2>
     </div>
-    <div class="container layout_padding2">
+    <div class="container layout_padding2 sky-view">
       <div class="img-box box-1">
-        <img src="/images/map_1.jpg" alt="" />
+        <img alt="" />
       </div>
       <div class="img-box box-2">
-        <img src="/images/캠핑장.png" alt="" />
+        <img alt="" />
       </div>
     </div>
   </section>
@@ -16,19 +16,29 @@
     <div class="d-flex justify-content-center">
       <h2 class="custom_heading">캠프</h2>
     </div>
-    <div class="container layout_padding2">
+    <div class="container layout_padding2 camps-view">
       <div class="img-box box-1">
-        <img src="/images/camp_A.jpg" alt="" />
+        <img alt="" />
       </div>
       <div class="img-box box-2">
-        <img src="/images/camp_B.jpg" alt="" />
+        <img alt="" />
       </div>
       <div class="img-box box-3">
-        <img src="/images/camp_A.jpg" alt="" />
+        <img alt="" />
       </div>
       <div class="img-box box-4">
-        <img src="/images/camp_B.jpg" alt="" />
+        <img alt="" />
       </div>
     </div>
   </section>
 </body>
+<script>
+  const skyViewImgs = document.querySelectorAll('div.sky-view img');
+  skyViewImgs[0].src = `${BASIC_CDN}/map_1.jpg`;
+  skyViewImgs[1].src = `${BASIC_CDN}/캠핑장.png`;
+  const campViewImgs = document.querySelectorAll('div.camps-view img');
+  campViewImgs[0].src = `${BASIC_CDN}/camp_A.jpg`;
+  campViewImgs[1].src = `${BASIC_CDN}/camp_B.jpg`;
+  campViewImgs[2].src = `${BASIC_CDN}/camp_A.jpg`;
+  campViewImgs[3].src = `${BASIC_CDN}/camp_B.jpg`;
+</script>

@@ -6,7 +6,7 @@ export class addUsersCollumn1678928654494 implements MigrationInterface {
       'Users',
       new TableColumn({
         name: 'socialType',
-        type: 'varchar(20)',
+        type: 'varchar',
         isNullable: true,
       }),
     );

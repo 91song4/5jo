@@ -57,17 +57,17 @@ export class AuthController {
   }
 
   // 테스트용
-  @Post('/phone')
-  async sendSMS() {
-    return await this.authService.sendSMS();
-  }
+  // @Post('/phone')
+  // async sendSMS() {
+  //   return await this.authService.sendSMS();
+  // }
 
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
-  // @Post('/phnoe')
-  // async sendSMS(@Body() { phone }: SendSMSDto) {
-  //   await this.authService.sendSMS(phone);
-  //   return { message: '인증번호를 발송하였습니다.' };
-  // }
+  @Post('/phone')
+  async sendSMS(@Body() { phone }: SendSMSDto) {
+    await this.authService.sendSMS(phone);
+    return { message: '인증번호를 발송하였습니다.' };
+  }
 
   // 비멀번호 찾기 - 인증번호 체크
   @Post('/phone/:certificationNumber')
@@ -103,25 +103,20 @@ export class AuthController {
     this.authService.createSocialUser(createSocialUserDto);
   }
 
-  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
-
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(
-    @Body() loginUserDto: LoginUserDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async login(@Body() loginUserDto: LoginUserDto, @Req() req: Request) {
     const userData: any = req.user;
-    const { accessToken, refreshToken } = await this.authService.login(
+    const { accessToken, hashedRefreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken);
-    res.send({ accessToken, refreshToken, userId: userData.id });
+    return {
+      accessToken,
+      refreshToken: hashedRefreshToken,
+    };
   }
 
   // 로그아웃

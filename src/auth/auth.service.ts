@@ -15,18 +15,12 @@ import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LoginUserDto } from './dtos/login-user.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
-import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
-import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { use } from 'passport';
-import e from 'express';
-import { em } from '@fullcalendar/core/internal-common';
 
 dotenv.config();
 
@@ -35,7 +29,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    private readonly jwtService: JwtService, // private smsService: SmsService,
+    private readonly jwtService: JwtService,
+    private smsService: SmsService,
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {}
@@ -54,11 +49,11 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
-    let id = req.user.id;
-    let name = req.user.name;
-    let email = req.user.email;
+    const id = req.user.id;
+    const name = req.user.name;
+    const email = req.user.email;
     // 1. 회원조회
-    let user = await this.userService.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     // 2, 회원가입이 안되어있다면? 회원가입페이지로 이동
     if (!user) {
       return res.render('index', {
@@ -75,7 +70,7 @@ export class AuthService {
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.redirect(`http://localhost:3000/view/mypage/${user.id}`);
+    res.redirect(process.env.BASIC_ORIGIN);
   }
 
   async createSocialUser(userData) {
@@ -96,23 +91,32 @@ export class AuthService {
    * @password 비밀번호
    */
   async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
-    console.log(userData);
     if (refreshTokenCookie) {
       await this.cacheManager.del(refreshTokenCookie);
     }
 
     const accessToken = await this.createAccessToken(userData.id);
     const refreshToken = await this.createRefreshToken();
-    await this.cacheManager.set(refreshToken, userData.id);
 
-    return { accessToken, refreshToken };
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      Number.parseInt(saltRound) ?? 10,
+    );
+
+    await this.cacheManager.set(accessToken, {
+      hashedRefreshToken,
+      userId: userData.id,
+    });
+
+    return { accessToken, hashedRefreshToken };
   }
 
   /**로그아웃
    * @refreshToken
    */
-  async logout({ refreshToken }) {
-    await this.cacheManager.del(refreshToken);
+  async logout({ accessToken }) {
+    await this.cacheManager.del(accessToken);
   }
 
   /** 회원가입
@@ -216,26 +220,26 @@ export class AuthService {
     return userData;
   }
 
-  async sendSMS() {
-    await this.cacheManager.set('01012341234', 123123);
-    return 123123;
-  }
-
-  // async sendSMS(phone: string) {
-  //   const certificationNumber = await this.smsService.sendSMS(phone);
-  //   await this.cacheManager.set(phone, certificationNumber);
-  //   setTimeout(async () => {
-  //     if (await this.cacheManager.get(phone)) {
-  //       this.cacheManager.del(phone);
-  //     }
-  //   }, 1000 * 60 * 3);
-
-  //   return certificationNumber;
+  // async sendSMS() {
+  //   await this.cacheManager.set('01012341234', 123123);
+  //   return 123123;
   // }
+
+  async sendSMS(phone: string) {
+    const certificationNumber = await this.smsService.sendSMS(phone);
+    await this.cacheManager.set(phone, certificationNumber);
+    setTimeout(async () => {
+      if (await this.cacheManager.get(phone)) {
+        this.cacheManager.del(phone);
+      }
+    }, 1000 * 60 * 3);
+
+    return certificationNumber;
+  }
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === certificationNumberDB;
+    const isAuthentication = certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;

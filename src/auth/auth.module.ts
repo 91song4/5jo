@@ -31,7 +31,7 @@ import { JwtGoogleStrategy } from './jwt-social-google.strategy';
       useClass: CacheConfigService,
     }),
     PassportModule,
-    // SmsModule,
+    SmsModule,
   ],
   controllers: [AuthController],
   providers: [

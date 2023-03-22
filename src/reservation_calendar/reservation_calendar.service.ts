@@ -9,6 +9,7 @@ import { ReservationCalendar } from './reservation_calendar.entity';
 // 캐시 매니저 ( redis )
 import * as cacheManager from 'cache-manager';
 import * as redisStore from 'cache-manager-ioredis';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ReservationCalendarService {
@@ -19,11 +20,12 @@ export class ReservationCalendarService {
     private readonly reservationCalendarRepository: Repository<ReservationCalendar>,
     @InjectRepository(Camp)
     private readonly campRepository: Repository<Camp>,
+    private configService: ConfigService,
   ) {
     this.cache = cacheManager.caching({
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      host: this.configService.get('REFRESHTOKEN_HOST'),
+      port: this.configService.get('REFRESHTOKEN_PORT'),
     });
   }
 

@@ -5,6 +5,7 @@ import { Camp } from 'src/camp/camp.entity';
 import { Order } from 'src/order/order.entity';
 import { Admin } from '../admin/admin.entity';
 import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
+import { Review } from 'src/review/review.entity';
 dotenv.config();
 
 export const ormConfig: DataSourceOptions = {
@@ -14,6 +15,6 @@ export const ormConfig: DataSourceOptions = {
   database: process.env.DATABASE_NAME,
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
-  entities: [Camp, User, Order, Admin, ReservationCalendar],
+  entities: [Camp, User, Order, Admin, ReservationCalendar, Review],
   synchronize: false,
 };

@@ -9,6 +9,7 @@ import {
   Logger,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common';
 import { json } from 'stream/consumers';
 import { CreateUsersInformationDto } from './dto/create-users.dto';
@@ -16,6 +17,7 @@ import { DeleteUsersInformationDto } from './dto/delete-users.dto';
 import { UpdateUsersInformationDto } from './dto/update-users.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('users')
 // routing path is /users -> http://localhost:3000/api
@@ -49,6 +51,22 @@ export class UsersController {
     // 해당 유저 정보를 어떤 내용으로 수정할까?
     console.log(id);
     this.logger.log(JSON.stringify(data));
+
+    return await this.usersService.updateUsersInformation(
+      id,
+      data.name,
+      data.phone,
+      data.email,
+      data.password,
+    );
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put()
+  async updateUser(@Req() req: any, @Body() data: UpdateUsersInformationDto) {
+    // 해당 유저 정보를 어떤 내용으로 수정할까?
+    this.logger.log(JSON.stringify(data));
+    const { id } = req.user;
 
     return await this.usersService.updateUsersInformation(
       id,
