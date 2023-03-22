@@ -18,7 +18,9 @@
             password: password.value,
           })
           .then((response) => {
-            localStorage.setItem('userId', response.data.userId);
+            const { accessToken, refreshToken } = response.data;
+            document.cookie = `accessToken=${accessToken}; path=/`;
+            document.cookie = `refreshToken=${refreshToken}; path=/`;
             window.location.href = '/';
           })
           .catch((error) => {

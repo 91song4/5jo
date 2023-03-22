@@ -16,6 +16,7 @@ export class createReviewsForeignkey1677698117174
       new TableColumn({
         name: 'orderId',
         type: 'bigint',
+        isUnique: true,
         unsigned: true,
         isNullable: false,
       }),

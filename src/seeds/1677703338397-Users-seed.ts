@@ -12,6 +12,7 @@ const seed = {
   email: 'admin@admin.com',
   phone: '010-0000-0000',
   birthday: '2023-03-02',
+  socialType: null,
 };
 
 export class UsersSeed1677703338397 implements MigrationInterface {

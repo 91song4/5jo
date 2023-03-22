@@ -12,7 +12,6 @@ const cookieExtracter = (req) => {
   if (req?.cookies) {
     jwt = req.cookies['accessToken'];
   }
-  console.log(jwt);
   return jwt;
 };
 @Injectable()

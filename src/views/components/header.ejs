@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
       <a class="navbar-brand" href="/">
-        <img src="/images/logo.png" alt="" />
+        <img alt="" />
         <span> 글래머와 캠핑 </span>
       </a>
       <button
@@ -47,6 +47,8 @@
   </div>
 </header>
 <script>
+  const img = document.querySelector('a.navbar-brand img');
+  img.src = `${BASIC_CDN}/logo.png`;
   // function mypage() {
   //   $.ajax({
   //     type: 'GET',
@@ -88,7 +90,6 @@
     axios
       .post('/api/auth/log-out')
       .then((response) => {
-        localStorage.clear();
         window.location.href = '/';
       })
       .catch((error) => console.log(error.message));
@@ -97,7 +98,6 @@
   const mypageBtn = document.querySelector('#mypage-btn');
 
   mypageBtn.addEventListener('click', () => {
-    const userId = localStorage.getItem('userId');
-    window.location.href = `/view/mypage/${userId}`;
+    window.location.href = `/view/mypage`;
   });
 </script>

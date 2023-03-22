@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
@@ -17,32 +18,39 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: any, res: any, next: (error?: any) => void) {
     const { accessToken, refreshToken } = req.cookies;
 
-    if (!refreshToken) {
-      throw new UnauthorizedException('Refresh Token이 존재하지 않습니다.');
-    }
     if (!accessToken) {
       throw new UnauthorizedException('Access Token이 존재하지 않습니다.');
     }
 
-    const isAccessTokenValidate = await this.validateToken(accessToken);
-    const isRefreshTokenValidate = await this.validateToken(refreshToken);
+    if (!refreshToken) {
+      await this.cacheManager.del(accessToken);
+      res.clearCookie('accessToken');
+      throw new UnauthorizedException('Refresh Token이 존재하지 않습니다.');
+    }
 
-    const accessTokenId = await this.cacheManager.get(refreshToken);
+    const getRedisData: { hashedRefreshToken: string; userId: string } =
+      await this.cacheManager.get(accessToken);
 
-    if (!accessTokenId) {
+    if (!getRedisData) {
       throw new UnauthorizedException(
         'Refresh Token의 정보가 서버에 존재하지 않습니다.',
       );
     }
 
-    if (!isRefreshTokenValidate) {
-      throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
-    }
+    // hashedRefreshToken,
+    // userId,
+
+    const isAccessTokenValidate = await this.validateToken(accessToken);
+    // const isRefreshTokenValidate = await this.validateToken(getRefreshToken);
+
+    // if (!hashedRefreshToken) {
+    //   throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
+    // }
 
     if (!isAccessTokenValidate) {
       try {
         const newAccessToken = await this.jwtService.signAsync({
-          id: accessTokenId,
+          id: getRedisData.userId,
         });
         res.cookie('accessToken', newAccessToken);
       } catch (error) {

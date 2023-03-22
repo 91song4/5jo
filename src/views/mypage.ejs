@@ -134,7 +134,7 @@
       const userId = localStorage.getItem('userId');
       try {
         axios
-          .put(`/api/users/${userId}`, {
+          .put(`/api/users`, {
             name: mypageName.value,
             phone: mypagePhone.value,
             email: mypageEmail.value,
@@ -142,7 +142,7 @@
           })
           .then((response) => {
             alert('유저정보 업데이트 완료');
-            window.location.href = `/view/mypage/${userId}`;
+            window.location.href = `/view/mypage`;
           })
           .catch((error) => alert(error.response.data.message));
       } catch (error) {
