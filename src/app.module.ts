@@ -65,10 +65,6 @@ import { UsersService } from './users/users.service';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-    }),
     AuthModule,
     CampModule,
     UsersModule,
