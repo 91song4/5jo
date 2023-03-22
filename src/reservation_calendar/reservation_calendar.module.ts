@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReservationCalendar } from './reservation_calendar.entity';
 import { ReservationCalendarController } from './reservation_calendar.controller';
 import { ReservationCalendarService } from './reservation_calendar.service';
-import { Camp } from 'src/camp/camp.entity';
+import { Camp } from '../camp/camp.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ReservationCalendar, Camp])],

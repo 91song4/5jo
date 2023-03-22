@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 // 엔티티
-import { Camp } from 'src/camp/camp.entity';
+import { Camp } from '../camp/camp.entity';
 import { ReservationCalendar } from './reservation_calendar.entity';
 
 // 캐시 매니저 ( redis )
