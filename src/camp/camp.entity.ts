@@ -1,5 +1,5 @@
-import { Order } from 'src/order/order.entity';
-import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
+import { Order } from '../order/order.entity';
+import { ReservationCalendar } from '../reservation_calendar/reservation_calendar.entity';
 import {
   Column,
   CreateDateColumn,
@@ -35,7 +35,7 @@ export class Camp {
   isRepair: boolean;
 
   @Column()
-  repairEndDate: Date | null;
+  repairEndDate: null | Date;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,4 +1,4 @@
-import { Camp } from 'src/camp/camp.entity';
+import { Camp } from '../camp/camp.entity';
 import {
   Entity,
   Column,
