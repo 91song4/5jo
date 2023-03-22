@@ -82,6 +82,10 @@ export class OrderService {
       userId: order.userId,
       ordercampId: order.ordercampId,
       CampName: order.CampName,
+      // 페이지네이션 구현 코드
+      // relations: ['category'],
+      skip: (page - 1) * 5,
+      take: 5,
     }));
   }
 
