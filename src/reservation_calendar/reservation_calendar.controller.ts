@@ -1,7 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { parseISO } from 'date-fns';
-import { CheckReservationDto } from './dto/check-reservation.dto';
 import { ReservationCalendarService } from './reservation_calendar.service';
 
 @ApiTags('Reservation')
