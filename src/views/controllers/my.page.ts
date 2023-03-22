@@ -12,12 +12,11 @@ export class MyPage {
     private readonly usersService: UsersService,
   ) {}
 
-  @Get('/mypage/:id')
+  @Get('/mypage')
   @UseGuards(AuthGuard('jwt'))
   @Render('index')
   async mypage(@Req() req: Request) {
     const userInfo = req.user;
-    console.log(userInfo);
     return { components: 'mypage', userInfo };
   }
 }

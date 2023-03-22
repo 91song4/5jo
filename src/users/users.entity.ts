@@ -1,5 +1,5 @@
-import { Admin } from 'src/admin/admin.entity';
-import { Order } from 'src/order/order.entity';
+import { Admin } from '../admin/admin.entity';
+import { Order } from '../order/order.entity';
 import {
   Column,
   CreateDateColumn,
@@ -18,11 +18,14 @@ export class User {
   readonly id: number;
 
   @Index({ unique: true })
-  @Column('varchar', { length: 10 })
+  @Column('varchar')
   readonly userId: string;
 
   @Column('varchar', { select: false })
   readonly password: string;
+
+  @Column('varchar', { nullable: true, default: null })
+  readonly socialType: string;
 
   @Index()
   @Column('varchar', { length: 10 })

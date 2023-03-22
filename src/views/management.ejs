@@ -22,29 +22,44 @@
       <%-include('./components/manager-menu') %>
 
       <div class="mid">
-        <% if(component==='main'){ %> <%-include('./components/manager-main') %>
-        <%} %> <% if(component==='camps'){ %>
-        <%-include('./components/manager-camp') %> <%} %> <%
-        if(component==='campRegister'){ %>
-        <%-include('./components/manager-camp-register') %> <%} %> <%
-        if(component==='camp'){ %>
-        <%-include('./components/manager-camp-detail') %> <%} %> <%
-        if(component==='campUpdateForm'){ %>
-        <%-include('./components/manager-camp-update') %> <%} %> <%
-        if(component==='coupon'){ %>
-        <%-include('./components/manager-coupon-detail') %> <%} %> <%
-        if(component==='couponUpdateForm'){ %>
-        <%-include('./components/manager-coupon-update') %> <%} %><%
-        if(component==='couponRegister'){ %>
+        <!-- 관리자 페이지 홈 -->
+        <% if(component==='main'){ %> <%-include('./components/manager-main')
+        %><%} %>
+        <!-- 캠프 관리 홈 -->
+        <% if(component==='camps'){ %> <%-include('./components/manager-camp')
+        %><%} %>
+        <!-- 캠프 등록 -->
+        <% if(component==='campRegister'){ %>
+        <%-include('./components/manager-camp-register') %> <%} %>
+        <!-- 캠프 상세 정보 -->
+        <% if(component==='camp'){ %>
+        <%-include('./components/manager-camp-detail') %> <%} %>
+        <!-- 캠프 업데이트 폼 -->
+        <% if(component==='campUpdateForm'){ %>
+        <%-include('./components/manager-camp-update') %> <%} %>
+        <!-- 쿠폰 상세 정보 -->
+        <% if(component==='coupon'){ %>
+        <%-include('./components/manager-coupon-detail') %> <%} %>
+        <!-- 쿠폰 업데이트 폼 -->
+        <% if(component==='couponUpdateForm'){ %>
+        <%-include('./components/manager-coupon-update') %> <%} %>
+        <!-- 쿠폰 등록 폼 -->
+        <% if(component==='couponRegister'){ %>
         <%-include('./components/manager-coupon-register') %> <%} %>
+        <!-- 유저 관리 홈 -->
         <%if(component==='users'){ %>
         <%-include('./components/manager-users')%><%} %>
+        <!-- 유저 상세 정보 -->
         <%if(component==='usersInfo'){ %>
         <%-include('./components/manager-usersInfo') %><%} %>
+        <!-- 유저 업데이트 폼 -->
         <%if(component==='usersUpdate'){ %>
-        <%-include('./components/manager-users-Update') %><%} %><%
-        if(component==='coupons'){ %> <%-include('./components/manager-coupon')
-        %> <%} %> <% if(component==='orderlist'){ %>
+        <%-include('./components/manager-users-Update') %><%} %>
+        <!-- 쿠폰즈? -->
+        <% if(component==='coupons'){ %>
+        <%-include('./components/manager-coupon') %> <%} %>
+        <!-- 주문 관리 홈 -->
+        <% if(component==='orderlist'){ %>
         <%-include('./components/manager-orderlist') %> <%} %>
       </div>
     </section>

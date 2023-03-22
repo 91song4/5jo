@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Camp } from 'src/camp/camp.entity';
+import { Camp } from '../camp/camp.entity';
 import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
-import { User } from 'src/users/users.entity';
+import { Review } from '../review/review.entity';
+import { User } from '../users/users.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +10,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -70,4 +72,7 @@ export class Order {
   })
   @JoinColumn({ name: 'campId' })
   camp: Camp;
+
+  @OneToOne(() => Review, (reviews) => reviews.orders)
+  reviews: Review;
 }

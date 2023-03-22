@@ -1,5 +1,6 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Param, Render, Req, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('view')
 export class HomePage {
@@ -10,10 +11,17 @@ export class HomePage {
   //   return { components: 'home' };
   // }
 
-  @Get('/reserve')
+  // @Get('/reserve')
+  @Get('/reserve/:day')
   @Render('index')
-  async reserve() {
-    return { components: 'reserve' };
+  // async reserve() {
+  async reserve(@Param('day') day: string) {
+    // TODO - 1911-1-56 같은 걸로 못들어오게 예외처리
+    return {
+      components: 'reserve',
+      socketReserve: this.configService.get('SOCKET_NAMESPACE_RESERVE'),
+      day,
+    };
   }
 
   @Get('/rooms')
@@ -35,10 +43,12 @@ export class HomePage {
   }
 
   @Get('/chatting')
+  @UseGuards(AuthGuard('jwt'))
   @Render('index')
-  async chatting() {
+  async chatting(@Req() req) {
     return {
       components: 'chatting',
+      userId: req.user.id,
       socketChat: this.configService.get('SOCKET_NAMESPACE_CHAT'),
     };
   }
