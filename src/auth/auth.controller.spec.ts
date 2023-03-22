@@ -44,6 +44,9 @@ describe('AuthController', () => {
       expect(result).toEqual({
         id: expect.any(number),
       });
+
+      expect(mockAuthService.createUser).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
     });
   });
 });
