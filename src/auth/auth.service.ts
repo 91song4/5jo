@@ -220,11 +220,6 @@ export class AuthService {
     return userData;
   }
 
-  // async sendSMS() {
-  //   await this.cacheManager.set('01012341234', 123123);
-  //   return 123123;
-  // }
-
   async sendSMS(phone: string) {
     const certificationNumber = await this.smsService.sendSMS(phone);
     await this.cacheManager.set(phone, certificationNumber);

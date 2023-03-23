@@ -30,6 +30,7 @@ import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // test OK
   // 유저 선택해서 가져오기
   @Get('/user')
   async getUserSelect(
@@ -55,12 +56,6 @@ export class AuthController {
   async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
-
-  // 테스트용
-  // @Post('/phone')
-  // async sendSMS() {
-  //   return await this.authService.sendSMS();
-  // }
 
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
   @Post('/phone')
@@ -130,6 +125,7 @@ export class AuthController {
     res.send({ message: '로그아웃 성공' });
   }
 
+  // test OK
   // 회원가입
   @Post('/sign-up')
   async createUser(@Body() userDto: CreateUserDto) {
