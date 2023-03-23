@@ -39,6 +39,7 @@ export class AuthController {
     return this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
+  // test OK
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
   async isExist(@Param('userId') userId: string) {

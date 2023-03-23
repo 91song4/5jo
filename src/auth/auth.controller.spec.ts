@@ -66,6 +66,32 @@ describe('AuthController', () => {
     });
   });
 
+  describe('isExist', () => {
+    it('정상작동', async () => {
+      // Given
+      const isExistParams = 'admin';
+
+      const getUserSelectReturnValue = {
+        userId: 'admin',
+      };
+
+      mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
+
+      // When
+      const expected = await authController.isExist(isExistParams);
+
+      // Then
+      expect(expected).toEqual(getUserSelectReturnValue);
+      expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
+        { userId: isExistParams },
+        ['userId'],
+      );
+    });
+
+    // it('잘못된 id 전달', () => {});
+  });
+
   describe('createUser()', () => {
     it('회원가입', async () => {
       // Given
@@ -101,5 +127,11 @@ describe('AuthController', () => {
       // service.createUser 인수 전달 제대로 했는지
       expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
     });
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
+    // jest.resetAllMocks();
+    // jest.restoreAllMocks();
   });
 });
