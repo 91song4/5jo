@@ -10,8 +10,9 @@ import { AuthService } from './auth.service';
 const cookieExtracter = (req) => {
   let jwt = null;
   if (req?.cookies) {
-    jwt = req.cookies['accessToken'];
+    jwt = req.cookies?.['accessToken'];
   }
+
   return jwt;
 };
 @Injectable()
