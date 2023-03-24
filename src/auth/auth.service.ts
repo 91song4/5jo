@@ -9,8 +9,8 @@ import {
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
