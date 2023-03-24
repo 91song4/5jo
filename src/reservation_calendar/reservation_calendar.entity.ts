@@ -15,10 +15,13 @@ export class ReservationCalendar {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: 0 })
+  campId: number;
+
   @Column()
   reservedDate: Date;
 
-  @Column({ default: false })
+  @Column({ default: true })
   isReserved: boolean;
 
   @CreateDateColumn()
@@ -32,6 +35,7 @@ export class ReservationCalendar {
 
   @ManyToOne(() => Camp, (camp) => camp.reservationCalendar, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'campId' })
   camp: Camp;

@@ -12,7 +12,7 @@ import { ReservationCalendar } from './reservation_calendar.entity';
 
 // 캐시 매니저 ( redis )
 import { Cache } from 'cache-manager';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 @Injectable()
 export class ReservationCalendarService {
@@ -21,6 +21,19 @@ export class ReservationCalendarService {
     private readonly reservationCalendarRepository: Repository<ReservationCalendar>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
+
+  // reservationCalendar 값 추가 ( POST )
+  async createReserve(
+    campId: number,
+    reservedDate: string,
+    isReserve: boolean,
+  ) {
+    const reserve = await this.reservationCalendarRepository.insert([
+      { camp: { id: campId }, reservedDate, isReserved: isReserve },
+    ]);
+
+    return reserve;
+  }
 
   // 해당 날짜의 예약 캘린더를 가져옴
   async getReservationCalendar(date: Date) {
@@ -89,10 +102,12 @@ export class ReservationCalendarService {
 
   // 해당 날짜에 예약 가능한 캠프장을 가져오는 함수
   async getAvailableCamps(date: Date) {
+    // moment로 한국시간 가져오기
+    const koreanDate = moment(date).tz('Asia/Seoul').format('YYYY-MM-DD');
     // 예약 캘린더를 가져오고 매개변수로 받은 날짜를 Date 객체로 변환하여 전달
-    console.log('매개변수로 받은 날짜 : ', date);
+    console.log('매개변수로 받은 날짜 : ', koreanDate);
     const reservationCalendar = await this.getReservationCalendar(
-      new Date(date),
+      new Date(koreanDate),
     );
     console.log('reservationCalendar : ', reservationCalendar);
     if (!reservationCalendar) {
@@ -110,12 +125,16 @@ export class ReservationCalendarService {
   async getExistingReservations(date: Date) {
     // 예약 날짜가 인자로 받은 날짜와 같은 예약 수를 찾아서 리턴
     const reservationCount = await this.reservationCalendarRepository.count({
-      where: { reservedDate: date },
+      where: {
+        reservedDate: new Date(
+          moment(date).tz('Asia/Seoul').format('YYYY-MM-DD'),
+        ),
+      },
     });
     return reservationCount;
   }
 
-  // isDateAvailable를 그대로 사용하면서, 추가된 if문 ( 선택한 날이 오늘을 기준으로 이미 지나간 날짜라면? )
+  // 선택한 날이 오늘을 기준으로 이미 지나간 날짜라면?
   async checkAvailability(date: Date) {
     // moment 라이브러리 문법
     const isPastDate = moment(date).isBefore(moment().format('YYYY-MM-DD'));
@@ -126,14 +145,14 @@ export class ReservationCalendarService {
     // 만약 선택한 날이 이미 지난 날짜라면
     if (isPastDate) {
       throw new BadRequestException(
-        '이미 지난 날을 예약할 수 없습니다. 다시 선택해주십시오.',
+        '이미 지난 예약일입니다. 다시 선택해주십시오.',
       );
     }
 
     // 만약 오늘로부터 6개월을 초과해서 예약을 시도할 경우
     if (isMoreThan6Months) {
       throw new BadRequestException(
-        '최대 예약일은 현재일로부터 6개월 뒤 까지입니다. 다시 선택해주십시오.',
+        '최대 예약일은 현재로부터 6개월입니다. 다시 선택해주십시오.',
       );
     }
     const isAvailable = await this.isReservationPossible(date);
