@@ -38,14 +38,6 @@ describe('AuthController', () => {
         name: '최고 관리자',
       };
 
-      // mockAuthService.getUserSelect = jest.fn(() => {
-      //   return getUserSelectReturnValue;
-      // });
-
-      // jest
-      //   .spyOn(mockAuthService, 'getUserSelect')
-      //   .mockResolvedValue(getUserSelectReturnValue);
-
       mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
 
       // When
@@ -105,10 +97,6 @@ describe('AuthController', () => {
       };
 
       mockAuthService.createUser.mockResolvedValue({ id: expect.any(number) });
-
-      // mockAuthService.createUser = jest.fn((createUserDto: CreateUserDto) => {
-      //   return { id: expect.any(number) };
-      // });
 
       // When
       const createUserReturnValue = await authController.createUser(

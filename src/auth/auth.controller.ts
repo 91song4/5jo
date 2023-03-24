@@ -36,7 +36,7 @@ export class AuthController {
   async getUserSelect(
     @Query() { whereColumns, selectColumns }: GetUserSelectDto,
   ) {
-    return this.authService.getUserSelect(whereColumns, selectColumns);
+    return await this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
   // test OK
@@ -83,6 +83,17 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // UnauthorizedException 걸리면 redis 삭제
+  @Delete('/redis')
+  deleteRefreshToken(@Req() req: Request) {
+    const { accessToken, refreshToken } = req.cookies;
+    if (accessToken) {
+      this.authService.deleteRefreshToken(accessToken);
+    } else if (refreshToken) {
+      this.authService.deleteRefreshToken(refreshToken);
+    }
+  }
+
   // 구글 로그인
   @Get('/login/google')
   @UseGuards(AuthGuard('google'))
@@ -102,23 +113,30 @@ export class AuthController {
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(@Body() loginUserDto: LoginUserDto, @Req() req: Request) {
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     const userData: any = req.user;
-    const { accessToken, hashedRefreshToken } = await this.authService.login(
+    const { accessToken, refreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    return {
-      accessToken,
-      refreshToken: hashedRefreshToken,
-    };
+    req.user;
+    res.cookie('accessToken', accessToken, { httpOnly: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true });
+    res.send({ message: '로그인 성공' });
   }
 
   // 로그아웃
+  // @UseGuards(AuthGuard('jwt'))
   @Post('/log-out')
   async logout(@Req() req: Request, @Res() res: Response) {
-    await this.authService.logout(req.cookies);
+    // const { id }: any = req.user;
+    const id: any = req.user;
+    await this.authService.logout(id);
 
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');

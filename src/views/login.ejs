@@ -18,9 +18,7 @@
             password: password.value,
           })
           .then((response) => {
-            const { accessToken, refreshToken } = response.data;
-            document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
-            document.cookie = `refreshToken=${refreshToken}; path=/; HttpOnly`;
+            localStorage.setItem('isLogin', true);
             window.location.href = '/';
           })
           .catch((error) => {
