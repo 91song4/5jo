@@ -31,7 +31,8 @@
     "seed:generate": "npm run typeorm migration:generate ./src/seeds/$npm_config_name",
     "seed:run": "npm run typeorm:seed migration:run",
     "seed:revert": "npm run typeorm:seed migration:revert",
-    "seed:show": "npm run typeorm:seed migration:show"
+    "seed:show": "npm run typeorm:seed migration:show",
+    "redis": "node -r dotenv/config -e 'require(\"child_process\").execSync(process.env.SONG, { stdio: \"inherit\" })'"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.4",
@@ -63,6 +64,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "nestjs-twilio": "^4.1.1",
+    "node-mocks-http": "^1.12.2",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
@@ -122,7 +124,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "src/(.*)": "<rootDir>/src/$1"
+      "^src/(.*)": "<rootDir>/$1"
     }
   }
 }
