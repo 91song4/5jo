@@ -3,7 +3,6 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request, { agent } from 'supertest';
 import { AppModule } from './../src/app.module';
 import cookieParser from 'cookie-parser';
-import { access } from 'fs';
 
 describe('CampController (e2e)', () => {
   let app: INestApplication;
