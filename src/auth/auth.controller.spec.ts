@@ -23,6 +23,7 @@ describe('AuthController', () => {
     deleteRefreshToken: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
+    deleteUser: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -344,6 +345,35 @@ describe('AuthController', () => {
 
       // service.createUser 인수 전달 제대로 했는지
       expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
+    });
+  });
+
+  describe('deleteUser()', () => {
+    it('in nomal operation', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
+
+      res.clearCookie = jest.fn();
+      res.send = jest.fn();
+
+      // When
+      await authController.deleteUser(req, res);
+
+      // Then
+      expect(mockAuthService.deleteUser).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.deleteUser).toHaveBeenCalledWith(req.cookies);
+
+      expect(res.clearCookie).toHaveBeenCalledTimes(2);
+      expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
+      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+
+      expect(res.send).toHaveBeenCalledWith({ message: '회원탈퇴 완료' });
     });
   });
 
