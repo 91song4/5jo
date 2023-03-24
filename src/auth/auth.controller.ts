@@ -46,18 +46,21 @@ export class AuthController {
     return this.authService.getUserSelect({ userId }, ['userId']);
   }
 
+  // test OK
   // 아이디 찾기
   @Post('/lost/id')
   async findUserId(@Body() findUserIdDto: FindUserIdDto) {
     return await this.authService.getUserSelect(findUserIdDto, ['userId']);
   }
 
+  // test OK
   // 비밀번호 찾기
   @Post('/lost/password')
   async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
 
+  // test OK
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
   @Post('/phone')
   async sendSMS(@Body() { phone }: SendSMSDto) {
@@ -65,15 +68,17 @@ export class AuthController {
     return { message: '인증번호를 발송하였습니다.' };
   }
 
+  // test OK
   // 비멀번호 찾기 - 인증번호 체크
   @Post('/phone/:certificationNumber')
   async certification(
     @Param('certificationNumber') certificationNumber: number,
     @Body() { phone }: SendSMSDto,
   ) {
-    return this.authService.certification({ certificationNumber, phone });
+    return await this.authService.certification({ certificationNumber, phone });
   }
 
+  // test OK
   // 비밀번호 재설정
   @Patch('/reset/password/:userId')
   async resetPassword(
