@@ -9,7 +9,6 @@ import { GetUserSelectDto } from './dtos/get-user-select.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import * as mocks from 'node-mocks-http';
-import { LoginUserDto } from './dtos/login-user.dto';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -23,6 +22,7 @@ describe('AuthController', () => {
     resetPassword: jest.fn(),
     deleteRefreshToken: jest.fn(),
     login: jest.fn(),
+    logout: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -285,6 +285,32 @@ describe('AuthController', () => {
         { httpOnly: true },
       );
       expect(res.send).toHaveBeenCalledWith({ message: '로그인 성공' });
+    });
+  });
+
+  describe('logout()', () => {
+    it('in nomal operation', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+      req.user = 1;
+      const id = req.user;
+
+      res.clearCookie = jest.fn();
+      res.send = jest.fn();
+
+      // When
+      await authController.logout(req, res);
+
+      // Then
+      expect(mockAuthService.logout).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.logout).toHaveBeenCalledWith(id);
+
+      expect(res.clearCookie).toHaveBeenCalledTimes(2);
+      expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
+      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+
+      expect(res.send).toHaveBeenCalledWith({ message: '로그아웃 성공' });
     });
   });
 

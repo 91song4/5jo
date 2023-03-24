@@ -112,8 +112,8 @@ export class AuthController {
     this.authService.createSocialUser(createSocialUserDto);
   }
 
+  // test OK
   // 로그인
-
   // @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(@Req() req: Request, @Res() res: Response) {
@@ -128,12 +128,14 @@ export class AuthController {
     res.send({ message: '로그인 성공' });
   }
 
+  // test OK
   // 로그아웃
   // @UseGuards(AuthGuard('jwt'))
   @Post('/log-out')
   async logout(@Req() req: Request, @Res() res: Response) {
     // const { id }: any = req.user;
     const id: any = req.user;
+    console.log(id, typeof id);
     await this.authService.logout(id);
 
     res.clearCookie('accessToken');
