@@ -28,7 +28,7 @@ export class ReservationCalendarController {
     const parsedDate = new Date(date);
     await this.reservationCalendarService.checkAvailability(parsedDate);
     const availableCamps =
-      await this.reservationCalendarService.getAvailableCamps(parsedDate);
+      await this.reservationCalendarService.isReservationPossible(parsedDate);
     return { availableCamps };
   }
 }

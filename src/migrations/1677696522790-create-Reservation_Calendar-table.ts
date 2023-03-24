@@ -18,7 +18,7 @@ export class createReservationCalendarTable1677696522790
           },
           {
             name: 'reservedDate',
-            type: 'date',
+            type: 'datetime',
             isNullable: false,
           },
           {
