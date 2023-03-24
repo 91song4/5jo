@@ -20,6 +20,7 @@ describe('AuthController', () => {
     sendSMS: jest.fn(),
     certification: jest.fn(),
     resetPassword: jest.fn(),
+    deleteRefreshToken: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -240,7 +241,12 @@ describe('AuthController', () => {
       };
 
       // When
+      authController.deleteRefreshToken(req);
+
       // Then
+      expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledWith(
+        req.cookies.accessToken,
+      );
     });
   });
 

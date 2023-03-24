@@ -91,12 +91,9 @@ export class AuthController {
   // UnauthorizedException 걸리면 redis 삭제
   @Delete('/redis')
   deleteRefreshToken(@Req() req: Request) {
-    const { accessToken, refreshToken } = req.cookies;
-    if (accessToken) {
-      this.authService.deleteRefreshToken(accessToken);
-    } else if (refreshToken) {
-      this.authService.deleteRefreshToken(refreshToken);
-    }
+    const { accessToken } = req.cookies;
+    console.log({ accessToken });
+    this.authService.deleteRefreshToken(accessToken);
   }
 
   // 구글 로그인
