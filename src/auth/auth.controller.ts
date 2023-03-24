@@ -88,11 +88,11 @@ export class AuthController {
     return await this.authService.resetPassword(userId, password);
   }
 
+  // test OK
   // UnauthorizedException 걸리면 redis 삭제
   @Delete('/redis')
   deleteRefreshToken(@Req() req: Request) {
     const { accessToken } = req.cookies;
-    console.log({ accessToken });
     this.authService.deleteRefreshToken(accessToken);
   }
 
@@ -113,20 +113,16 @@ export class AuthController {
   }
 
   // 로그인
-  @UseGuards(LocalAuthenticationGuard)
+
+  // @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(
-    @Body() loginUserDto: LoginUserDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async login(@Req() req: Request, @Res() res: Response) {
     const userData: any = req.user;
     const { accessToken, refreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    req.user;
     res.cookie('accessToken', accessToken, { httpOnly: true });
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
     res.send({ message: '로그인 성공' });

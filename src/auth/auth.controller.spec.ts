@@ -9,6 +9,7 @@ import { GetUserSelectDto } from './dtos/get-user-select.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import * as mocks from 'node-mocks-http';
+import { LoginUserDto } from './dtos/login-user.dto';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -21,6 +22,7 @@ describe('AuthController', () => {
     certification: jest.fn(),
     resetPassword: jest.fn(),
     deleteRefreshToken: jest.fn(),
+    login: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -237,16 +239,52 @@ describe('AuthController', () => {
       const req = mocks.createRequest();
       req.cookies = {
         accessToken: 'accesToken',
-        refreshToken: 'refreshToken',
       };
-
       // When
       authController.deleteRefreshToken(req);
-
       // Then
       expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledWith(
         req.cookies.accessToken,
       );
+    });
+  });
+
+  describe('login()', () => {
+    it('in nomal operation', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = { id: 'admin', password: '1234' };
+
+      res.cookie = jest.fn();
+      res.send = jest.fn();
+
+      const loginReturnValue = {
+        accessToken: 'newAccesToken',
+        refreshToken: 'newRefreshToken',
+      };
+
+      mockAuthService.login.mockResolvedValue(loginReturnValue);
+
+      // When
+      await authController.login(req, res);
+      // Then
+      expect(mockAuthService.login).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.login).toHaveBeenCalledWith(req.user, req.cookies);
+
+      expect(res.cookie).toHaveBeenCalledTimes(2);
+      expect(res.cookie).toHaveBeenCalledWith(
+        'accessToken',
+        loginReturnValue.accessToken,
+        { httpOnly: true },
+      );
+      expect(res.cookie).toHaveBeenCalledWith(
+        'refreshToken',
+        loginReturnValue.refreshToken,
+        { httpOnly: true },
+      );
+      expect(res.send).toHaveBeenCalledWith({ message: '로그인 성공' });
     });
   });
 
