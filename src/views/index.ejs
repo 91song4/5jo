@@ -13,9 +13,6 @@
         <%if(components === 'home'){ %> <%-include('home')%> <%}%>
         <!-- 회원가입 -->
         <%if(components === 'signup'){ %> <%-include('sign-up') %> <%} %>
-        <!-- 구글 회원가입 -->
-        <%if(components === 'socialsignup'){ %> <%-include('social-sign-up') %>
-        <%} %>
         <!-- 로그인 -->
         <%if(components === 'login' ){ %> <%-include('login') %> <%} %>
         <!-- 아이디 찾기 -->
@@ -28,6 +25,9 @@
         <%}%>
         <!-- 문의사항 -->
         <%if(components ==='inquiry'){%> <%-include('inquiry')%> <%}%>
+        <!-- 예약(캘린더) -->
+        <%if(components ==='reservationCalendar'){%>
+        <%-include('reservation-calendar')%> <%}%>
         <!-- 예약 -->
         <%if(components ==='reserve'){%> <%-include('reserve')%> <%}%>
         <!-- 캠핑장 정보 -->
@@ -40,10 +40,6 @@
         <%if(components ==='mypage'){%> <%-include('mypage')%><%}%>
         <!-- 관리자 메인 -->
         <% if(components === 'main'){ %> <%-include('main') %> <%} %>
-        <!-- 개인정보처리방침 -->
-        <% if(components === 'pipp'){ %> <%-include('pipp') %> <%} %>
-        <!-- 서비스약관 -->
-        <% if(components === 'tos'){ %> <%-include('tos') %> <%} %>
       </section>
       <!-- end hero section -->
     </div>
