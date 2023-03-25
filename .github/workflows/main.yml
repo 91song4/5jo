@@ -15,6 +15,7 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           TEST_SONG: ${{ secrets.TEST_SSONG }}
+          TEST_SONG2: ${{ secrets.TEST_SSONG2 }}
           
         with:
           host: ${{ secrets.HOST }}
@@ -24,6 +25,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: 
             TEST_SONG
+            TEST_SONG2
             
           script: |
             # DB 정보
@@ -65,6 +67,7 @@ jobs:
             
             # TEST
             export TEST_SONG=$TEST_SONG
+            export TEST_SONG2=$TEST_SONG2
             
             cd 5jo
             pm2 stop main
