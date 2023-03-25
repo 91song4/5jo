@@ -26,11 +26,11 @@ jobs:
             
           script: |
             # DB 정보
-            export DATABASE_PORT=$DATABASE_PORT
-            export DATABASE_HOST=$DATABASE_HOST
-            export DATABASE_NAME=$DATABASE_NAME
-            export DATABASE_USERNAME=$DATABASE_USERNAME
-            export DATABASE_PASSWORD=$DATABASE_PASSWORD
+            # export DATABASE_PORT=$DATABASE_PORT
+            # export DATABASE_HOST=$DATABASE_HOST
+            # export DATABASE_NAME=$DATABASE_NAME
+            # export DATABASE_USERNAME=$DATABASE_USERNAME
+            # export DATABASE_PASSWORD=$DATABASE_PASSWORD
             
             # 관리자 정보
             # export ADMIN_PASSWORD=$ADMIN_PASSWORD
