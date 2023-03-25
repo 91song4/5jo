@@ -15,6 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: if_push
+      if: github.event.push
+      run: |
+        echo PUSH
+
+      - name: if_pr
+      if: github.event.pull_request
+      run: |
+        echo PULL_REQUEST
+
       - name: Run scripts in server
         uses: appleboy/ssh-action@master
         env:
