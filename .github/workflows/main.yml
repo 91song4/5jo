@@ -3,10 +3,11 @@ name: IF-EVENT
 on:
   pull_request:
     branches: forTest-main
-  push:
+  pull_request:
     branches: forTest-main
-  merge:
-    branches: forTest-main
+    types:
+      - closed
+
 
 jobs:
   AUTO_DEPLOY:
@@ -14,9 +15,9 @@ jobs:
 
     steps:
       - name: if_push
-        if: github.event.push
+        if: github.event.pull_request.types === 'clsed'
         run: |
-          echo PUSH!
+          echo PULL_REQUEST CLOSED!
 
       - name: if_pr
         if: github.event.pull_request
