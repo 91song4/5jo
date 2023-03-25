@@ -24,7 +24,44 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: TEST_SONG
             
-          script: |            
+          script: |
+            # DB 정보
+            export DATABASE_PORT=$DATABASE_PORT
+            export DATABASE_HOST=$DATABASE_HOST
+            export DATABASE_NAME=$DATABASE_NAME
+            export DATABASE_USERNAME=$DATABASE_USERNAME
+            export DATABASE_PASSWORD=$DATABASE_PASSWORD
+            
+            # 관리자 정보
+            # export ADMIN_PASSWORD=$ADMIN_PASSWORD
+            
+            # JWT 정보
+            # export HASH_SALT_OR_ROUND=$HASH_SALT_OR_ROUND
+            # export JWT_SECRET=$JWT_SECRET
+            
+            # REDIS 정보
+            # export REFRESHTOKEN_HOST=$REFRESHTOKEN_HOST
+            # export REFRESHTOKEN_PORT=$REFRESHTOKEN_PORT
+            # export REFRESHTOKEN_EXP=$REFRESHTOKEN_EXP
+            # export REFRESHTOKEN_PASSWORD=$REFRESHTOKEN_PASSWORD
+            
+            # DOMAIN 정보
+            # export BASIC_ORIGIN=$BASIC_ORIGIN
+            # export BASIC_CDN=$BASIC_CDN
+            
+            # SOCKET 정보
+            # export SOCKET_NAMESPACE_CHAT=$SOCKET_NAMESPACE_CHAT
+            # export SOCKET_NAMESPACE_RESERVE=$SOCKET_NAMESPACE_RESERVE
+            
+            # 소셜 로그인 정보
+            # export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            # export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+            # export GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL
+            
+            # Twilio 정보
+            # export TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
+            # export TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
+            
             # TEST
             export TEST_SONG=$TEST_SONG
             
