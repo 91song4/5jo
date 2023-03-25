@@ -35,6 +35,7 @@ jobs:
           GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TEST_SONG: ${{ secrets.TEST_SONG }}
           
         with:
           host: ${{ secrets.HOST }}
@@ -64,14 +65,15 @@ jobs:
             GOOGLE_CALLBACK_URL
             TWILIO_ACCOUNT_SID
             TWILIO_AUTH_TOKEN
+            TEST_SONG
             
           script: |
             # DB 정보
-            export DATABASE_PORT=$DATABASE_PORT
-            export DATABASE_HOST=$DATABASE_HOST
-            export DATABASE_NAME=$DATABASE_NAME
-            export DATABASE_USERNAME=$DATABASE_USERNAME
-            export DATABASE_PASSWORD=$DATABASE_PASSWORD
+            # export DATABASE_PORT=$DATABASE_PORT
+            # export DATABASE_HOST=$DATABASE_HOST
+            # export DATABASE_NAME=$DATABASE_NAME
+            # export DATABASE_USERNAME=$DATABASE_USERNAME
+            # export DATABASE_PASSWORD=$DATABASE_PASSWORD
             
             # 관리자 정보
             # export ADMIN_PASSWORD=$ADMIN_PASSWORD
@@ -103,7 +105,12 @@ jobs:
             # export TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
             # export TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
             
+            # TEST
+            export TEST_SONG=$TEST_SONG
+            
             cd 5jo
             git switch forTest
-            git pull origin forTest
-            npm run deploy
+            pm2 stop main
+            npm run build
+            pm2 start dist/main.js
+            
