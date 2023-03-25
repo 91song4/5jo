@@ -1,8 +1,10 @@
 name: glamping-CICD-test
 
 on:
-  pull_request:
-    branches: main
+  push:
+    branches: forTest
+  # pull_request:
+  #   branches: main
 
 jobs:
   AUTO_DEPLOY:
