@@ -14,7 +14,7 @@ jobs:
       - name: Run scripts in server
         uses: appleboy/ssh-action@master
         env:
-          TEST_SONG: ${{ secrets.TEST_SONG }}
+          TEST_SONG: ${{ secrets.TEST_SSONG }}
           
         with:
           host: ${{ secrets.HOST }}
@@ -27,10 +27,9 @@ jobs:
           script: |            
             # TEST
             export TEST_SONG=$TEST_SONG
-            
             cd 5jo
-            git branch
             pm2 stop main
+            pm2 kill
             npm run build
             pm2 start dist/main.js
             
