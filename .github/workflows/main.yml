@@ -64,9 +64,7 @@ jobs:
             GOOGLE_CLIENT_SECRET,
             GOOGLE_CALLBACK_URL,
             TWILIO_ACCOUNT_SID,
-            TWILIO_AUTH_TOKEN,
-            TEST_SONG,
-            TEST_SONG2
+            TWILIO_AUTH_TOKEN
 
           script: |
             # DB 정보
