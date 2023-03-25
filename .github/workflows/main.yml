@@ -22,8 +22,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSH_KEY }}
-          envs: 
-            TEST_SONG
+          envs: TEST_SONG
             
           script: |            
             # TEST
