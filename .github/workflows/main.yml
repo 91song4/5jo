@@ -1,8 +1,10 @@
 name: glamping-CICD-test
 
 on:
+  pull_request:
+    branches: forTest-main
   push:
-    branches: forTest
+    branches: forTest-main
   # pull_request:
   #   branches: main
 
