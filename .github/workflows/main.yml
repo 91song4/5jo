@@ -5,6 +5,8 @@ on:
     branches: forTest-main
   push:
     branches: forTest-main
+  merge:
+    branches: forTest-main
 
 jobs:
   AUTO_DEPLOY:
