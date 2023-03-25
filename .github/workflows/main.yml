@@ -27,6 +27,7 @@ jobs:
           script: |            
             # TEST
             export TEST_SONG=$TEST_SONG
+            
             cd 5jo
             pm2 stop main
             pm2 kill
