@@ -43,49 +43,49 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSH_KEY }}
           envs: 
-            DATABASE_PORT,
-            DATABASE_HOST,
-            DATABASE_NAME,
-            DATABASE_USERNAME,
-            DATABASE_PASSWORD,
-            ADMIN_PASSWORD,
-            HASH_SALT_OR_ROUND,
-            JWT_SECRET,
-            REFRESHTOKEN_HOST,
-            REFRESHTOKEN_PORT,
-            REFRESHTOKEN_EXP,
-            REFRESHTOKEN_PASSWORD,
-            BASIC_ORIGIN,
-            BASIC_CDN,
-            SOCKET_NAMESPACE_CHAT,
-            SOCKET_NAMESPACE_RESERVE,
-            GOOGLE_CLIENT_ID,
-            GOOGLE_CLIENT_SECRET,
-            GOOGLE_CALLBACK_URL,
-            TWILIO_ACCOUNT_SID,
+            DATABASE_PORT
+            DATABASE_HOST
+            DATABASE_NAME
+            DATABASE_USERNAME
+            DATABASE_PASSWORD
+            ADMIN_PASSWORD
+            HASH_SALT_OR_ROUND
+            JWT_SECRET
+            REFRESHTOKEN_HOST
+            REFRESHTOKEN_PORT
+            REFRESHTOKEN_EXP
+            REFRESHTOKEN_PASSWORD
+            BASIC_ORIGIN
+            BASIC_CDN
+            SOCKET_NAMESPACE_CHAT
+            SOCKET_NAMESPACE_RESERVE
+            GOOGLE_CLIENT_ID
+            GOOGLE_CLIENT_SECRET
+            GOOGLE_CALLBACK_URL
+            TWILIO_ACCOUNT_SID
             TWILIO_AUTH_TOKEN
             
           script: |
-            export DATABASE_PORT=$DATABASE_PORT,
-            export DATABASE_HOST=$DATABASE_HOST,
-            export DATABASE_NAME=$DATABASE_NAME,
-            export DATABASE_USERNAME=$DATABASE_USERNAME,
-            export DATABASE_PASSWORD=$DATABASE_PASSWORD,
-            export ADMIN_PASSWORD=$ADMIN_PASSWORD,
-            export HASH_SALT_OR_ROUND=$HASH_SALT_OR_ROUND,
-            export JWT_SECRET=$JWT_SECRET,
-            export REFRESHTOKEN_HOST=$REFRESHTOKEN_HOST,
-            export REFRESHTOKEN_PORT=$REFRESHTOKEN_PORT,
-            export REFRESHTOKEN_EXP=$REFRESHTOKEN_EXP,
-            export REFRESHTOKEN_PASSWORD=$REFRESHTOKEN_PASSWORD,
-            export BASIC_ORIGIN=$BASIC_ORIGIN,
-            export BASIC_CDN=$BASIC_CDN,
-            export SOCKET_NAMESPACE_CHAT=$SOCKET_NAMESPACE_CHAT,
-            export SOCKET_NAMESPACE_RESERVE=$SOCKET_NAMESPACE_RESERVE,
-            export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID,
-            export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET,
-            export GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL,
-            export TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID,
+            export DATABASE_PORT=$DATABASE_PORT
+            export DATABASE_HOST=$DATABASE_HOST
+            export DATABASE_NAME=$DATABASE_NAME
+            export DATABASE_USERNAME=$DATABASE_USERNAME
+            export DATABASE_PASSWORD=$DATABASE_PASSWORD
+            export ADMIN_PASSWORD=$ADMIN_PASSWORD
+            export HASH_SALT_OR_ROUND=$HASH_SALT_OR_ROUND
+            export JWT_SECRET=$JWT_SECRET
+            export REFRESHTOKEN_HOST=$REFRESHTOKEN_HOST
+            export REFRESHTOKEN_PORT=$REFRESHTOKEN_PORT
+            export REFRESHTOKEN_EXP=$REFRESHTOKEN_EXP
+            export REFRESHTOKEN_PASSWORD=$REFRESHTOKEN_PASSWORD
+            export BASIC_ORIGIN=$BASIC_ORIGIN
+            export BASIC_CDN=$BASIC_CDN
+            export SOCKET_NAMESPACE_CHAT=$SOCKET_NAMESPACE_CHAT
+            export SOCKET_NAMESPACE_RESERVE=$SOCKET_NAMESPACE_RESERVE
+            export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+            export GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL
+            export TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
             export TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
             
             cd 5jo
