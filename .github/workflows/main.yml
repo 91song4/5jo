@@ -1,8 +1,8 @@
 name: glamping-CICD-test
 
 on:
-  push:
-    branches: forTest
+  pull_request:
+    branches: main
 
 jobs:
   AUTO_DEPLOY:
@@ -114,7 +114,7 @@ jobs:
             export TEST_SONG2=$TEST_SONG2
             
             cd 5jo
-            git branch
+            npm ci
+            npm run build --if-present
             npm run test
-            touch isComming
             
