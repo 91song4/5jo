@@ -16,6 +16,11 @@ jobs:
         env:
           TEST_SONG: ${{ secrets.TEST_SSONG }}
           TEST_SONG2: ${{ secrets.TEST_SSONG2 }}
+          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           
         with:
           host: ${{ secrets.HOST }}
@@ -24,16 +29,22 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSH_KEY }}
           envs: 
+            DATABASE_PORT,
+            DATABASE_HOST,
+            DATABASE_NAME,
+            DATABASE_USERNAME,
+            DATABASE_PASSWORD,
             TEST_SONG,
             TEST_SONG2
             
+            
           script: |
             # DB 정보
-            # export DATABASE_PORT=$DATABASE_PORT
-            # export DATABASE_HOST=$DATABASE_HOST
-            # export DATABASE_NAME=$DATABASE_NAME
-            # export DATABASE_USERNAME=$DATABASE_USERNAME
-            # export DATABASE_PASSWORD=$DATABASE_PASSWORD
+            export DATABASE_PORT=$DATABASE_PORT
+            export DATABASE_HOST=$DATABASE_HOST
+            export DATABASE_NAME=$DATABASE_NAME
+            export DATABASE_USERNAME=$DATABASE_USERNAME
+            export DATABASE_PASSWORD=$DATABASE_PASSWORD
             
             # 관리자 정보
             # export ADMIN_PASSWORD=$ADMIN_PASSWORD
