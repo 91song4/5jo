@@ -32,7 +32,8 @@
     "seed:run": "npm run typeorm:seed migration:run",
     "seed:revert": "npm run typeorm:seed migration:revert",
     "seed:show": "npm run typeorm:seed migration:show",
-    "redis": "node -r dotenv/config -e 'require(\"child_process\").execSync(process.env.SONG, { stdio: \"inherit\" })'"
+    "redis": "node -r dotenv/config -e 'require(\"child_process\").execSync(process.env.REDIS, { stdio: \"inherit\" })'",
+    "rds": "node -r dotenv/config -e 'require(\"child_process\").execSync(process.env.RDS, { stdio: \"inherit\" })'"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.4",

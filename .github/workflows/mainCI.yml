@@ -5,7 +5,7 @@ on:
     branches: main
 
 jobs:
-  AUTO_DEPLOY:
+  AUTO_INTERGRATION:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,6 @@ jobs:
             cd 5jo
             git switch dev
             git pull origin dev
-            npm ci
+            npm i
             npm run build --if-present
             npm run test
