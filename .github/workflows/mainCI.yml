@@ -5,7 +5,7 @@ on:
     branches: main
 
 jobs:
-  AUTO_DEPLOY:
+  AUTO_INTERGRATION:
     runs-on: ubuntu-latest
 
     steps:
