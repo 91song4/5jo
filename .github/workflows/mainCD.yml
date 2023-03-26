@@ -104,5 +104,5 @@ jobs:
 
             cd 5jo
             git switch main
-            rm -rf node_modules
-            npm i
+            git pull origin main
+            npm run deploy
