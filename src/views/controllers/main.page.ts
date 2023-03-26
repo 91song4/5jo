@@ -16,6 +16,7 @@ export class HomePage {
   async reservationCalendar() {
     return { components: 'reservationCalendar' };
   }
+
   @Get('/reserve/:day')
   @Render('index')
   // async reserve() {
