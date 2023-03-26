@@ -1,28 +1,17 @@
 name: IF-EVENT
 
 on:
-  pull_request:
+  push:
     branches: forTest-main
-  pull_request:
-    branches: forTest-main
-    types:
-      - closed
-
 
 jobs:
   AUTO_DEPLOY:
     runs-on: ubuntu-latest
 
     steps:
-      - name: if_push
-        if: github.event.pull_request.types === 'clsed'
+      - name: push
         run: |
-          echo PULL_REQUEST CLOSED!
-
-      - name: if_pr
-        if: github.event.pull_request
-        run: |
-          echo PULL_REQUEST!
+          echo push!
 
         # - name: Run scripts in server
         #   uses: appleboy/ssh-action@master

@@ -1,0 +1,14 @@
+name: IF-EVENT
+
+on:
+  pull_request:
+    branches: forTest-main
+
+jobs:
+  AUTO_DEPLOY:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: pull_request
+        run: |
+          echo PULL_REQUEST!
