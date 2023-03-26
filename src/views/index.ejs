@@ -25,11 +25,13 @@
         <%}%>
         <!-- 문의사항 -->
         <%if(components ==='inquiry'){%> <%-include('inquiry')%> <%}%>
+        <!-- 예약 -->
+        <%if(components ==='reserve'){%> <%-include('reserve')%> <%}%>
         <!-- 예약(캘린더) -->
         <%if(components ==='reservationCalendar'){%>
         <%-include('reservation-calendar')%> <%}%>
-        <!-- 예약 -->
-        <%if(components ==='reserve'){%> <%-include('reserve')%> <%}%>
+        <!-- 예약(결제) -->
+        <%if(components ==='payment'){%> <%-include('payment')%> <%}%>
         <!-- 캠핑장 정보 -->
         <%if(components ==='rooms'){%> <%-include('rooms')%> <%}%>
         <!-- 리뷰 -->
