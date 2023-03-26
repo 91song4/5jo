@@ -1,7 +1,8 @@
 .d-flex,
 .guide,
 .select-camp,
-.paymentInfo {
+.paymentInfo,
+.socket {
   color: black;
 }
 
@@ -45,4 +46,20 @@ hr {
   background-color: #8fd8a5;
   color: white;
   font-weight: bold;
+}
+
+.sideSocket {
+  background-color: rgb(255, 0, 0, 0.2);
+  width: 500px;
+  height: 40px;
+  margin: 0 auto 100px auto;
+  position: sticky;
+  top: 100px;
+  display: flex;
+  border-radius: 10px;
+}
+
+.socket {
+  margin: auto;
+  font-size: large;
 }

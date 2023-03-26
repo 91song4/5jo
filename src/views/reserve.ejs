@@ -2,6 +2,9 @@
   <!-- about section -->
   <section class="about_section layout_padding">
     <div class="about_container">
+      <div class="sideSocket">
+        <p id="socket" class="socket"></p>
+      </div>
       <div class="d-flex justify-content-center">
         <h2 class="custom_heading">캠프 예약안내</h2>
       </div>
@@ -49,8 +52,8 @@
                 <th>캠프</th>
                 <th>가격</th>
                 <th>타입</th>
-                <th>Additional Person</th>
-                <th>Number of People</th>
+                <th>캠프 이용 인원</th>
+                <th>추가 이용 인원</th>
                 <th>선택</th>
               </tr>
             </thead>
@@ -70,7 +73,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-blade-select"
+                  id="red-blade-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -94,7 +97,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-wolf-select"
+                  id="red-wolf-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -118,7 +121,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-toad-select"
+                  id="red-toad-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -142,7 +145,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-golem-select"
+                  id="red-golem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -166,7 +169,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-blueGolem-select"
+                  id="red-blueGolem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -190,7 +193,7 @@
               <td>
                 <input
                   type="number"
-                  id="red-redGolem-select"
+                  id="red-redGolem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -214,7 +217,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-blade-select"
+                  id="blue-blade-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -238,7 +241,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-wolf-select"
+                  id="blue-wolf-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -262,7 +265,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-toad-select"
+                  id="blue-toad-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -286,7 +289,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-golem-select"
+                  id="blue-golem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -310,7 +313,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-blueGolem-select"
+                  id="blue-blueGolem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -334,7 +337,7 @@
               <td>
                 <input
                   type="number"
-                  id="blue-redGolem-select"
+                  id="blue-redGolem-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -358,7 +361,7 @@
               <td>
                 <input
                   type="number"
-                  id="dragon-select"
+                  id="dragon-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -382,7 +385,7 @@
               <td>
                 <input
                   type="number"
-                  id="baron-select"
+                  id="baron-additionalUsers"
                   min="0"
                   max="4"
                   value="0"
@@ -408,6 +411,75 @@
   </section>
 </body>
 <script>
+  $(document).ready(disableUsedCamps());
+
+  // 이미 예약된 캠프를 비활성화하는 함수
+  function disableUsedCamps() {
+    // 로컬 스토리지에서 사용된 캠프를 가져옴
+    const usedCamps = JSON.parse(localStorage.getItem('usedCamps'));
+    // 사용된 캠프를 모두 비활성화 하는 반복문
+    usedCamps.forEach((camp) => {
+      const campRow = document.getElementById(`camp${camp}`);
+      campRow.disabled = true;
+      campRow.classList.add('disabled');
+      // input과 button 요소를 모두 비활성화
+      campRow
+        .querySelectorAll('input, button')
+        .forEach((item) => (item.disabled = true));
+    });
+  }
+
+  // 유저가 선택 버튼을 눌렀을 때, 해당 정보를 아래에 업데이트하는 함수
+  function selectItem(button) {
+    const camp = button.closest('tr');
+    const dataCampName = camp.dataset.campname;
+    const campName = document.getElementById(`${dataCampName}-name`).innerHTML;
+    // number 타입으로 사용하길 상정했던 텍스트나 밸류값을 Number타입으로 변수에 담음
+    const campPrice = Number(
+      document
+        .getElementById(`${dataCampName}-price`)
+        .innerHTML.replace(/,/g, ''),
+    );
+    const campType = Number(
+      document.getElementById(`${dataCampName}-type`).innerHTML,
+    );
+    const numOfPeople = Number(
+      document.getElementById(`${dataCampName}-people`).value,
+    );
+    const numOfAdditionalUsers = Number(
+      document.getElementById(`${dataCampName}-additionalUsers`).value,
+    );
+
+    if (`${numOfPeople}` < 4 && `${numOfAdditionalUsers}` >= 1)
+      throw new Error(
+        (status = 401),
+        alert('초과 인원은 캠프 기본 할당 인원을 모두 채워야 이용 가능합니다'),
+      );
+
+    const fields = {
+      'camp-name': campName,
+      'camp-price': campPrice,
+      'total-people': numOfPeople + numOfAdditionalUsers,
+      'total-price': campPrice,
+    };
+
+    // 추가인원이 1명 이상일 때
+    if (numOfAdditionalUsers >= 1) {
+      // 추가 요금을 계산한다. (추가인원 x 캠프 타입에 따른 가격)
+      let additionalAmount =
+        numOfAdditionalUsers *
+        (campType === 1 ? 10000 : campType === 2 ? 15000 : 20000);
+      // 캠핑장 가격과 추가 요금을 더한 값을 'total-price' 필드에 저장한다.
+      fields['total-price'] = campPrice + additionalAmount;
+    } else {
+      // 계산된 총 금액을 'total-price' 필드에 저장한다.
+      fields['total-price'] = campPrice;
+    }
+    // fields 객체의 각 필드와 값을 반복하여 HTML 요소에 출력함.
+    for (const [field, value] of Object.entries(fields))
+      document.getElementById(field).innerHTML = value;
+  }
+
   // 소켓 접속
   const reserveDay = '<%- day %>';
   const socket = io('<%- socketReserve %>', {
@@ -419,5 +491,8 @@
   // 소켓 통신
   socket.on(reserveDay, (data) => {
     console.log(`접속중인 유저: ${data}`);
+    document.querySelector(
+      '#socket',
+    ).textContent = `같은 날짜에 예약중인 유저 수 : 총 ${data}명`;
   });
 </script>
