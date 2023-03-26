@@ -24,7 +24,6 @@ export class UsersService {
 
   // 유저 정보 조회 API
   async getUsersInformation(page) {
-    console.log(page);
     if (page === undefined) {
       page = 1;
     }

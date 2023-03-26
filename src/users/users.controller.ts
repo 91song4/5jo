@@ -32,7 +32,7 @@ export class UsersController {
 
   @Get('/')
   async getUsersInformation(@Query() query) {
-    return await this.usersService.getUsersInformation(query.page);
+    return this.usersService.getUsersInformation(query.page);
   }
 
   // 유저 정보 상세조회 API
