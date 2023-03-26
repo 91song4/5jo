@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Camp } from '../camp/camp.entity';
-import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
 import { Review } from '../review/review.entity';
 import { User } from '../users/users.entity';
 import {
@@ -30,8 +29,8 @@ export class Order {
   campId: number;
 
   @ApiProperty({ example: '2023-01-01', description: '선택한 날짜' })
-  @Column({ type: 'date' })
-  selectedDay: string;
+  @Column()
+  selectedDay: Date;
 
   @ApiProperty({ example: 4, description: '총 인원' })
   @Column()
