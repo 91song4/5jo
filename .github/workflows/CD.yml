@@ -1,4 +1,4 @@
-name: IF-EVENT
+name: CD
 
 on:
   push:
