@@ -5,9 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -49,12 +47,9 @@ export class Camp {
   @OneToMany(() => Order, (order) => order.camp, { onDelete: 'CASCADE' })
   orders: Order[];
 
-  @OneToOne(
+  @OneToMany(
     () => ReservationCalendar,
     (reservationCalendar) => reservationCalendar.camp,
-    {
-      onDelete: 'CASCADE',
-    },
   )
-  reservationCalendar: ReservationCalendar;
+  reservationCalendar: ReservationCalendar[];
 }

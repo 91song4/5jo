@@ -11,7 +11,12 @@ export class HomePage {
   //   return { components: 'home' };
   // }
 
-  // @Get('/reserve')
+  @Get('/reserve')
+  @Render('index')
+  async reservationCalendar() {
+    return { components: 'reservationCalendar' };
+  }
+
   @Get('/reserve/:day')
   @Render('index')
   // async reserve() {
