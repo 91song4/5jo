@@ -1,0 +1,29 @@
+name: glamping-CI
+
+on:
+  pull_request:
+    branches: main
+
+jobs:
+  AUTO_DEPLOY:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run scripts in server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSH_KEY }}
+
+          script: |
+            cd 5jo
+            git switch dev
+            git pull origin dev
+            npm ci
+            npm run build --if-present
+            npm run test
