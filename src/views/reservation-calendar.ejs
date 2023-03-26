@@ -148,7 +148,6 @@
         currentYear + '-' + (currentMonth + 1) + '-' + event.target.textContent;
 
       if (!isAPICalled) {
-        console.log('Clicked date: ' + clickedDate);
         isAPICalled = true;
         axios
           .get('/api/' + clickedDate)
