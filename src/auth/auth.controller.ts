@@ -106,17 +106,24 @@ export class AuthController {
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(@Body() loginUserDto: LoginUserDto, @Req() req: Request) {
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     const userData: any = req.user;
     const { accessToken, hashedRefreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    return {
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', hashedRefreshToken);
+
+    res.json({
       accessToken,
       refreshToken: hashedRefreshToken,
-    };
+    });
   }
 
   // 로그아웃

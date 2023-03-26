@@ -31,7 +31,6 @@ async function bootstrap() {
     .setTitle('글래머와 캠핑')
     .setDescription('글램핑 페이지 개발을 위한 API 문서')
     .setVersion('1.0')
-    .addCookieAuth('')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
