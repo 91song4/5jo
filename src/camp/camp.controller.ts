@@ -1,3 +1,4 @@
+import { er } from '@fullcalendar/core/internal-common';
 import {
   Controller,
   Delete,
@@ -14,25 +15,29 @@ import { CreateCampDto } from './dto/create-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')
-@Controller('')
+@Controller('camps')
 export class CampController {
   constructor(private readonly campService: CampService) {}
 
   // 캠프 목록 조회
-  @Get('/camps')
+  @Get()
   getCamps() {
-    return this.campService.getCamps();
+    try {
+      return this.campService.getCamps();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // 캠프 상세 조회
-  @Get('/camps/:id')
+  @Get('/:id')
   getCampById(@Param('id') campId: number) {
     console.log({ campId });
     return this.campService.getCampById(Number(campId));
   }
 
   // 새로운 캠프 등록
-  @Post('/camps')
+  @Post()
   createCamp(@Body() data: CreateCampDto) {
     return this.campService.createCamp(
       data.name,
@@ -43,7 +48,7 @@ export class CampController {
   }
 
   // 캠프 정보 수정
-  @Put('/camps/:id')
+  @Put('/:id')
   updateCamp(@Param('id') campId: number, @Body() data: UpdateCampDto) {
     return this.campService.updateCamp(
       campId,
@@ -57,7 +62,7 @@ export class CampController {
   }
 
   // 캠프 삭제
-  @Delete('/camps/:id')
+  @Delete('/:id')
   deleteCamp(@Param('id') campId: number) {
     return this.campService.deleteCamp(campId);
   }

@@ -46,6 +46,7 @@ import { ReservationCalendarModule } from './reservation_calendar/reservation_ca
 import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { UsersService } from './users/users.service';
     // SmsModule,
     ReviewModule,
     ReservationCalendarModule,
+    TestModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
   providers: [AppService, AuthMiddleware],

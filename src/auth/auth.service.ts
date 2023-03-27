@@ -9,8 +9,8 @@ import {
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -65,7 +65,7 @@ export class AuthService {
     }
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
     const accessToken = await this.createAccessToken(user.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = await this.createRefreshToken(user.id);
     await this.cacheManager.set(refreshToken, user.id);
 
     res.cookie('accessToken', accessToken);
@@ -96,7 +96,7 @@ export class AuthService {
     }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = await this.createRefreshToken(userData.id);
 
     const saltRound = process.env.HASH_SALT_OR_ROUND;
     const hashedRefreshToken = await bcrypt.hash(
@@ -104,19 +104,18 @@ export class AuthService {
       Number.parseInt(saltRound) ?? 10,
     );
 
-    await this.cacheManager.set(accessToken, {
+    await this.cacheManager.set(userData.id, {
       hashedRefreshToken,
-      userId: userData.id,
     });
 
-    return { accessToken, hashedRefreshToken };
+    return { accessToken, refreshToken };
   }
 
   /**로그아웃
    * @refreshToken
    */
-  async logout({ accessToken }) {
-    await this.cacheManager.del(accessToken);
+  async logout(id) {
+    await this.cacheManager.del(id);
   }
 
   /** 회원가입
@@ -205,6 +204,11 @@ export class AuthService {
     return { message: '비밀번호 재설정 완료' };
   }
 
+  // UnauthorizedException 걸리면 redis 삭제
+  deleteRefreshToken(token) {
+    const { id }: any = this.jwtService.decode(token);
+    this.cacheManager.del(id);
+  }
   /** where로 원하는 컬럼 불러오기
    * @whereColumns where에 설정할 컬럼 - {} 전달
    * @selectColumns select하고싶은 컬럼 - string[] 전달
@@ -217,13 +221,9 @@ export class AuthService {
       select: [...selectColumns],
       where: { ...whereColumns },
     });
+
     return userData;
   }
-
-  // async sendSMS() {
-  //   await this.cacheManager.set('01012341234', 123123);
-  //   return 123123;
-  // }
 
   async sendSMS(phone: string) {
     const certificationNumber = await this.smsService.sendSMS(phone);
@@ -257,8 +257,11 @@ export class AuthService {
   }
 
   /** JWT Refresh Token 생성 함수 */
-  private async createRefreshToken() {
-    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+  private async createRefreshToken(id: number) {
+    const refreshToken = await this.jwtService.sign(
+      { id },
+      { expiresIn: '23h' },
+    );
     return refreshToken;
   }
 }

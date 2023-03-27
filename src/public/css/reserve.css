@@ -1,0 +1,48 @@
+.d-flex,
+.guide,
+.select-camp,
+.paymentInfo {
+  color: black;
+}
+
+.custom_heading {
+  margin-bottom: 50px;
+}
+
+hr {
+  width: 60%;
+}
+
+.hr-solid {
+  border: 0px;
+  border-top: 5px solid #8fd8a5;
+  margin: 100px auto 50px auto;
+}
+
+.select-camp {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+
+.select-camp td,
+.select-camp th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.select-camp tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.select-camp tr:hover {
+  background-color: #ddd;
+}
+
+.select-camp th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #8fd8a5;
+  color: white;
+  font-weight: bold;
+}
