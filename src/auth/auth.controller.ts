@@ -114,7 +114,7 @@ export class AuthController {
 
   // test OK
   // 로그인
-  // @UseGuards(LocalAuthenticationGuard)
+  @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(@Req() req: Request, @Res() res: Response) {
     const userData: any = req.user;
