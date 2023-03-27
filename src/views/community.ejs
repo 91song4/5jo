@@ -16,17 +16,16 @@
             </tr>
           </thead>
           <tbody id="review-list">
-            <% for(let i = reviewsMeta.page + 4 * (reviewsMeta.page - 1); i <
-            reviews.length; i++){ %>
+            <% for(let i = 0 ; i < reviews.length; i++){ %>
             <tr>
-              <td><%= i %></td>
+              <td><%= ((reviewsMeta.page - 1) * 5 + 1 ) + i %></td>
               <td><%= reviews[i].title %></td>
               <td><%= reviews[i].userId %></td>
               <td><%= reviewsCreatedAt[i] %></td>
               <td>
                 <button
                   class="btn btn-outline-dark"
-                  onclick="location.replace('/view/index/review/' + reviews[i].id)"
+                  onclick="location.replace('/view/review/' + <%= reviews[i].id %>)"
                 >
                   상세보기
                 </button>
@@ -50,32 +49,6 @@
 </body>
 <script>
   console.log('<%- reviewsMeta.page %>');
-  // const reviewPage = parseInt('<%- reviewsMeta.page %>');
-  // const reviewList = document.querySelector('review-list');
-  // for (
-  //   let i = reviewPage + 4 * (reviewPage - 1);
-  //   i <= '<%- reviews.length %>';
-  //   i++
-  // ) {
-  //   const temp_review = `
-  //         <tr>
-  //               <td><%= i %></td>
-  //               <td><%= reviews[i].title %></td>
-  //               <td><%= reviews[i].userId %></td>
-  //               <td><%= reviewsCreatedAt[i] %></td>
-  //               <td>
-  //                 <button
-  //                   class="btn btn-outline-dark"
-  //                   onclick="location.replace('/view/index/review/' + reviews[i].id)"
-  //                 >
-  //                   상세보기
-  //                 </button>
-  //               </td>
-  //             </tr>
-  //             `;
-  //   reviewList.innerHTML = temp_review;
-  // }
-
   const totalPage = parseInt('<%- reviewsMeta.lastPage %>', 10);
   const pageNationLi = document.querySelector('#pagination li');
   for (let i = 1; i <= totalPage; ++i) {

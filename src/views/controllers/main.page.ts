@@ -35,9 +35,6 @@ export class HomePage {
 
   @Get('/community')
   @Render('index')
-  // async community() {
-  //   return { components: 'reviews' };
-  // }
   async community(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
@@ -54,6 +51,11 @@ export class HomePage {
     }; //이쪽
   }
 
+  @Get('/review/:userId')
+  @Render('index')
+  async review(@Param('userId') userId: string) {
+    return { components: 'review', userId };
+  }
   @Get('/inquiry')
   @Render('index')
   async inquiry() {
