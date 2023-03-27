@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
-import { Repository, DataSource } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Order } from './order.entity';
 
 @Injectable()
@@ -9,9 +8,9 @@ export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    private dataSource: DataSource,
   ) {}
 
+  // 주문 생성 ( POST )
   async createOrder(
     userId: number,
     campId: number,
@@ -21,37 +20,17 @@ export class OrderService {
     isReview: boolean,
     type: number,
   ) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const returned = await queryRunner.manager.getRepository(Order).save({
-        userId,
-        campId,
-        selectedDay,
-        headcount,
-        receipt,
-        isReview,
-        type,
-      });
-      const reservationCalendar = await queryRunner.manager
-        .getRepository(ReservationCalendar)
-        .create();
-      reservationCalendar.campId = returned.campId;
-      reservationCalendar.reservedDate = new Date(returned.selectedDay);
-      reservationCalendar.isReserved = true;
-      await queryRunner.manager
-        .getRepository(ReservationCalendar)
-        .save(reservationCalendar);
-      await queryRunner.commitTransaction();
-      return true;
-    } catch (err) {
-      console.log(err);
-      await queryRunner.rollbackTransaction();
-      throw err;
-    } finally {
-      await queryRunner.release();
-    }
+    const order = this.orderRepository.create({
+      userId,
+      campId,
+      selectedDay,
+      headcount,
+      receipt,
+      isReview,
+      type,
+    });
+
+    return await this.orderRepository.save(order);
   }
 
   // 주문 가져오기 ( GET )
@@ -65,7 +44,7 @@ export class OrderService {
 
     // const orders = await this.orderRepository
     //   .query(
-    //     `SELECT O.id, O.selectedDay, O.headcount, O.receipt, O.isReview, O.type,  O.userId AS orderuserId, U.USERID AS userId, O.CAMPID AS ordercampId, C.NAME AS CampName
+    //     `SELECT O.id, O.selectedDay, O.headcount, O.receipt, O.isReview, O.type,  O.userId AS orderuserId, U.USERID AS userId, O.CAMPID AS ordercampId ,C.NAME AS CampName
     // FROM ORDERS O INNER JOIN USERS U
     // ON O.USERID = U.ID
     // INNER JOIN CAMPS C
@@ -103,10 +82,6 @@ export class OrderService {
       userId: order.userId,
       ordercampId: order.ordercampId,
       CampName: order.CampName,
-      // 페이지네이션 구현 코드
-      // relations: ['category'],
-      skip: (page - 1) * 5,
-      take: 5,
     }));
   }
 

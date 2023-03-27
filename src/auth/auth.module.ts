@@ -7,12 +7,12 @@ import { JwtConfigService } from '../config/jwt.config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheConfigService } from '../config/cache.config.service';
 import { SmsModule } from '../sms/sms.module';
-import { User } from '../users/users.entity';
+import { User } from 'src/users/users.entity';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
-import { UsersService } from '../users/users.service';
+import { UsersService } from 'src/users/users.service';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from 'src/users/users.module';
 import { JwtGoogleStrategy } from './jwt-social-google.strategy';
 
 @Module({
@@ -31,7 +31,7 @@ import { JwtGoogleStrategy } from './jwt-social-google.strategy';
       useClass: CacheConfigService,
     }),
     PassportModule,
-    SmsModule,
+    // SmsModule,
   ],
   controllers: [AuthController],
   providers: [

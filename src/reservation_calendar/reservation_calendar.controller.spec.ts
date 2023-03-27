@@ -9,9 +9,7 @@ describe('ReservationCalendarController', () => {
       controllers: [ReservationCalendarController],
     }).compile();
 
-    controller = module.get<ReservationCalendarController>(
-      ReservationCalendarController,
-    );
+    controller = module.get<ReservationCalendarController>(ReservationCalendarController);
   });
 
   it('should be defined', () => {

@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Query, Render } from '@nestjs/common';
-import { CampService } from '../../camp/camp.service';
-import { CouponService } from '../../coupon/coupon.service';
-import { OrderService } from '../../order/order.service';
-import { UsersService } from '../../users/users.service';
+import { CampService } from 'src/camp/camp.service';
+import { CouponService } from 'src/coupon/coupon.service';
+import { OrderService } from 'src/order/order.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('view')
 export class ManagementPage {
@@ -23,7 +23,7 @@ export class ManagementPage {
   @Render('management')
   async camps() {
     const camps = await this.campService.getCamps();
-    return { component: 'camps', camps };
+    return { component: 'camps', camps }; //여기참고
   }
 
   @Get('/management/camp/register')

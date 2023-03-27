@@ -46,7 +46,7 @@ import { ReservationCalendarModule } from './reservation_calendar/reservation_ca
 import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
-import { TestModule } from './test/test.module';
+import { ReviewController } from './review/review.controller';
 
 @Module({
   imports: [
@@ -66,6 +66,10 @@ import { TestModule } from './test/test.module';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
     AuthModule,
     CampModule,
     UsersModule,
@@ -76,7 +80,6 @@ import { TestModule } from './test/test.module';
     // SmsModule,
     ReviewModule,
     ReservationCalendarModule,
-    TestModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
   providers: [AppService, AuthMiddleware],

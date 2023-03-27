@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
       <a class="navbar-brand" href="/">
-        <img alt="" />
+        <img src="/images/logo.png" alt="" />
         <span> 글래머와 캠핑 </span>
       </a>
       <button
@@ -32,7 +32,7 @@
               <a class="nav-link" href="/view/rooms"> 캠프 </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/view/community"> 리뷰 </a>
+              <a class="nav-link" href="/view/community?page=1&limit=5"> 리뷰 </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/view/inquiry"> 문의하기 </a>
@@ -47,8 +47,6 @@
   </div>
 </header>
 <script>
-  const img = document.querySelector('a.navbar-brand img');
-  img.src = `${BASIC_CDN}/logo.png`;
   // function mypage() {
   //   $.ajax({
   //     type: 'GET',
@@ -66,8 +64,7 @@
   //     },
   //   });
   // }
-
-  if (localStorage.getItem('isLogin') !== 'true') {
+  if (!document.cookie) {
     let temp_html = `
         <li class="nav-item">
                 <a class="nav-link" href="/view/login"> 로그인 </a>
@@ -91,7 +88,7 @@
     axios
       .post('/api/auth/log-out')
       .then((response) => {
-        localStorage.setItem('isLogin', false);
+        localStorage.clear();
         window.location.href = '/';
       })
       .catch((error) => console.log(error.message));
