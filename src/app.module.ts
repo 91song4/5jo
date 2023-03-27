@@ -47,6 +47,9 @@ import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
 import { TestModule } from './test/test.module';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 
 @Module({
   imports: [
@@ -79,21 +82,29 @@ import { TestModule } from './test/test.module';
     TestModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
-  providers: [AppService, AuthMiddleware],
+  providers: [
+    AppService,
+    // AuthMiddleware,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthenticationGuard,
+    // },
+  ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude('auth')
-      .exclude({ path: 'camps', method: RequestMethod.GET })
-      .exclude({ path: 'coupon', method: RequestMethod.GET })
-      .forRoutes(
-        { path: 'view/mypage', method: RequestMethod.ALL },
-        { path: 'auth/log-out', method: RequestMethod.POST },
-        { path: 'auth/withdrawal', method: RequestMethod.DELETE },
-        CampController,
-        CouponController,
-      );
-  }
-}
+export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer) {
+//     consumer
+//       .apply(JwtAuthenticationGuard)
+//       .exclude('auth')
+//       .exclude({ path: 'camps', method: RequestMethod.GET })
+//       .exclude({ path: 'coupon', method: RequestMethod.GET })
+//       .forRoutes(
+//         { path: 'view/mypage', method: RequestMethod.ALL },
+//         { path: 'auth/log-out', method: RequestMethod.POST },
+//         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
+//         CampController,
+//         CouponController,
+//       );
+//   }
+// }
