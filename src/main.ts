@@ -55,7 +55,7 @@ async function bootstrap() {
   ); // 이 한줄만 넣어주면 됩니다! 잊지마세요!
 
   // 전역 가드 설정
-  app.useGlobalGuards(new JwtAuthenticationGuard());
+  // app.useGlobalGuards(new JwtAuthenticationGuard());
 
   console.log(`${port} 서버가 열렸어요`);
 }
