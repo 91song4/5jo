@@ -84,27 +84,26 @@ import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
   providers: [
     AppService,
-    // AuthMiddleware,
+    AuthMiddleware,
     // {
     //   provide: APP_GUARD,
     //   useClass: JwtAuthenticationGuard,
     // },
   ],
 })
-export class AppModule {}
-// export class AppModule implements NestModule {
-//   configure(consumer) {
-//     consumer
-//       .apply(JwtAuthenticationGuard)
-//       .exclude('auth')
-//       .exclude({ path: 'camps', method: RequestMethod.GET })
-//       .exclude({ path: 'coupon', method: RequestMethod.GET })
-//       .forRoutes(
-//         { path: 'view/mypage', method: RequestMethod.ALL },
-//         { path: 'auth/log-out', method: RequestMethod.POST },
-//         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
-//         CampController,
-//         CouponController,
-//       );
-//   }
-// }
+export class AppModule implements NestModule {
+  configure(consumer) {
+    consumer
+      .apply(JwtAuthenticationGuard)
+      .exclude('auth')
+      .exclude({ path: 'camps', method: RequestMethod.GET })
+      .exclude({ path: 'coupon', method: RequestMethod.GET })
+      .forRoutes(
+        { path: 'view/mypage', method: RequestMethod.ALL },
+        { path: 'auth/log-out', method: RequestMethod.POST },
+        { path: 'auth/withdrawal', method: RequestMethod.DELETE },
+        CampController,
+        CouponController,
+      );
+  }
+}
