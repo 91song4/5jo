@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { NotFoundError } from 'rxjs';
@@ -94,24 +94,40 @@ export class UsersService {
     email: string,
     password: string,
   ) {
-    const user = await this.userRepository.findOne({
-      where: { id: id, deletedAt: null },
-      select: ['name', 'phone', 'email', 'password'],
-    });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: id, deletedAt: null },
+        select: ['name', 'phone', 'email', 'password'],
+      });
 
-    if (_.isNil(user)) {
-      throw new Error(`user not found. id: + ${id}`);
+      if (_.isNil(user)) {
+        throw new Error(`user not found. id: + ${id}`);
+      }
+
+      const comparePassword = await bcrypt.compare(password, user.password);
+      console.log(comparePassword);
+      if (comparePassword) {
+        // nest 내부함수
+        throw new ConflictException('위의 비밀번호로 변경할 수 없습니다.');
+      } else {
+        // 비밀번호를 암호화 시켜서 저장시켜주는 코드
+        const saltRound = process.env.HASH_SALT_OR_ROUND;
+        password = await bcrypt.hash(
+          password,
+          Number.parseInt(saltRound) ?? 10,
+        );
+
+        await this.userRepository.update(id, {
+          name,
+          phone,
+          email,
+          password,
+        });
+        return;
+      }
+    } catch (error) {
+      throw error;
     }
-
-    const saltRound = process.env.HASH_SALT_OR_ROUND;
-    password = await bcrypt.hash(password, Number.parseInt(saltRound) ?? 10);
-
-    this.userRepository.update(id, {
-      name,
-      phone,
-      email,
-      password,
-    });
   }
 
   // 유저 정보 삭제 API
