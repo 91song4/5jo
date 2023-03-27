@@ -79,7 +79,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp2" data-campname="red-wolf">
               <td id="red-wolf-name">늑대(Red)</td>
@@ -103,7 +105,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp3" data-campname="red-toad">
               <td id="red-toad-name">두꺼비(Red)</td>
@@ -127,7 +131,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp4" data-campname="red-golem">
               <td id="red-golem-name">작은골렘(Red)</td>
@@ -151,7 +157,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp5" data-campname="red-blueGolem">
               <td id="red-blueGolem-name">블루골렘(Red)</td>
@@ -175,7 +183,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp6" data-campname="red-redGolem">
               <td id="red-redGolem-name">레드골렘(Red)</td>
@@ -199,7 +209,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp7" data-campname="blue-blade">
               <td id="blue-blade-name">칼날부리(Blue)</td>
@@ -223,7 +235,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp8" data-campname="blue-wolf">
               <td id="blue-wolf-name">늑대(Blue)</td>
@@ -247,7 +261,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp9" data-campname="blue-toad">
               <td id="blue-toad-name">두꺼비(Blue)</td>
@@ -271,7 +287,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp10" data-campname="blue-golem">
               <td id="blue-golem-name">작은골렘(Blue)</td>
@@ -295,7 +313,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp11" data-campname="blue-blueGolem">
               <td id="blue-blueGolem-name">블루골렘(Blue)</td>
@@ -319,7 +339,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp12" data-campname="blue-redGolem">
               <td id="blue-redGolem-name">레드골렘(Blue)</td>
@@ -343,7 +365,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp13" data-campname="dragon">
               <td id="dragon-name">드래곤</td>
@@ -367,7 +391,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
             <tr id="camp14" data-campname="baron">
               <td id="baron-name">바론</td>
@@ -391,7 +417,9 @@
                   value="0"
                 />
               </td>
-              <td><button onclick="selectItem(this)">선택</button></td>
+              <td>
+                <button class="select" onclick="selectItem(this)">선택</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -407,6 +435,7 @@
           <p>총 가격 : <span id="total-price"></span></p>
         </div>
       </div>
+      <button onclick="goingToPay()" class="payment-btn">결제하러 가기</button>
     </div>
   </section>
 </body>
@@ -476,8 +505,35 @@
       fields['total-price'] = campPrice;
     }
     // fields 객체의 각 필드와 값을 반복하여 HTML 요소에 출력함.
-    for (const [field, value] of Object.entries(fields))
+    for (const [field, value] of Object.entries(fields)) {
       document.getElementById(field).innerHTML = value;
+    }
+  }
+
+  function goingToPay() {
+    const campName = document.getElementById('camp-name').innerHTML;
+    const totalPeople = Number(
+      document.getElementById('total-people').innerHTML,
+    );
+    const totalPrice = Number(document.getElementById('total-price').innerHTML);
+    const seletedDay = document.location.pathname.split('/')[3];
+
+    const fields = {
+      campName,
+      totalPeople,
+      totalPrice,
+      seletedDay,
+    };
+
+    if (!fields.campName || !fields.totalPeople || !fields.totalPrice)
+      throw new Error(
+        alert('먼저 원하시는 캠프를 선택해 주십시오.'),
+        (status = 401),
+      );
+
+    localStorage.setItem('paymentInfo', JSON.stringify(fields));
+
+    window.location.href = '/view/payment';
   }
 
   // 소켓 접속
@@ -490,7 +546,6 @@
 
   // 소켓 통신
   socket.on(reserveDay, (data) => {
-    console.log(`접속중인 유저: ${data}`);
     document.querySelector(
       '#socket',
     ).textContent = `같은 날짜에 예약중인 유저 수 : 총 ${data}명`;

@@ -63,3 +63,51 @@ hr {
   margin: auto;
   font-size: large;
 }
+
+.select,
+.payment-btn {
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  color: #000;
+  font-family: Arial;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #5c5c5c;
+}
+
+.select {
+  font-size: 20px;
+  margin: 20px auto 20px auto;
+  padding: 5px 8px;
+
+  background-color: #eea565;
+  border: 1px solid #eea565;
+}
+
+.payment-btn {
+  font-size: 24px;
+  padding: 10px 20px;
+
+  background-color: #ff7e7e;
+  border: 1px solid #ff7e7e;
+
+  margin-top: 100px;
+}
+
+.payment-btn:hover {
+  background-color: #ff6363;
+}
+
+input {
+  text-align: center;
+  width: 100px;
+  height: 32px;
+  font-size: 18px;
+
+  border: 0;
+  border-radius: 10px;
+  outline: none;
+  padding-left: 10px;
+
+  background-color: rgb(201, 201, 201);
+}

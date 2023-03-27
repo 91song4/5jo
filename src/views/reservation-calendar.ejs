@@ -138,7 +138,6 @@
         today.getDate(),
       );
       renderCalender(thisMonth);
-      console.log(today);
     });
 
     let isAPICalled = false;
@@ -162,7 +161,6 @@
           .catch((error) => {
             // 지정해둔 에러를 얼럿으로 배출함
             alert(error.response.data.message);
-            console.log();
             isAPICalled = false;
           });
       }
