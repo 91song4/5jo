@@ -57,4 +57,10 @@ export class HomePage {
       socketChat: this.configService.get('SOCKET_NAMESPACE_CHAT'),
     };
   }
+
+  @Get('/payment')
+  @Render('index')
+  async payment() {
+    return { components: 'payment' };
+  }
 }
