@@ -153,6 +153,19 @@ hr {
   margin-left: 150px;
 }
 
+.emergencyPhone {
+  vertical-align: middle;
+  text-align: center;
+  width: 500px;
+  resize: none;
+}
+
+.payment-rules.active {
+  background-color: rgb(255, 129, 129);
+  position: relative;
+  top: 6px;
+}
+
 @media (max-width: 1700px) {
   .user-info,
   .payment-wrap {

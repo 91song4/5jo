@@ -40,7 +40,7 @@ export class AuthMiddleware implements NestMiddleware {
     // console.log(a);
 
     const hashedRefreshToken: any = await this.cacheManager.get(id);
-    const keys = await this.cacheManager.store.keys();
+    // const keys = await this.cacheManager.store.keys();
 
     if (!hashedRefreshToken) {
       throw new UnauthorizedException(

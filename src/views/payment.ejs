@@ -17,18 +17,18 @@
         </thead>
         <tbody>
           <tr>
-            <td class="campName"></td>
-            <td class="selectedDay"></td>
-            <td class="totalPeople"></td>
-            <td class="price"></td>
-            <td class="coupon"></td>
+            <td id="campName"></td>
+            <td id="selectedDay"></td>
+            <td id="totalPeople"></td>
+            <td id="price"></td>
+            <td id="coupon"></td>
           </tr>
         </tbody>
       </table>
       <div>
         <div class="price-wrap">
           <div>총 결제 금액 :</div>
-          <div class="total-price">asdasd</div>
+          <div class="total-price">150000</div>
           <p>원</p>
         </div>
       </div>
@@ -37,23 +37,29 @@
         <div class="user-info">
           <div class="info-wrap">
             <div class="info-title">예약자명 :</div>
-            <div class="info-content">이진석</div>
+            <div id="name" class="info-content"><%=userInfo.name%></div>
           </div>
           <div class="info-wrap">
             <div class="info-title">생년월일 :</div>
-            <div class="info-content">1996-01-25</div>
+            <div id="birthday" class="info-content"><%=userInfo.birthday%></div>
           </div>
           <div class="info-wrap">
             <div class="info-title">연락처 :</div>
-            <div class="info-content">010-5434-4425</div>
+            <div id="phone" class="info-content"><%=userInfo.phone%></div>
           </div>
           <div class="info-wrap">
             <div class="info-title">비상연락처 :</div>
-            <div class="info-content">010-5434-4425</div>
+            <div class="">
+              <textarea
+                class="emergencyPhone"
+                maxlength="15"
+                rows="1"
+              ></textarea>
+            </div>
           </div>
           <div class="info-wrap">
             <div class="info-title">이메일 :</div>
-            <div class="info-content">fimjsl47@gmail.com</div>
+            <div id="email" class="info-content"><%=userInfo.email%></div>
           </div>
           <div class="info-wrap">
             <div class="info-title">요청사항 :</div>
@@ -69,14 +75,16 @@
         <div class="updown"></div>
         <div class="payment-wrap">
           <div>
-            <button class="coupon-btn">쿠폰 선택하기</button>
+            <button class="coupon-btn" onclick="couponSearch()">
+              쿠폰 선택하기
+            </button>
           </div>
           <div class="rules-wrap">
-            <button class="payment-rules">카드 결제</button>
-            <button class="payment-rules">무통장 입금</button>
+            <button id="card-payment" class="payment-rules">카드 결제</button>
+            <button id="deposit" class="payment-rules">무통장 입금</button>
           </div>
           <div>
-            <button class="payment">결제</button>
+            <button id="pay" class="payment">결제</button>
           </div>
         </div>
       </div>
@@ -89,20 +97,99 @@
     getPaymentInfo();
   });
 
+  // 로컬 스토리지 긁어오고
+  const { campName, selectedDay, totalPeople, totalPrice } = JSON.parse(
+    localStorage.getItem('paymentInfo'),
+  );
+
+  // 부족한 정보 API로 받아오고
+  axios
+    .get('/api/camps')
+    .then((response) => {
+      const camp = response.data.find((camp) => camp.name === campName);
+      const campId = camp ? camp.id : null;
+      console.log('Dragon camp ID:', campId);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  const cardPaymentBtn = document.getElementById('card-payment');
+  const depositBtn = document.getElementById('deposit');
+  const payBtn = document.getElementById('pay');
+
+  let paymentMethod = null;
+
+  // 카드결제 버튼 세팅
+  cardPaymentBtn.addEventListener('click', function () {
+    paymentMethod = 'card';
+    cardPaymentBtn.classList.add('active');
+    depositBtn.classList.remove('active');
+  });
+
+  // 무통장 버튼 세팅
+  depositBtn.addEventListener('click', function () {
+    paymentMethod = 'deposit';
+    depositBtn.classList.add('active');
+    cardPaymentBtn.classList.remove('active');
+  });
+
+  // 결제하기 버튼 세팅
+  payBtn.addEventListener('click', function () {
+    if (!paymentMethod) {
+      alert('원하시는 결제 방식을 먼저 선택해주세요');
+      return;
+    }
+    payment(paymentMethod);
+  });
+
+  const a = '<%=userInfo.name%>';
+  const c = '<%=userInfo.email%>';
+  const d = '<%=userInfo.phone%>';
+  const e = '<%=userInfo.birthday%>';
+  const userId = '<%=userInfo.id%>';
+
+  console.log(a);
+  console.log(c);
+  console.log(d);
+  console.log(e);
+  console.log(userId);
+
   // 결제정보를 HTML에 뿌려주는 함수
   function getPaymentInfo() {
-    const { campName, selectedDay, totalPeople, totalPrice } = JSON.parse(
-      localStorage.getItem('paymentInfo'),
-    );
     // 문자열 3개마다 쉼표 넣어주고 변수에 담음
     const totalPriceWithCommas = totalPrice.toLocaleString('ko-KR');
-    const tableRow = document.querySelector('tbody tr');
-    tableRow.querySelector('.campName').innerHTML = campName;
-    tableRow.querySelector('.selectedDay').innerHTML = selectedDay;
-    tableRow.querySelector('.totalPeople').innerHTML = `${totalPeople} 명`;
-    tableRow.querySelector('.price').innerHTML = `${totalPriceWithCommas} 원`;
-    tableRow.querySelector('.coupon').innerHTML = '사용하지 않음';
+    document.querySelector('#campName').innerHTML = campName;
+    document.querySelector('#selectedDay').innerHTML = selectedDay;
+    document.querySelector('#totalPeople').innerHTML = `${totalPeople} 명`;
+    document.querySelector('#price').innerHTML = `${totalPriceWithCommas} 원`;
+    document.querySelector('#coupon').innerHTML = '사용하지 않음';
   }
 
-  function getUserInfo() {}
+  function payment(paymentMethod) {
+    paymentMethod = paymentMethod === 'card' ? 0 : 1;
+    console.log(paymentMethod);
+
+    try {
+      axios
+        .post('/api/orders', {
+          userId,
+          campId: 5,
+          selectedDay,
+          headcount: totalPeople,
+          receipt: totalPrice,
+          isReview: false,
+          type: paymentMethod,
+        })
+        .then((response) => {
+          alert('예약 완료');
+          window.location.href = '/';
+        })
+        .catch((error) => {
+          alert('실패함');
+        });
+    } catch (error) {
+      throw new Error();
+    }
+  }
 </script>

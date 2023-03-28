@@ -100,7 +100,7 @@ export class AppModule implements NestModule {
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
         CouponController,
-        ReservationCalendarController,
+        // ReservationCalendarController,
       );
   }
 }

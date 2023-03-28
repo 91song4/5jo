@@ -4,31 +4,47 @@ import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/users.entity';
 dotenv.config();
 
-const seed = {
-  id: 1,
-  name: '최고 관리자',
-  userId: 'admin',
-  password: process.env.ADMIN_PASSWORD,
-  email: 'admin@admin.com',
-  phone: '010-0000-0000',
-  birthday: '2023-03-02',
-  socialType: null,
-};
+const seed = [
+  {
+    id: 1,
+    name: '최고 관리자',
+    userId: 'admin',
+    password: process.env.ADMIN_PASSWORD,
+    email: 'admin@admin.com',
+    phone: '010-0000-0000',
+    birthday: '2023-03-02',
+    socialType: null,
+  },
+  {
+    id: 2,
+    name: '세컨 관리자',
+    userId: 'admin2',
+    password: process.env.ADMIN_PASSWORD,
+    email: 'admin@admin.com',
+    phone: '010-0000-0000',
+    birthday: '2023-03-02',
+    socialType: null,
+  },
+];
 
-export class UsersSeed1677703338397 implements MigrationInterface {
+export class UsersSeed implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const passwordHashedSeed = await Promise.resolve({
-      ...seed,
-      password: await bcrypt.hash(
-        seed.password,
-        Number.parseInt(process.env.HASH_SALT_OR_ROUND, 10) ?? 10,
-      ),
-    });
+    for (const data of seed) {
+      const passwordHashedSeed = await Promise.resolve({
+        ...data,
+        password: await bcrypt.hash(
+          data.password,
+          Number.parseInt(process.env.HASH_SALT_OR_ROUND, 10) ?? 10,
+        ),
+      });
 
-    await queryRunner.manager.save(User, passwordHashedSeed);
+      await queryRunner.manager.save(User, passwordHashedSeed);
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await Promise.resolve(queryRunner.manager.delete(User, { id: seed.id }));
+    for (const data of seed) {
+      await Promise.resolve(queryRunner.manager.delete(User, { id: data.id }));
+    }
   }
 }
