@@ -52,8 +52,8 @@ export class HomePage {
   @Render('index')
   async community(@Query('page') page = 1, @Query('limit') limit = 5) {
     const reviews = await this.reviewService.paginate(
-      Number(page ?? '1'),
-      Number(limit ?? '5'),
+      Number(page ?? 1),
+      Number(limit ?? 5),
     );
     return {
       components: 'community',
@@ -63,6 +63,12 @@ export class HomePage {
     }; //이쪽
   }
 
+  @Get('/review/:reviewId')
+  @Render('index')
+  async review(@Param('reviewId') reviewId: string) {
+    return { components: 'review', reviewId };
+  }
+
   @Get('/inquiry')
   @Render('index')
   async inquiry() {
@@ -70,7 +76,7 @@ export class HomePage {
   }
 
   @Get('/chatting')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Render('index')
   async chatting(@Req() req) {
     return {
