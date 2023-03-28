@@ -10,14 +10,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import JwtAuthenticationGuard from 'src/auth/jwt-authentication.guard';
+import { AuthGuard } from '@nestjs/passport';
 import { CampService } from './camp.service';
 // dto
 import { CreateCampDto } from './dto/create-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')
-@UseGuards(JwtAuthenticationGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('camps')
 export class CampController {
   constructor(private readonly campService: CampService) {}

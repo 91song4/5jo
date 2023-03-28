@@ -83,17 +83,10 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
     TestModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
-  providers: [
-    AppService,
-    AuthMiddleware,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthenticationGuard,
-    // },
-  ],
+  providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
-  configure(consumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
@@ -104,7 +97,6 @@ export class AppModule implements NestModule {
         { path: 'auth/log-out', method: RequestMethod.POST },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
-        CouponController,
       );
   }
 }

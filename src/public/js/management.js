@@ -98,7 +98,7 @@ function createCoupon() {
   let maxDiscount = $('#maxDiscount').val();
   $.ajax({
     type: 'POST',
-    url: `/api/coupon/`,
+    url: '/api/coupon',
     beforeSend: function (xhrObj) {
       xhrObj.setRequestHeader('Content-Type', 'application/json');
       xhrObj.setRequestHeader('Accept', 'application/json');
@@ -118,8 +118,9 @@ function createCoupon() {
         alert('전송된 값 없음');
       }
     },
-    error: function () {
+    error: function (error) {
       alert('전송 실패');
+      console.log(error);
     },
   });
 }
