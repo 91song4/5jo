@@ -47,7 +47,6 @@ import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
 import { ReviewController } from './review/review.controller';
-import { TestModule } from './test/test.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
