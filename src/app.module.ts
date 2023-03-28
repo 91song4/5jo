@@ -46,7 +46,7 @@ import { ReservationCalendarModule } from './reservation_calendar/reservation_ca
 import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
-import { TestModule } from './test/test.module';
+import { ReviewController } from './review/review.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
@@ -70,6 +70,10 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
     AuthModule,
     CampModule,
     UsersModule,
@@ -80,7 +84,6 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
     // SmsModule,
     ReviewModule,
     ReservationCalendarModule,
-    TestModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
   providers: [AppService, AuthMiddleware],

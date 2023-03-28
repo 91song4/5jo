@@ -30,55 +30,54 @@ import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // test OK
   // 유저 선택해서 가져오기
   @Get('/user')
   async getUserSelect(
     @Query() { whereColumns, selectColumns }: GetUserSelectDto,
   ) {
-    return await this.authService.getUserSelect(whereColumns, selectColumns);
+    return this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
-  // test OK
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
   async isExist(@Param('userId') userId: string) {
     return this.authService.getUserSelect({ userId }, ['userId']);
   }
 
-  // test OK
   // 아이디 찾기
   @Post('/lost/id')
   async findUserId(@Body() findUserIdDto: FindUserIdDto) {
     return await this.authService.getUserSelect(findUserIdDto, ['userId']);
   }
 
-  // test OK
   // 비밀번호 찾기
   @Post('/lost/password')
   async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
 
-  // test OK
-  // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
+  // 테스트용
   @Post('/phone')
-  async sendSMS(@Body() { phone }: SendSMSDto) {
-    await this.authService.sendSMS(phone);
-    return { message: '인증번호를 발송하였습니다.' };
+  async sendSMS() {
+    return await this.authService.sendSMS();
   }
 
-  // test OK
+  // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
+  // @Post('/phnoe')
+  // async sendSMS(@Body() { phone }: SendSMSDto) {
+  //   await this.authService.sendSMS(phone);
+  //   return { message: '인증번호를 발송하였습니다.' };
+  // }
+
   // 비멀번호 찾기 - 인증번호 체크
   @Post('/phone/:certificationNumber')
   async certification(
     @Param('certificationNumber') certificationNumber: number,
     @Body() { phone }: SendSMSDto,
   ) {
-    return await this.authService.certification({ certificationNumber, phone });
+    return this.authService.certification({ certificationNumber, phone });
   }
 
-  // test OK
   // 비밀번호 재설정
   @Patch('/reset/password/:userId')
   async resetPassword(
@@ -86,14 +85,6 @@ export class AuthController {
     @Body() { password }: ResetPasswordDto,
   ) {
     return await this.authService.resetPassword(userId, password);
-  }
-
-  // test OK
-  // UnauthorizedException 걸리면 redis 삭제
-  @Delete('/redis')
-  deleteRefreshToken(@Req() req: Request) {
-    const { accessToken } = req.cookies;
-    this.authService.deleteRefreshToken(accessToken);
   }
 
   // 구글 로그인
@@ -112,31 +103,31 @@ export class AuthController {
     this.authService.createSocialUser(createSocialUserDto);
   }
 
-  // test OK
+  // TODO - 리프레쉬토큰 DB 저장을 할 때에 암호화 하기
+
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
-  async login(@Req() req: Request, @Res() res: Response) {
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     const userData: any = req.user;
     const { accessToken, refreshToken } = await this.authService.login(
       userData,
       req.cookies,
     );
 
-    res.cookie('accessToken', accessToken, { httpOnly: true });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true });
-    res.send({ message: '로그인 성공' });
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
+    res.send({ accessToken, refreshToken, userId: userData.id });
   }
 
-  // test OK
   // 로그아웃
-  // @UseGuards(AuthGuard('jwt'))
   @Post('/log-out')
   async logout(@Req() req: Request, @Res() res: Response) {
-    // const { id }: any = req.user;
-    const id: any = req.user;
-    console.log(id, typeof id);
-    await this.authService.logout(id);
+    await this.authService.logout(req.cookies);
 
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
@@ -144,7 +135,6 @@ export class AuthController {
     res.send({ message: '로그아웃 성공' });
   }
 
-  // test OK
   // 회원가입
   @Post('/sign-up')
   async createUser(@Body() userDto: CreateUserDto) {

@@ -10,10 +10,7 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // app.useWebSocketAdapter(new IoAdapter(app));
-
   // prefix 예외처리
-
   app.setGlobalPrefix('api', {
     exclude: [
       { path: '', method: RequestMethod.GET },

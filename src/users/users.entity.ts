@@ -1,5 +1,5 @@
-import { Admin } from '../admin/admin.entity';
-import { Order } from '../order/order.entity';
+import { Admin } from 'src/admin/admin.entity';
+import { Order } from 'src/order/order.entity';
 import {
   Column,
   CreateDateColumn,
