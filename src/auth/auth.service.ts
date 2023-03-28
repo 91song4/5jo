@@ -105,8 +105,7 @@ export class AuthService {
     );
     const userId = userData.id;
 
-    await this.cacheManager.set(userData.id, hashedRefreshToken);
-    // const keys = await this.cacheManager.store.keys();
+    await this.cacheManager.set(userData.id, { hashedRefreshToken });
 
     return { accessToken, refreshToken, userId };
   }
