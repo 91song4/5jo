@@ -50,8 +50,9 @@
             <div class="info-title">비상연락처 :</div>
             <div class="">
               <textarea
-                class="emergencyPhone"
-                maxlength="15"
+                id="emergencyContact"
+                class="emergency-contact"
+                maxlength="20"
                 rows="1"
               ></textarea>
             </div>
@@ -64,7 +65,8 @@
             <div class="info-title">요청사항 :</div>
             <div class="info-content">
               <textarea
-                class="request-from-user"
+                id="requirements"
+                class="requirements"
                 maxlength="60"
                 rows="1"
               ></textarea>
@@ -85,7 +87,6 @@
           <div>
             <button id="pay" class="payment">결제</button>
           </div>
-          <div id="get-camp-id" hidden></div>
         </div>
       </div>
     </div>
@@ -105,9 +106,7 @@
     const camp = response.data.find((camp) => camp.name === campName);
     const campId = camp ? camp.id : null;
     console.log('camp ID : ', campId);
-    document.querySelector('#get-camp-id').innerHTML = campId;
 
-    // const campId = document.getElementById('get-camp-id').innerHTML;
     const cardPaymentBtn = document.getElementById('card-payment');
     const depositBtn = document.getElementById('deposit');
     const payBtn = document.getElementById('pay');
@@ -163,6 +162,23 @@
     function payment(paymentMethod) {
       paymentMethod = paymentMethod === 'card' ? 0 : 1;
       console.log(paymentMethod);
+      // 버튼을 누른 이후에 작성된 비상연락처, 요청사항을 가져옴
+      const emergencyContact =
+        document.getElementById('emergencyContact').value;
+      console.log('쵸ㅗㅗㅗㅗㅗ비상', emergencyContact);
+      const requirements = document.getElementById('requirements').value;
+      console.log('요ㅗㅗㅗㅗㅗ청', requirements);
+      var phone = document.getElementById('phone').value;
+
+      // 휴대폰번호 검증 정규식 (https://hanryangitstory.tistory.com/12)
+      const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+
+      if (regPhone.test(emergencyContact) == false) {
+        throw new Error(
+          (status = 400),
+          alert('비상 연락처에는 휴대폰 번호만 입력 가능합니다'),
+        );
+      }
 
       try {
         axios
@@ -174,6 +190,8 @@
             receipt: totalPrice,
             isReview: false,
             type: paymentMethod,
+            emergencyContact: emergencyContact,
+            requirements: requirements,
           })
           .then((response) => {
             alert('예약 완료');

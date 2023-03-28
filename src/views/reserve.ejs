@@ -482,7 +482,7 @@
 
     if (`${numOfPeople}` < 4 && `${numOfAdditionalUsers}` >= 1)
       throw new Error(
-        (status = 401),
+        (status = 400),
         alert('초과 인원은 캠프 기본 할당 인원을 모두 채워야 이용 가능합니다'),
       );
 
@@ -530,7 +530,7 @@
     if (!fields.campName || !fields.totalPeople || !fields.totalPrice)
       throw new Error(
         alert('먼저 원하시는 캠프를 선택해 주십시오.'),
-        (status = 401),
+        (status = 400),
       );
 
     localStorage.setItem('paymentInfo', JSON.stringify(fields));
