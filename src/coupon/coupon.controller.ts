@@ -6,37 +6,31 @@ import {
   Put,
   Param,
   Body,
-  UseGuards,
 } from '@nestjs/common';
-
-import JwtAuthenticationGuard from 'src/auth/jwt-authentication.guard';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { CouponService } from './coupon.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 import { UpdateCouponDto } from './dto/update-coupon.dto';
-import { GiveCouponDto } from './dto/give-coupon.dto';
 
-@UseGuards(AuthGuard('jwt'))
 @ApiTags('coupon')
-@Controller('coupon')
+@Controller('')
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
   // 쿠폰 목록 조회
-  @Get('')
+  @Get('/coupon')
   getCoupons() {
     return this.couponService.getCoupons();
   }
 
   // 쿠폰 상세 조회
-  @Get('/:id')
+  @Get('/coupon/:id')
   getCouponById(@Param('id') couponId: number) {
     return this.couponService.getCouponById(Number(couponId));
   }
 
   // 새로운 쿠폰 등록
-  @Post('')
+  @Post('/coupon')
   createCoupon(@Body() data: CreateCouponDto) {
     return this.couponService.createCoupon(
       data.name,
@@ -45,13 +39,9 @@ export class CouponController {
       data.maxDiscount,
     );
   }
-  @Post('/give')
-  giveCoupon(@Body() data: GiveCouponDto) {
-    return this.couponService.giveCoupon(data.couponId, data.userId);
-  }
 
   // 쿠폰 정보 수정
-  @Put('/:id')
+  @Put('/coupon/:id')
   updateCoupon(@Param('id') couponId: number, @Body() data: UpdateCouponDto) {
     return this.couponService.updateCoupon(
       couponId,
@@ -63,7 +53,7 @@ export class CouponController {
   }
 
   // 쿠폰 삭제
-  @Delete('/:id')
+  @Delete('/coupon/:id')
   deleteCoupon(@Param('id') couponId: number) {
     return this.couponService.deleteCoupon(couponId);
   }
