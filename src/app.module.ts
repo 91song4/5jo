@@ -52,6 +52,7 @@ import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 
+import * as redisStore from 'cache-manager-ioredis';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -71,6 +72,9 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    // CacheModule.register({
+    //   store: redisStore,
+    // }),
     AuthModule,
     CampModule,
     UsersModule,

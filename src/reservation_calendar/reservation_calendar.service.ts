@@ -145,7 +145,7 @@ export class ReservationCalendarService {
 
   // 선택한 날이 오늘을 기준으로 이미 지나간 날짜라면?
   async checkAvailability(date: Date) {
-    // moment 라이브러리 문법
+    // moment 라이브러리 문법. 이전이면? true 아니면? false
     const isPastDate = moment(date).isBefore(moment().format('YYYY-MM-DD'));
     const isMoreThan6Months = moment(date).isAfter(
       moment().add(6, 'months').format('YYYY-MM-DD'),

@@ -32,8 +32,6 @@ export class ReservationCalendarController {
         parsedDate,
       );
 
-    console.log(availableCamps);
-
     return availableCamps;
   }
 }
