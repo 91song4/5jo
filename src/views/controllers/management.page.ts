@@ -6,12 +6,13 @@ import {
   Render,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import JwtAuthenticationGuard from 'src/auth/jwt-authentication.guard';
 import { CampService } from '../../camp/camp.service';
 import { CouponService } from '../../coupon/coupon.service';
 import { OrderService } from '../../order/order.service';
 import { UsersService } from '../../users/users.service';
 
+@UseGuards(JwtAuthenticationGuard)
 @Controller('view')
 export class ManagementPage {
   constructor(

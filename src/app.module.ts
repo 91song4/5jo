@@ -66,6 +66,7 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
       inject: [ConfigService],
     }),
     CacheModule.registerAsync({
+      isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useClass: CacheConfigService,
@@ -86,7 +87,7 @@ import { ReservationCalendarController } from './reservation_calendar/reservatio
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
@@ -97,6 +98,8 @@ export class AppModule implements NestModule {
         { path: 'auth/log-out', method: RequestMethod.POST },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
+        CouponController,
+        ReservationCalendarController,
       );
   }
 }
