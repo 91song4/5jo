@@ -3,7 +3,7 @@ import { Camp } from 'src/camp/camp.entity';
 const seed = [
   {
     id: 1,
-    name: '블루 칼날부리',
+    name: '칼날부리(Red)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -12,7 +12,7 @@ const seed = [
   },
   {
     id: 2,
-    name: '블루 늑대',
+    name: '늑대(Red)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -21,7 +21,7 @@ const seed = [
   },
   {
     id: 3,
-    name: '블루 두꺼비',
+    name: '두꺼비(Red)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -30,7 +30,7 @@ const seed = [
   },
   {
     id: 4,
-    name: '블루 작은골렘',
+    name: '작은골렘(Red)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -39,7 +39,7 @@ const seed = [
   },
   {
     id: 5,
-    name: '블루 레드골렘',
+    name: '블루골렘(Red)',
     type: 2,
     headcount: 4,
     price: 100000,
@@ -48,7 +48,7 @@ const seed = [
   },
   {
     id: 6,
-    name: '블루 블루골렘',
+    name: '레드골렘(Red)',
     type: 2,
     headcount: 4,
     price: 100000,
@@ -57,7 +57,7 @@ const seed = [
   },
   {
     id: 7,
-    name: '레드 칼날부리',
+    name: '칼날부리(Blue)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -66,7 +66,7 @@ const seed = [
   },
   {
     id: 8,
-    name: '레드 늑대',
+    name: '늑대(Blue)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -75,7 +75,7 @@ const seed = [
   },
   {
     id: 9,
-    name: '레드 두꺼비',
+    name: '두꺼비(Blue)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -84,7 +84,7 @@ const seed = [
   },
   {
     id: 10,
-    name: '레드 작은골렘',
+    name: '작은골렘(Blue)',
     type: 1,
     headcount: 4,
     price: 50000,
@@ -93,7 +93,7 @@ const seed = [
   },
   {
     id: 11,
-    name: '레드 레드골렘',
+    name: '블루골렘(Blue)',
     type: 2,
     headcount: 4,
     price: 100000,
@@ -102,7 +102,7 @@ const seed = [
   },
   {
     id: 12,
-    name: '레드 블루골렘',
+    name: '레드골렘(Blue)',
     type: 2,
     headcount: 4,
     price: 100000,

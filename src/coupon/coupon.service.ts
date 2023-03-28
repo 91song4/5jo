@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Coupon } from './coupon.entity';
+import { GiveCoupon } from './give.coupon.entiry';
 @Injectable()
 export class CouponService {
   constructor(
     @InjectRepository(Coupon)
     private readonly couponRepository: Repository<Coupon>,
+    @InjectRepository(GiveCoupon)
+    private readonly giveCouponRepository: Repository<GiveCoupon>,
   ) {}
 
   // 쿠폰 목록 조회
@@ -23,6 +26,7 @@ export class CouponService {
       const coupon = await this.couponRepository.findOne({
         where: { id },
       });
+
       return coupon;
     } catch (err) {
       console.log(err);
@@ -50,6 +54,20 @@ export class CouponService {
       maxDiscount,
     });
     return coupon;
+  }
+
+  // 유저에게 쿠폰 지급
+  async giveCoupon(userId: number, couponId: number) {
+    const { dateOfUse } = await this.getCouponById(couponId);
+    let date = new Date();
+    date.setDate(date.getDate() + Number(dateOfUse) * 30);
+    const giveCoupon = await this.giveCouponRepository.insert({
+      couponId,
+      userId,
+      isUsed: false,
+      endDate: date,
+    });
+    return giveCoupon;
   }
 
   // 쿠폰 정보 수정

@@ -143,8 +143,13 @@
     let isAPICalled = false;
     // 클릭한 날짜를 서버에 넘겨주기
     function handleDateClick(event) {
+      // 월, 일 표현시에 최소 두자리가 될 수 있도록 함.
       let clickedDate =
-        currentYear + '-' + (currentMonth + 1) + '-' + event.target.textContent;
+        currentYear +
+        '-' +
+        (currentMonth + 1).toString().padStart(2, '0') +
+        '-' +
+        event.target.textContent.toString().padStart(2, '0');
 
       if (!isAPICalled) {
         isAPICalled = true;

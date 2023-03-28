@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { ReviewService } from 'src/review/review.service';
 
@@ -83,11 +84,5 @@ export class HomePage {
       userId: req.user.id,
       socketChat: this.configService.get('SOCKET_NAMESPACE_CHAT'),
     };
-  }
-
-  @Get('/payment')
-  @Render('index')
-  async payment() {
-    return { components: 'payment' };
   }
 }

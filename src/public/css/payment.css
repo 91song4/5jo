@@ -1,0 +1,182 @@
+.about_section {
+  color: black;
+}
+
+tr {
+  font-size: large;
+}
+
+.price-wrap {
+  margin-top: 200px;
+  margin-bottom: 200px;
+}
+
+.div-wrap td,
+.price-wrap,
+.payment-wrap,
+.div-wrap {
+  font-size: 24px;
+  font-family: 'Gowun Dodum', sans-serif;
+  text-shadow: 0px 1px 0px #000000;
+}
+
+.price-wrap {
+  width: 500px;
+  margin: 100px auto 0px auto;
+  font-size: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+hr {
+  width: 60%;
+}
+
+.hr-solid {
+  border: 0px;
+  border-top: 5px solid #8fd8a5;
+  margin: 100px auto 50px auto;
+}
+
+.div-wrap {
+  background-color: #f5fcf0;
+  padding: 30px;
+  margin-top: 200px;
+  /* 3단논법 같은거임 기억 안나면 다시 써보자 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.user-info {
+  width: 700px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  /* 텍스트 높낮이 중앙정렬 */
+  align-items: center;
+
+  width: 100%;
+}
+
+.info-title {
+  width: 200px;
+}
+
+.info-content {
+  width: 500px;
+}
+
+.payment-wrap {
+  width: 700px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.request-from-user {
+  vertical-align: middle;
+  width: 100%;
+  height: 100px;
+  resize: none;
+}
+
+.div-wrap button {
+  border-radius: 5px;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #5c5c5c;
+}
+
+.coupon-btn {
+  font-size: 24px;
+  padding: 10px 20px;
+
+  background-color: #f1c183;
+  border: 1px solid #f3ad84;
+}
+
+.coupon-btn:hover {
+  background-color: #ffa43b;
+}
+
+.rules-wrap {
+  width: 500px;
+  margin: 0px auto 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.payment-rules {
+  width: 170px;
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #ffdcee;
+  border: 1px solid #ffeef7;
+}
+
+.payment-rules:hover {
+  background-color: #ffc0e0;
+}
+
+.payment {
+  width: 250px;
+  border-radius: 20px;
+  font-size: 40px;
+  padding: 10px 20px;
+
+  background-color: #f18383;
+  border: 1px solid #f3ad84;
+}
+
+.payment:hover {
+  background-color: #ff6a6a;
+}
+
+.updown {
+  border: 3px dashed #b3acac;
+  width: 0.1px;
+  height: 600px;
+}
+
+.total-price {
+  margin-left: 150px;
+}
+
+.emergencyPhone {
+  vertical-align: middle;
+  text-align: center;
+  width: 500px;
+  resize: none;
+}
+
+.payment-rules.active {
+  background-color: rgb(255, 129, 129);
+  position: relative;
+  top: 6px;
+}
+
+@media (max-width: 1700px) {
+  .user-info,
+  .payment-wrap {
+    width: 100% !important;
+  }
+
+  .user-info {
+    margin-bottom: 100px;
+  }
+
+  .updown {
+    display: none;
+  }
+}
