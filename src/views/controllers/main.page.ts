@@ -81,7 +81,7 @@ export class HomePage {
   async chatting(@Req() req) {
     return {
       components: 'chatting',
-      userId: req.user.id,
+      userId: req.user,
       socketChat: this.configService.get('SOCKET_NAMESPACE_CHAT'),
     };
   }
