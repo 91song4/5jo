@@ -47,7 +47,9 @@ import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
 import { TestModule } from './test/test.module';
+import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 
+import * as redisStore from 'cache-manager-ioredis';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -62,10 +64,14 @@ import { TestModule } from './test/test.module';
       inject: [ConfigService],
     }),
     CacheModule.registerAsync({
+      isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
+    // CacheModule.register({
+    //   store: redisStore,
+    // }),
     AuthModule,
     CampModule,
     UsersModule,
@@ -94,6 +100,7 @@ export class AppModule implements NestModule {
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
         CouponController,
+        ReservationCalendarController,
       );
   }
 }

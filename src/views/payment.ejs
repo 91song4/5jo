@@ -1,5 +1,108 @@
+<body class="sub_page">
+  <!-- about section -->
+  <section class="about_section layout_padding">
+    <div class="about_container">
+      <div class="d-flex justify-content-center">
+        <h2 class="custom_heading">결제</h2>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">캠프명</th>
+            <th scope="col">이용 날짜</th>
+            <th scope="col">이용 인원</th>
+            <th scope="col">총 금액</th>
+            <th scope="col">쿠폰</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="campName"></td>
+            <td class="selectedDay"></td>
+            <td class="totalPeople"></td>
+            <td class="price"></td>
+            <td class="coupon"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <div class="price-wrap">
+          <div>총 결제 금액 :</div>
+          <div class="total-price">asdasd</div>
+          <p>원</p>
+        </div>
+      </div>
+      <hr class="hr-solid" />
+      <div class="div-wrap">
+        <div class="user-info">
+          <div class="info-wrap">
+            <div class="info-title">예약자명 :</div>
+            <div class="info-content">이진석</div>
+          </div>
+          <div class="info-wrap">
+            <div class="info-title">생년월일 :</div>
+            <div class="info-content">1996-01-25</div>
+          </div>
+          <div class="info-wrap">
+            <div class="info-title">연락처 :</div>
+            <div class="info-content">010-5434-4425</div>
+          </div>
+          <div class="info-wrap">
+            <div class="info-title">비상연락처 :</div>
+            <div class="info-content">010-5434-4425</div>
+          </div>
+          <div class="info-wrap">
+            <div class="info-title">이메일 :</div>
+            <div class="info-content">fimjsl47@gmail.com</div>
+          </div>
+          <div class="info-wrap">
+            <div class="info-title">요청사항 :</div>
+            <div class="info-content">
+              <textarea
+                class="request-from-user"
+                maxlength="60"
+                rows="1"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="updown"></div>
+        <div class="payment-wrap">
+          <div>
+            <button class="coupon-btn">쿠폰 선택하기</button>
+          </div>
+          <div class="rules-wrap">
+            <button class="payment-rules">카드 결제</button>
+            <button class="payment-rules">무통장 입금</button>
+          </div>
+          <div>
+            <button class="payment">결제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
 <script>
-  const campName = localStorage.getItem('campName');
-  const totalPeople = localStorage.getItem('totalPeople');
-  const totalPrice = localStorage.getItem('totalPrice');
+  document.addEventListener('DOMContentLoaded', function () {
+    getPaymentInfo();
+  });
+
+  // 결제정보를 HTML에 뿌려주는 함수
+  function getPaymentInfo() {
+    const { campName, selectedDay, totalPeople, totalPrice } = JSON.parse(
+      localStorage.getItem('paymentInfo'),
+    );
+    // 문자열 3개마다 쉼표 넣어주고 변수에 담음
+    const totalPriceWithCommas = totalPrice.toLocaleString('ko-KR');
+    const tableRow = document.querySelector('tbody tr');
+    tableRow.querySelector('.campName').innerHTML = campName;
+    tableRow.querySelector('.selectedDay').innerHTML = selectedDay;
+    tableRow.querySelector('.totalPeople').innerHTML = `${totalPeople} 명`;
+    tableRow.querySelector('.price').innerHTML = `${totalPriceWithCommas} 원`;
+    tableRow.querySelector('.coupon').innerHTML = '사용하지 않음';
+  }
+
+  function getUserInfo() {}
 </script>

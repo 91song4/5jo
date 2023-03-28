@@ -1,10 +1,14 @@
 import { Controller, Get, Param, Render, Req, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('view')
 export class HomePage {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
+  ) {}
   // @Get('/home')
   // @Render('index')
   // async home() {

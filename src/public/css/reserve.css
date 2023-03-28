@@ -68,7 +68,6 @@ hr {
 .payment-btn {
   border-radius: 5px;
   display: inline-block;
-  cursor: pointer;
   color: #000;
   font-family: Arial;
   text-decoration: none;
@@ -98,7 +97,7 @@ hr {
   background-color: #ff6363;
 }
 
-input {
+.table-wrap input {
   text-align: center;
   width: 100px;
   height: 32px;
@@ -110,4 +109,8 @@ input {
   padding-left: 10px;
 
   background-color: rgb(201, 201, 201);
+}
+
+button:disabled {
+  background-color: rgb(209, 55, 55);
 }
