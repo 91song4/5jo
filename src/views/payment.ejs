@@ -161,14 +161,10 @@
 
     function payment(paymentMethod) {
       paymentMethod = paymentMethod === 'card' ? 0 : 1;
-      console.log(paymentMethod);
       // 버튼을 누른 이후에 작성된 비상연락처, 요청사항을 가져옴
       const emergencyContact =
         document.getElementById('emergencyContact').value;
-      console.log('쵸ㅗㅗㅗㅗㅗ비상', emergencyContact);
       const requirements = document.getElementById('requirements').value;
-      console.log('요ㅗㅗㅗㅗㅗ청', requirements);
-      var phone = document.getElementById('phone').value;
 
       // 휴대폰번호 검증 정규식 (https://hanryangitstory.tistory.com/12)
       const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
