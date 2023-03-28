@@ -50,7 +50,7 @@ export class createOrdersTable1677691103047 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'type',
+            name: 'requirements',
             type: 'varchar',
             length: '60',
             isNullable: true,
