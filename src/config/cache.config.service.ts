@@ -17,8 +17,6 @@ export class CacheConfigService implements CacheOptionsFactory {
       port: this.configService.get<number>('REFRESHTOKEN_PORT'),
       password: this.configService.get<string>('REFRESHTOKEN_PASSWORD'),
       ttl: this.configService.get<number>('REFRESHTOKEN_EXP'),
-      // username: this.configService.get('REFRESHTOKEN_USERNAME'),
-      // isGlobal: true,
     };
   }
 }

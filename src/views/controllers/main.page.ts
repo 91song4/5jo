@@ -1,13 +1,22 @@
-import { Controller, Get, Param, Render, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Render,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { ReviewService } from 'src/review/review.service';
 
 @Controller('view')
 export class HomePage {
   constructor(
     private readonly configService: ConfigService,
-    private readonly jwtService: JwtService,
+    private readonly reviewService: ReviewService,
   ) {}
   // @Get('/home')
   // @Render('index')
@@ -41,8 +50,17 @@ export class HomePage {
 
   @Get('/community')
   @Render('index')
-  async community() {
-    return { components: 'community' };
+  async community(@Query('page') page = 1, @Query('limit') limit = 5) {
+    const reviews = await this.reviewService.paginate(
+      Number(page ?? '1'),
+      Number(limit ?? '5'),
+    );
+    return {
+      components: 'community',
+      reviews: reviews.data,
+      reviewsMeta: reviews.meta,
+      reviewsCreatedAt: reviews.createdAt,
+    }; //이쪽
   }
 
   @Get('/inquiry')
