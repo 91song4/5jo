@@ -65,8 +65,7 @@ export class ReviewController {
 
   // 리뷰 삭제
   @Delete(':id')
-  async deleteReview(@Param('id') reviewId: number, @Req() req: any) {
-    const userId: number = parseInt(req.user, 10);
-    return await this.reviewService.deleteReview(reviewId, userId);
+  async deleteReview(@Param('id') reviewId: number) {
+    return await this.reviewService.deleteReview(reviewId);
   }
 }

@@ -104,6 +104,7 @@ export class AppModule implements NestModule {
         { path: 'view/mypage', method: RequestMethod.ALL },
         { path: 'view/chatting', method: RequestMethod.GET },
         { path: 'auth/log-out', method: RequestMethod.POST },
+        { path: 'auth/me', method: RequestMethod.GET },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
         CouponController,

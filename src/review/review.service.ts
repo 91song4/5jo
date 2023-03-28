@@ -100,21 +100,7 @@ export class ReviewService {
   }
 
   //리뷰 삭제
-  async deleteReview(id: number, userId: number) {
-    const review = await this.reviewRepository.findOne({
-      relations: {
-        orders: true,
-      },
-      where: { id },
-    });
-
-    if (!review) {
-      throw new NotFoundException();
-    }
-
-    if (userId !== +review.orders.userId) {
-      throw new UnauthorizedException();
-    }
+  async deleteReview(id: number) {
     this.reviewRepository.softDelete(id);
     return id;
   }
