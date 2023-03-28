@@ -169,7 +169,7 @@
       // 휴대폰번호 검증 정규식 (https://hanryangitstory.tistory.com/12)
       const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
 
-      if (regPhone.test(emergencyContact) == false) {
+      if (emergencyContact && regPhone.test(emergencyContact) == false) {
         throw new Error(
           (status = 400),
           alert('비상 연락처에는 휴대폰 번호만 입력 가능합니다'),
