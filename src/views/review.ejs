@@ -19,16 +19,16 @@
 
     // 수정버튼
     updateBtn.addEventListener('click', async () => {
+      const { data: userId } = await axios.get('/api/auth/me');
       const { data } = await axios.get('/api/auth/user', {
         params: {
           whereColumns: { userId: reviewUserId.value },
           selectColumns: ['id'],
         },
       });
-
-      if (!data.id) {
+      if (!data.id || +data.id !== userId) {
         alert('권한이 없습니다!');
-        window.location.href = '/view/community';
+        return (window.location.href = '/view/community');
       }
 
       reviewTitle.disabled = false;
@@ -47,7 +47,20 @@
     });
 
     // 삭제버튼
-    deleteBtn.addEventListener('click', () => {
+    deleteBtn.addEventListener('click', async () => {
+      debugger;
+      const { data: userId } = await axios.get('/api/auth/me');
+      const { data } = await axios.get('/api/auth/user', {
+        params: {
+          whereColumns: { userId: reviewUserId.value },
+          selectColumns: ['id'],
+        },
+      });
+      if (!data.id || +data.id !== userId) {
+        alert('권한이 없습니다!');
+        return (window.location.href = '/view/community');
+      }
+
       axios.delete(`/api/reviews/${reviewId}`).then(() => {
         window.location.href = '/view/community';
       });
