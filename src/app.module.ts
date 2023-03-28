@@ -47,6 +47,10 @@ import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
 import { TestModule } from './test/test.module';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
+import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 
 @Module({
   imports: [
@@ -62,6 +66,7 @@ import { TestModule } from './test/test.module';
       inject: [ConfigService],
     }),
     CacheModule.registerAsync({
+      isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useClass: CacheConfigService,
@@ -82,7 +87,7 @@ import { TestModule } from './test/test.module';
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
@@ -94,6 +99,7 @@ export class AppModule implements NestModule {
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
         CouponController,
+        ReservationCalendarController,
       );
   }
 }

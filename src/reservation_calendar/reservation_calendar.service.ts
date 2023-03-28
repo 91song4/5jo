@@ -122,7 +122,7 @@ export class ReservationCalendarService {
   async isReservationPossible(date: Date) {
     // 해당 날짜에 예약 가능한 캠핑장 목록을 가져옴.
     const availableCamps = await this.getAvailableCamps(date);
-    console.log('예약되어 있는 캠프 : ', availableCamps.length);
+    console.log('예약되어 있는 캠프 수 : ', availableCamps.length);
 
     // 해당 날짜에 이미 예약된 캠핑장 목록을 가져옴.
     const existingReservations = await this.getExistingReservations(date);
@@ -140,7 +140,7 @@ export class ReservationCalendarService {
         '이미 예약이 모두 완료된 날짜입니다. 다시 선택해주세요',
       );
     }
-    return returned;
+    return { availableCamps, returned };
   }
 
   // 선택한 날이 오늘을 기준으로 이미 지나간 날짜라면?
