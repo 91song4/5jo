@@ -50,6 +50,7 @@ import { TestModule } from './test/test.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
+import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 
 @Module({
   imports: [
@@ -94,7 +95,7 @@ import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 export class AppModule implements NestModule {
   configure(consumer) {
     consumer
-      .apply(JwtAuthenticationGuard)
+      .apply(AuthMiddleware)
       .exclude('auth')
       .exclude({ path: 'camps', method: RequestMethod.GET })
       .exclude({ path: 'coupon', method: RequestMethod.GET })
