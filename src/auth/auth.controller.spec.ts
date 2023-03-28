@@ -10,7 +10,9 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import * as mocks from 'node-mocks-http';
 
+// 전체적인 바구니describe
 describe('AuthController', () => {
+  // 어떤것을 테스트해줄 것인지 적어줌
   let authController: AuthController;
 
   const mockAuthService = {
@@ -26,6 +28,7 @@ describe('AuthController', () => {
     deleteUser: jest.fn(),
   };
 
+  // 테스트마다 한번씩 실행해주는 친구 - beforeEach
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
@@ -38,7 +41,9 @@ describe('AuthController', () => {
     authController = module.get<AuthController>(AuthController);
   });
 
+  // 제일 큰 바구니 안에 또 바구니가 들어가 있는것
   describe('getUserSelect()', () => {
+    // ''안에 있는건 설명해준것
     it('탐색조건, 가져올 컬럼 선택해서 유저정보찾기', async () => {
       // Given
       const getUserSelectDto: GetUserSelectDto = {
@@ -53,7 +58,7 @@ describe('AuthController', () => {
 
       mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
 
-      // When
+      // When 어떤걸 테스트 하고 싶은지
       const expected = await authController.getUserSelect(getUserSelectDto);
 
       // Then
@@ -377,6 +382,7 @@ describe('AuthController', () => {
     });
   });
 
+  // 테스트가 끝나고 한번 실행
   afterEach(async () => {
     jest.clearAllMocks();
     // jest.resetAllMocks();
