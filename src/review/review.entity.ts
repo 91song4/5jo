@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { Order } from 'src/order/order.entity';
+import { Order } from '../order/order.entity';
 import {
   Column,
   CreateDateColumn,

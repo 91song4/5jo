@@ -18,6 +18,7 @@
             password: password.value,
           })
           .then((response) => {
+            localStorage.setItem('isLogin', true);
             window.location.href = '/';
           })
           .catch((error) => {

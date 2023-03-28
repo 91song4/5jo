@@ -1,13 +1,11 @@
-import { Order } from 'src/order/order.entity';
-import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
+import { Order } from '../order/order.entity';
+import { ReservationCalendar } from '../reservation_calendar/reservation_calendar.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,7 +33,7 @@ export class Camp {
   isRepair: boolean;
 
   @Column()
-  repairEndDate: Date | null;
+  repairEndDate: null | Date;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -49,12 +47,9 @@ export class Camp {
   @OneToMany(() => Order, (order) => order.camp, { onDelete: 'CASCADE' })
   orders: Order[];
 
-  @OneToOne(
+  @OneToMany(
     () => ReservationCalendar,
     (reservationCalendar) => reservationCalendar.camp,
-    {
-      onDelete: 'CASCADE',
-    },
   )
-  reservationCalendar: ReservationCalendar;
+  reservationCalendar: ReservationCalendar[];
 }

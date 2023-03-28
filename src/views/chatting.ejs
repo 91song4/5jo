@@ -37,15 +37,13 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
-    const userId = localStorage.getItem('userId');
+    const userId = <%- userId %>;
 
     /**
      * 유저 이름 가져오기 API
      * return {then: response.data.name = userName, catch: response.data.name = undefined}
      */
-    let {
-      data: { name: userName },
-    } = await axios.get('/api/auth/user', {
+    let { data: {name:userName} } = await axios.get('/api/auth/user', {
       params: {
         whereColumns: { id: userId },
         selectColumns: ['name'],

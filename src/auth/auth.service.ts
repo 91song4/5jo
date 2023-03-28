@@ -9,24 +9,18 @@ import {
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LoginUserDto } from './dtos/login-user.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
-import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
-import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { use } from 'passport';
-import e from 'express';
-import { em } from '@fullcalendar/core/internal-common';
 
 dotenv.config();
 
@@ -35,7 +29,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    private readonly jwtService: JwtService, // private smsService: SmsService,
+    private readonly jwtService: JwtService,
+    private smsService: SmsService,
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {}
@@ -54,11 +49,11 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
-    let id = req.user.id;
-    let name = req.user.name;
-    let email = req.user.email;
+    const id = req.user.id;
+    const name = req.user.name;
+    const email = req.user.email;
     // 1. 회원조회
-    let user = await this.userService.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     // 2, 회원가입이 안되어있다면? 회원가입페이지로 이동
     if (!user) {
       return res.render('index', {
@@ -70,7 +65,7 @@ export class AuthService {
     }
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
     const accessToken = await this.createAccessToken(user.id);
-    const refreshToken = await this.createRefreshToken();
+    const refreshToken = await this.createRefreshToken(user.id);
     await this.cacheManager.set(refreshToken, user.id);
 
     res.cookie('accessToken', accessToken);
@@ -96,14 +91,22 @@ export class AuthService {
    * @password 비밀번호
    */
   async login(userData, { refreshToken: refreshTokenCookie = undefined }) {
-    console.log(userData);
     if (refreshTokenCookie) {
       await this.cacheManager.del(refreshTokenCookie);
     }
 
     const accessToken = await this.createAccessToken(userData.id);
-    const refreshToken = await this.createRefreshToken();
-    await this.cacheManager.set(refreshToken, userData.id);
+    const refreshToken = await this.createRefreshToken(userData.id);
+
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      Number.parseInt(saltRound) ?? 10,
+    );
+
+    await this.cacheManager.set(userData.id, {
+      hashedRefreshToken,
+    });
 
     return { accessToken, refreshToken };
   }
@@ -111,8 +114,8 @@ export class AuthService {
   /**로그아웃
    * @refreshToken
    */
-  async logout({ refreshToken }) {
-    await this.cacheManager.del(refreshToken);
+  async logout(id) {
+    await this.cacheManager.del(id);
   }
 
   /** 회원가입
@@ -223,29 +226,25 @@ export class AuthService {
       select: [...selectColumns],
       where: { ...whereColumns },
     });
+
     return userData;
   }
 
-  async sendSMS() {
-    await this.cacheManager.set('01012341234', 123123);
-    return 123123;
+  async sendSMS(phone: string) {
+    const certificationNumber = await this.smsService.sendSMS(phone);
+    await this.cacheManager.set(phone, certificationNumber);
+    setTimeout(async () => {
+      if (await this.cacheManager.get(phone)) {
+        this.cacheManager.del(phone);
+      }
+    }, 1000 * 60 * 3);
+
+    return certificationNumber;
   }
-
-  // async sendSMS(phone: string) {
-  //   const certificationNumber = await this.smsService.sendSMS(phone);
-  //   await this.cacheManager.set(phone, certificationNumber);
-  //   setTimeout(async () => {
-  //     if (await this.cacheManager.get(phone)) {
-  //       this.cacheManager.del(phone);
-  //     }
-  //   }, 1000 * 60 * 3);
-
-  //   return certificationNumber;
-  // }
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === certificationNumberDB;
+    const isAuthentication = certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;
@@ -263,8 +262,11 @@ export class AuthService {
   }
 
   /** JWT Refresh Token 생성 함수 */
-  private async createRefreshToken() {
-    const refreshToken = await this.jwtService.sign({}, { expiresIn: '23h' });
+  private async createRefreshToken(id: number) {
+    const refreshToken = await this.jwtService.sign(
+      { id },
+      { expiresIn: '23h' },
+    );
     return refreshToken;
   }
 }
