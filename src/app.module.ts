@@ -51,6 +51,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
+import { ReviewController } from './review/review.controller';
 
 import * as redisStore from 'cache-manager-ioredis';
 @Module({
@@ -91,19 +92,23 @@ import * as redisStore from 'cache-manager-ioredis';
   providers: [AppService, AuthMiddleware],
 })
 export class AppModule implements NestModule {
-  configure(consumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')
       .exclude({ path: 'camps', method: RequestMethod.GET })
       .exclude({ path: 'coupon', method: RequestMethod.GET })
+      .exclude({ path: 'view', method: RequestMethod.GET })
+      .exclude({ path: 'reviews/:id', method: RequestMethod.GET })
       .forRoutes(
         { path: 'view/mypage', method: RequestMethod.ALL },
+        { path: 'view/chatting', method: RequestMethod.GET },
         { path: 'auth/log-out', method: RequestMethod.POST },
         { path: 'auth/withdrawal', method: RequestMethod.DELETE },
         CampController,
         CouponController,
         ReservationCalendarController,
+        ReviewController,
       );
   }
 }

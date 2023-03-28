@@ -8,7 +8,4 @@ export class UpdateReviewDto extends PartialType(CreateReviewDto) {
 
   @IsString()
   readonly content: string;
-
-  @IsNumber()
-  readonly password: string;
 }
