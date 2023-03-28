@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CampRepository } from './camp.repository';
 import { Camp } from './camp.entity';
 import { Repository } from 'typeorm';
 @Injectable()
@@ -15,10 +16,14 @@ export class CampService {
 
   // 캠프 상세 조회
   async getCampById(id: number) {
-    const camp = await this.campRepository.findOne({
-      where: { id },
-    });
-    return camp;
+    try {
+      const camp = await this.campRepository.findOne({
+        where: { id },
+      });
+      return camp;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // 새로운 캠프 등록

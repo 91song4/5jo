@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../users/users.entity';
+import { User } from 'src/users/users.entity';
 
 @Entity({ schema: 'glamping', name: 'Admins' })
 export class Admin {

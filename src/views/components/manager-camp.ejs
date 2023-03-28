@@ -11,7 +11,7 @@
       <th>상세정보</th>
     </thead>
     <tbody></tbody>
-      <% for(let i = 0; i<camps.length; i++){ %>
+      <% for(let i = 0; i<camps.length; i++){ %>  //여기사부터
       <tr> 
         <td><%=camps[i].name%></td>
         <td><%=camps[i].type%></td>
@@ -21,6 +21,6 @@
         <% } else {%><td>수리중</td><%}%>
         <td><button class="btn btn-outline-dark" onclick="location.replace(`/view/management/camp/<%=camps[i].id%>`)">상세보기</button></td>
       </tr>
-      <% } %>
+      <% } %>  여기까지
     </table>
     </div>

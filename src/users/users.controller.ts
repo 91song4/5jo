@@ -10,7 +10,6 @@ import {
   UseGuards,
   Query,
   Req,
-  PreconditionFailedException,
 } from '@nestjs/common';
 import { json } from 'stream/consumers';
 import { CreateUsersInformationDto } from './dto/create-users.dto';
@@ -49,22 +48,17 @@ export class UsersController {
     @Param('id') id: number,
     @Body() data: UpdateUsersInformationDto,
   ) {
-    try {
-      // 해당 유저 정보를 어떤 내용으로 수정할까?
-      console.log(id);
-      this.logger.log(JSON.stringify(data));
+    // 해당 유저 정보를 어떤 내용으로 수정할까?
+    console.log(id);
+    this.logger.log(JSON.stringify(data));
 
-      const result = await this.usersService.updateUsersInformation(
-        id,
-        data.name,
-        data.phone,
-        data.email,
-        data.password,
-      );
-      return result;
-    } catch (error) {
-      throw new PreconditionFailedException(error.message);
-    }
+    return await this.usersService.updateUsersInformation(
+      id,
+      data.name,
+      data.phone,
+      data.email,
+      data.password,
+    );
   }
 
   @UseGuards(AuthGuard('jwt'))

@@ -68,14 +68,14 @@ body {
   left: -45px;
   width: 37px;
   height: 32px;
-  background-image: url(https://cdn.blackpaper.shop/herbal.png);
+  background-image: url(../images/herbal.png);
   background-size: cover;
 }
 
 /*header section*/
 .hero_area {
   height: 98vh;
-  background-image: url(https://cdn.blackpaper.shop/hero.jpg);
+  background-image: url(../images/hero.jpg);
   background-size: cover;
   background-attachment: fixed;
 }
@@ -131,7 +131,7 @@ a:focus {
 }
 
 .custom_nav-container .nav_search-btn {
-  background-image: url(https://cdn.blackpaper.shop/search-icon.png);
+  background-image: url(../images/search-icon.png);
   background-size: 22px;
   background-repeat: no-repeat;
   background-position-y: 7px;
@@ -184,7 +184,7 @@ a:focus {
 }
 
 .custom_nav-container .navbar-toggler .navbar-toggler-icon {
-  background-image: url(https://cdn.blackpaper.shop/menu.png);
+  background-image: url(../images/menu.png);
   background-size: 35px;
 }
 
@@ -241,7 +241,7 @@ a:focus {
   margin-left: auto;
   margin-right: auto;
   padding: 75px 45px;
-  /* background-image: url(https://cdn.blackpaper.shop/about.jpg); */
+  /* background-image: url(../images/about.jpg); */
   background-size: auto 100%;
   background-color: #fff;
   background-position: center;
@@ -360,14 +360,14 @@ a:focus {
 
 .contact_section {
   color: #fff;
-  background: url(https://cdn.blackpaper.shop/contact-bg.jpg);
+  background: url(../images/contact-bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
 .contact_section h2::before {
-  background-image: url(https://cdn.blackpaper.shop/herbal-white.png);
+  background-image: url(../images/herbal-white.png);
 }
 
 .contact_section input {
@@ -514,7 +514,7 @@ a:focus {
 }
 
 .info_section {
-  background-image: url(https://cdn.blackpaper.shop/info-bg.jpg);
+  background-image: url(../images/info-bg.jpg);
   background-size: cover;
   background-attachment: fixed;
 }

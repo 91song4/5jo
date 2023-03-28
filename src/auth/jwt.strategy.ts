@@ -14,9 +14,8 @@ import { Cache } from 'cache-manager';
 const cookieExtracter = (req) => {
   let jwt = null;
   if (req?.cookies) {
-    jwt = req.cookies?.['accessToken'];
+    jwt = req.cookies['accessToken'];
   }
-
   return jwt;
 };
 

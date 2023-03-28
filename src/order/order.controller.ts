@@ -47,7 +47,7 @@ export class OrderController {
   // 유저의 주문 목록 가져오기 ( GET )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '유저의 주문 목록 가져오기' })
-  @Get('/orders/:userId')
+  @Get('/orders/user/:userId')
   async getOrdersByUserId(@Param('userId') userId: number): Promise<Order[]> {
     return this.orderService.getOrdersByUserId(userId);
   }
