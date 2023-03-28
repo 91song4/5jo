@@ -47,6 +47,11 @@ import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
 import { UsersService } from './users/users.service';
 import { ReviewController } from './review/review.controller';
+import { TestModule } from './test/test.module';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
+import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 
 @Module({
   imports: [
@@ -82,10 +87,17 @@ import { ReviewController } from './review/review.controller';
     ReservationCalendarModule,
   ],
   controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
-  providers: [AppService, AuthMiddleware],
+  providers: [
+    AppService,
+    AuthMiddleware,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthenticationGuard,
+    // },
+  ],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth')

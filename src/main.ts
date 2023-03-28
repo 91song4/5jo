@@ -7,13 +7,11 @@ import { AppModule } from './app.module';
 import { RequestMethod } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // app.useWebSocketAdapter(new IoAdapter(app));
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   // prefix 예외처리
-
   app.setGlobalPrefix('api', {
     exclude: [
       { path: '', method: RequestMethod.GET },
@@ -45,7 +43,17 @@ async function bootstrap() {
   await app.listen(port);
 
   // DTO의 유효성 검사 코드
-  app.useGlobalPipes(new ValidationPipe({ transform: true })); // 이 한줄만 넣어주면 됩니다! 잊지마세요!
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  ); // 이 한줄만 넣어주면 됩니다! 잊지마세요!
+
+  // 전역 가드 설정
+  // app.useGlobalGuards(new JwtAuthenticationGuard());
+
   console.log(`${port} 서버가 열렸어요`);
 }
 bootstrap();
