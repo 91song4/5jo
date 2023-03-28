@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
@@ -17,38 +18,53 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: any, res: any, next: (error?: any) => void) {
     const { accessToken, refreshToken } = req.cookies;
 
-    if (!refreshToken) {
-      throw new UnauthorizedException('Refresh Token이 존재하지 않습니다.');
-    }
     if (!accessToken) {
       throw new UnauthorizedException('Access Token이 존재하지 않습니다.');
     }
+    const { id }: any = await this.jwtService.decode(accessToken);
 
-    const isAccessTokenValidate = await this.validateToken(accessToken);
+    if (!refreshToken) {
+      await this.cacheManager.del(id);
+      throw new UnauthorizedException('Refresh Token이 존재하지 않습니다.');
+    }
+
     const isRefreshTokenValidate = await this.validateToken(refreshToken);
+    const isAccessTokenValidate = await this.validateToken(accessToken);
 
-    const accessTokenId = await this.cacheManager.get(refreshToken);
+    if (!isRefreshTokenValidate) {
+      await this.cacheManager.del(id);
+      throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
+    }
 
-    if (!accessTokenId) {
+    const hashedRefreshToken: any = await this.cacheManager.get(id);
+
+    if (!hashedRefreshToken) {
       throw new UnauthorizedException(
         'Refresh Token의 정보가 서버에 존재하지 않습니다.',
       );
     }
 
-    if (!isRefreshTokenValidate) {
-      throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
+    const compareRefreshToken: boolean = await bcrypt.compare(
+      refreshToken,
+      hashedRefreshToken.hashedRefreshToken,
+    );
+
+    if (!compareRefreshToken) {
+      await this.cacheManager.del(id);
+      throw new UnauthorizedException('Refresh Token이 일치하지 않습니다.');
     }
 
     if (!isAccessTokenValidate) {
       try {
         const newAccessToken = await this.jwtService.signAsync({
-          id: accessTokenId,
+          id,
         });
-        res.cookie('accessToken', newAccessToken);
+        res.cookie('accessToken', newAccessToken, { httpOnly: true });
       } catch (error) {
         throw error;
       }
     }
+
     next();
   }
 

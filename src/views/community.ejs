@@ -1,60 +1,37 @@
-<body>
-  <section class="client_section layout_padding">
-    <div class="d-flex justify-content-center">
-      <h2 class="custom_heading">이용 후기</h2>
-    </div>
-    <br />
-    <div class="client_container" style="display: inherit">
-      <div>
+  <body class="sub_page">
+    
+    <!-- end hero area -->
+
+    <!-- client section -->
+    <section class="client_section layout_padding">
+      <div class="d-flex justify-content-center">
+        <h2 class="custom_heading">후기</h2>
+      </div></br>
+      <div class="client_container">
         <table class="table">
           <thead>
             <tr>
               <th scope="col">번호</th>
-              <th scope="col">제목</th>
+              <th scope="col" colspan="2">제목</th>
               <th scope="col">작성자</th>
-              <th scope="col">생성일자</th>
             </tr>
           </thead>
-          <tbody id="review-list">
-            <% for(let i = 0 ; i < reviews.length; i++){ %>
+          <tbody>
             <tr>
-              <td><%= ((reviewsMeta.page - 1) * 5 + 1 ) + i %></td>
-              <td><%= reviews[i].title %></td>
-              <td><%= reviews[i].userId %></td>
-              <td><%= reviewsCreatedAt[i] %></td>
-              <td>
-                <button
-                  class="btn btn-outline-dark"
-                  onclick="location.replace('/view/review/' + <%= reviews[i].id %>)"
-                >
-                  상세보기
-                </button>
-              </td>
+              <th scope="row">1</th>
+              <td colspan="2">예시 1번</td>
+              <td>상우</td>
             </tr>
-            <% } %>
+            <tr>
+              <th scope="row">2</th>
+              <td colspan="2">예시 2번</td>
+              <td>유</td>
+            </tr>
+
           </tbody>
         </table>
       </div>
-      <div>
-        <ul id="pagination">
-          <li></li>
-        </ul>
-      </div>
-    </div>
-    <button onclick="location.href='/view/community?page=1&limit=5'">
-      글작성
-    </button>
-    <div class="pagination"></div>
-  </section>
-</body>
-<script>
-  console.log('<%- reviewsMeta.page %>');
-  const totalPage = parseInt('<%- reviewsMeta.lastPage %>', 10);
-  const pageNationLi = document.querySelector('#pagination li');
-  for (let i = 1; i <= totalPage; ++i) {
-    const a = document.createElement('a');
-    a.href = `/view/community?page=${i}&limit=5`;
-    a.textContent = i + ' ';
-    pageNationLi.appendChild(a);
-  }
-</script>
+    </section>
+
+  </body>
+</html>

@@ -1,47 +1,27 @@
 import _ from 'lodash';
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './review.entity';
 import { Repository } from 'typeorm';
-import {
-  paginate,
-  Pagination,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { number } from 'joi';
 
 @Injectable()
 export class ReviewService {
-  reviewService: any;
   constructor(
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
   ) {}
 
   // 리뷰 목록 조회
-  async paginate(page: number = 1, limit: number = 5): Promise<any> {
-    // console.log((page - 1) * limit);
-    const [review, total] = await this.reviewRepository.findAndCount({
-      select: ['id', 'userId', 'title', 'createdAt'],
-      take: limit,
-      skip: (page - 1) * limit,
+  async getReviews() {
+    return await this.reviewRepository.find({
+      where: { deletedAt: null },
+      select: ['id', 'content', 'title'],
     });
-
-    const createdAt = review.map((element) => {
-      const year = element.createdAt.getFullYear();
-      const month = element.createdAt.getMonth();
-      const date = element.createdAt.getDate();
-      return `${year}-${month}-${date}`;
-    });
-
-    return {
-      data: review,
-      meta: {
-        total,
-        page,
-        lastPage: Math.ceil(total / limit),
-      },
-      createdAt,
-    };
   }
 
   //리뷰 상세 조회
@@ -69,7 +49,6 @@ export class ReviewService {
       title,
       content,
     });
-    return review;
   }
 
   //리뷰 수정

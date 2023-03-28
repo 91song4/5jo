@@ -31,7 +31,7 @@ export class ManagementPage {
   @Render('management')
   async camps() {
     const camps = await this.campService.getCamps();
-    return { component: 'camps', camps }; //여기참고
+    return { component: 'camps', camps };
   }
 
   @Get('/management/camp/register')
