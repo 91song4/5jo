@@ -1,0 +1,14 @@
+<%-include('./components/review-form.ejs') %>
+
+<script>
+  console.log('{userId: <%- userId %>}');
+  const revieTitle = document.querySelector('#review-title');
+  const revieUserId = document.querySelector('#review-userId');
+  const reviewContent = document.querySelector('#review-content');
+  axios.get('/api/reviews/<%- userId%>').then((response) => {
+    console.log(response);
+    revieTitle.value = response.data.title;
+    revieUserId.value = response.data.userId;
+    reviewContent.textContent = response.data.content;
+  });
+</script>
