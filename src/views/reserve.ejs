@@ -44,7 +44,7 @@
         사전 연락 부탁드립니다.
       </div>
       <hr class="hr-solid" />
-      <div>
+      <div class="table-wrap">
         <table id="testTable" class="select-camp">
           <tbody>
             <thead>
@@ -428,7 +428,6 @@
           <div class="d-flex justify-content-center">
             <h2 class="custom_heading">내가 선택한 캠프 확인</h2>
           </div>
-          <p></p>
           <p>캠프명 : <span id="camp-name"></span></p>
           <p>캠프 가격 : <span id="camp-price"></span></p>
           <p>총 인원 : <span id="total-people"></span></p>
@@ -440,7 +439,9 @@
   </section>
 </body>
 <script>
-  $(document).ready(disableUsedCamps());
+  document.addEventListener('DOMContentLoaded', function () {
+    disableUsedCamps();
+  });
 
   // 이미 예약된 캠프를 비활성화하는 함수
   function disableUsedCamps() {
@@ -510,19 +511,20 @@
     }
   }
 
+  // 결제 페이지로 이동하는 함수
   function goingToPay() {
     const campName = document.getElementById('camp-name').innerHTML;
     const totalPeople = Number(
       document.getElementById('total-people').innerHTML,
     );
     const totalPrice = Number(document.getElementById('total-price').innerHTML);
-    const seletedDay = document.location.pathname.split('/')[3];
+    const selectedDay = document.location.pathname.split('/')[3];
 
     const fields = {
       campName,
       totalPeople,
       totalPrice,
-      seletedDay,
+      selectedDay,
     };
 
     if (!fields.campName || !fields.totalPeople || !fields.totalPrice)

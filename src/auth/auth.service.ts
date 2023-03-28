@@ -103,12 +103,11 @@ export class AuthService {
       refreshToken,
       Number.parseInt(saltRound) ?? 10,
     );
+    const userId = userData.id;
 
-    await this.cacheManager.set(userData.id, {
-      hashedRefreshToken,
-    });
+    await this.cacheManager.set(userData.id, { hashedRefreshToken });
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, userId };
   }
 
   /**로그아웃

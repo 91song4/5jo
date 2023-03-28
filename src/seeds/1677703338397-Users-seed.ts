@@ -28,7 +28,7 @@ const seeds = [
   },
 ];
 
-export class UsersSeed1677703338397 implements MigrationInterface {
+export class UsersSeed implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const passwordHashedSeeds = await Promise.all(
       seeds.map(async (seed) => ({

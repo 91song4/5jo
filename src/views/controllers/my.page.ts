@@ -20,4 +20,13 @@ export class MyPage {
     console.log(userInfo);
     return { components: 'mypage', userInfo };
   }
+
+  // 미들웨어 적용가능 or 어스가드 완성 시 main.page.ts로 옮겨가야함
+  @Get('/payment')
+  @UseGuards(AuthGuard('jwt'))
+  @Render('index')
+  async payment(@Req() req: Request) {
+    const userInfo = req.user;
+    return { components: 'payment', userInfo };
+  }
 }
