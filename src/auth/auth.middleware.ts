@@ -36,7 +36,7 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Refresh Token이 만료되었습니다.');
     }
 
-    const hashedRefreshToken: any = await this.cacheManager.get(id);
+    const hashedRefreshToken: any = await this.cacheManager.get(id.toString());
 
     if (!hashedRefreshToken) {
       throw new UnauthorizedException(
