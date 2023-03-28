@@ -7,10 +7,9 @@ axios.interceptors.response.use(
     if (err.response?.status === 401) {
       debugger;
       localStorage.setItem('isLogin', false);
+      axios.delete('/api/auth/redis');
       window.location.href = '/view/login';
     }
-    debugger;
-    axios.delete('/api/auth/redis');
 
     return Promise.reject(error);
   },
