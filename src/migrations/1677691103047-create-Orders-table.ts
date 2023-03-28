@@ -44,6 +44,18 @@ export class createOrdersTable1677691103047 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'emergencyContact',
+            type: 'varchar',
+            length: '15',
+            isNullable: true,
+          },
+          {
+            name: 'type',
+            type: 'varchar',
+            length: '60',
+            isNullable: true,
+          },
+          {
             name: 'createdAt',
             type: 'datetime',
             isNullable: true,

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDateString, IsNumber } from 'class-validator';
+import { IsBoolean, IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class CreateOrderDto {
   @ApiProperty({ example: 1, description: '유저 번호', required: true })
@@ -41,4 +41,10 @@ export class CreateOrderDto {
   })
   @IsNumber()
   readonly type: number;
+
+  @IsString()
+  readonly emergencyContact: string | null;
+
+  @IsString()
+  readonly requirements: string | null;
 }

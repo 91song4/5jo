@@ -33,6 +33,8 @@ export class OrderController {
       body.receipt,
       body.isReview,
       body.type,
+      body.emergencyContact,
+      body.requirements,
     );
   }
 
@@ -70,6 +72,8 @@ export class OrderController {
       body.receipt,
       body.isReview,
       body.type,
+      body.emergencyContact,
+      body.requirements,
     );
   }
 
