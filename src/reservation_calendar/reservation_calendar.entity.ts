@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ schema: 'glamping', name: 'reservation_calendar' })
+@Entity({ schema: 'glamping', name: 'Reservation_Calendar' })
 export class ReservationCalendar {
   @PrimaryGeneratedColumn()
   id: number;

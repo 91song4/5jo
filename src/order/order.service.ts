@@ -91,9 +91,9 @@ export class OrderService {
         U.USERID AS userId,
         O.CAMPID AS ordercampId,
         C.NAME AS CampName
-      FROM ORDERS O
-        INNER JOIN USERS U ON O.USERID = U.ID
-        INNER JOIN CAMPS C ON O.CAMPID = C.ID
+      FROM Orders O
+        INNER JOIN Users U ON O.USERID = U.ID
+        INNER JOIN Camps C ON O.CAMPID = C.ID
       ORDER BY O.id
       LIMIT ${5} OFFSET ${(page - 1) * 5}
     `);
