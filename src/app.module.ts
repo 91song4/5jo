@@ -52,6 +52,8 @@ import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 import { ReviewController } from './review/review.controller';
+import { WeatherService } from './weather/weather.service';
+import { WeatherController } from './weather/weather.controller';
 
 import * as redisStore from 'cache-manager-ioredis';
 @Module({
@@ -88,8 +90,15 @@ import * as redisStore from 'cache-manager-ioredis';
     ReservationCalendarModule,
     TestModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
-  providers: [AppService, AuthMiddleware],
+  controllers: [
+    AppController,
+    ManagementPage,
+    AuthPage,
+    HomePage,
+    MyPage,
+    WeatherController,
+  ],
+  providers: [AppService, AuthMiddleware, WeatherService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
