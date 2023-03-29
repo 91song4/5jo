@@ -84,4 +84,10 @@ export class HomePage {
   async payment() {
     return { components: 'payment' };
   }
+
+  @Get('/community-post')
+  @Render('index')
+  async communitypost() {
+    return { components: 'community-post' };
+  }
 }
