@@ -35,6 +35,7 @@ jobs:
           GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
         with:
           host: ${{ secrets.HOST }}
@@ -62,7 +63,8 @@ jobs:
             GOOGLE_CLIENT_SECRET,
             GOOGLE_CALLBACK_URL,
             TWILIO_ACCOUNT_SID,
-            TWILIO_AUTH_TOKEN
+            TWILIO_AUTH_TOKEN,
+            TWILIO_PHONE_NUMBER
 
           script: |
             # DB 정보
@@ -101,8 +103,8 @@ jobs:
             # Twilio 정보
             export TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
             export TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
+            export TWILIO_PHONE_NUMBER=$TWILIO_PHONE_NUMBER
 
             cd 5jo
-            git switch main
             git pull origin main
             npm run deploy
