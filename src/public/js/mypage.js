@@ -26,6 +26,10 @@ realUpdateBtn.addEventListener('click', () => {
   updateBtn.addEventListener('click', () => {
     const userId = localStorage.getItem('userId');
     try {
+      if (mypagePassword.value === '') {
+        alert('비밀번호를 입력하지 않았습니다.');
+        return (window.location.href = `/view/mypage`);
+      }
       axios
         .put(`/api/users`, {
           name: mypageName.value,

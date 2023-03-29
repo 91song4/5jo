@@ -8,6 +8,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import JwtAuthenticationGuard from 'src/auth/jwt-authentication.guard';
@@ -24,9 +25,9 @@ export class CampController {
 
   // 캠프 목록 조회
   @Get()
-  getCamps() {
+  async getCamps(@Query() query) {
     try {
-      return this.campService.getCamps();
+      return this.campService.getCamps(query.page);
     } catch (err) {
       console.log(err);
     }

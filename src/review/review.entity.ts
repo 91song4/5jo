@@ -13,7 +13,7 @@ import {
 
 // 시퀄라이즈의 마이그레이션 파일을 담당
 
-@Entity({ schema: 'glamping', name: 'reviews' })
+@Entity({ schema: 'glamping', name: 'Reviews' })
 export class Review {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

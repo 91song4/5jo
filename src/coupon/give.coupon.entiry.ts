@@ -10,7 +10,7 @@ import {
 
 // 시퀄라이즈의 마이그레이션 파일을 담당
 
-@Entity({ schema: 'glamping', name: 'users_coupons_mapping' })
+@Entity({ schema: 'glamping', name: 'Users_Coupons_Mapping' })
 export class GiveCoupon {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
