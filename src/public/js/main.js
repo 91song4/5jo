@@ -6,10 +6,9 @@ axios.interceptors.response.use(
     const err = error;
     if (err.response?.status === 401) {
       localStorage.setItem('isLogin', false);
+      axios.delete('/api/auth/redis');
       window.location.href = '/view/login';
     }
-
-    axios.delete('/api/auth/redis');
 
     return Promise.reject(error);
   },

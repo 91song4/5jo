@@ -51,6 +51,12 @@ export class Order {
   @Column()
   type: number;
 
+  @Column('varchar', { length: 20 })
+  emergencyContact: string | null;
+
+  @Column('varchar', { length: 60 })
+  requirements: string | null;
+
   @CreateDateColumn()
   createdAt: Date;
 
