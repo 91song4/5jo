@@ -10,7 +10,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { CacheConfigService } from './config/cache.config.service';
-// import { SmsModule } from './sms/sms.module';
 import { EventsModule } from './events/events.module';
 
 // app
@@ -40,8 +39,8 @@ import { CampController } from './camp/camp.controller';
 import { CouponController } from './coupon/coupon.controller';
 import { HomePage } from './views/controllers/main.page';
 
-// import { SmsService } from './sms/sms.service';
-// import { SmsModule } from './sms/sms.module';
+import { SmsService } from './sms/sms.service';
+import { SmsModule } from './sms/sms.module';
 import { ReservationCalendarModule } from './reservation_calendar/reservation_calendar.module';
 import { ReviewModule } from './review/review.module';
 import { MyPage } from './views/controllers/my.page';
@@ -83,7 +82,7 @@ import * as redisStore from 'cache-manager-ioredis';
     CouponModule,
     AdminModule,
     EventsModule,
-    // SmsModule,
+    SmsModule,
     ReviewModule,
     ReservationCalendarModule,
     TestModule,

@@ -15,6 +15,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
 import { JwtGoogleStrategy } from './jwt-social-google.strategy';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
+import { SmsService } from 'src/sms/sms.service';
 
 @Module({
   imports: [
@@ -44,6 +45,5 @@ import JwtAuthenticationGuard from './jwt-authentication.guard';
     UsersService,
     JwtAuthenticationGuard,
   ],
-  exports: [AuthService, JwtModule, JwtAuthenticationGuard],
 })
 export class AuthModule {}

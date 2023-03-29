@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,6 +20,7 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import { SmsService } from 'src/sms/sms.service';
 
 dotenv.config();
 
@@ -239,7 +239,7 @@ export class AuthService {
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === +certificationNumberDB;
+    const isAuthentication = +certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;
