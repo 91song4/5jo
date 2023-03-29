@@ -1,7 +1,7 @@
 
   <div>캠프 정보 조회 페이지</div>
     <div class="common_form">
-    <table id="camps_info" class="table">
+    <table id="camps_info" class="table table-secondary" style="width: 90%; margin: 25px auto; text-align: center">
     <thead>
       <th>캠프명</th>
       <th>캠프타입</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody></tbody>
       <% for(let i = 0; i<camps.length; i++){ %>
-      <tr> 
+      <tr class="table-light"> 
         <td><%=camps[i].name%></td>
         <td><%=camps[i].type%></td>
         <td><%=camps[i].headcount%></td>
@@ -23,4 +23,102 @@
       </tr>
       <% } %>
     </table>
+    <div
+    id="pagination"
+    class="pagination"
+    style="display: flex; justify-content: center; text-align: center"
+  ></div>
     </div>
+
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+    <script>
+      // 페이지 네이션
+      $(document).ready(function () {
+        let url = new URL(window.location.href);
+        const currentPage = url.searchParams.get('page') || 1;
+  
+        const totalCount = '<%= camps[1] %>';
+  
+        const lastPage = Math.ceil(totalCount / 12);
+        const pagesInPageGroup = 3;
+  
+        // 1~2페이지는 그룹1, 3~4페이지는 그룹2
+        const pageGroup = Math.ceil(currentPage / pagesInPageGroup);
+  
+        // 페이지 그룹1의 마지막 페이지는 2
+        const pageGroupLast =
+          pageGroup * pagesInPageGroup > lastPage
+            ? lastPage
+            : pageGroup * pagesInPageGroup;
+  
+        // 페이지 그룹1의 첫번째 페이지는 1
+        // => 마지막 페이지 숫자(2) - 한 페이지 그룹에 들어가는 페이지 수(2) - 1
+        // const pageGroupFirst = pageGroupLast - (pagesInPageGroup - 1) < 1 ? 1 : pageGroupLast - (pagesInPageGroup -1)
+        const pageGroupFirst =
+          pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1;
+  
+        const pages = [];
+  
+        // 전 페이지 그룹으로 가기
+        if (pageGroup > 1) {
+          // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
+          pages.push(
+            `<li class="page-item"><a class="page-link" onclick="appendQueryParameter(${
+              (pageGroup - 1) * pagesInPageGroup
+            })"><<</a></li>`,
+          );
+        }
+  
+        // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
+        if (currentPage > 1) {
+          pages.push(
+            `<li class="page-item"><a class="page-link" onclick="appendQueryParameter(${
+              currentPage - 1
+            })"><</a></li>`,
+          );
+        }
+  
+        // 페이지 그룹의 마지막 페이지까지 페이지 숫자 렌더링 하기
+        for (i = pageGroupFirst; i <= pageGroupLast; i++) {
+          pages.push(
+            `<li class="page-item" id="page${i}"><a class="page-link" onclick="appendQueryParameter(${i})">${i}</a></li>`,
+          );
+        }
+  
+        // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
+        if (currentPage < lastPage) {
+          pages.push(
+            `<li class="page-item"><a class="page-link" onclick="appendQueryParameter(${
+              currentPage + 1
+            })">></a></li>`,
+          );
+        }
+  
+        // 다음 페이지 그룹으로 가기
+        if (pageGroupLast < lastPage) {
+          // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
+          pages.push(
+            `<li class="page-item"><a class="page-link" onclick="appendQueryParameter(${
+              pageGroup * pagesInPageGroup + 1
+            })">>></a></li>`,
+          );
+        }
+  
+        document.getElementById('pagination').innerHTML = pages.join('');
+  
+        $(`#page${currentPage}`).addClass('active');
+      });
+  
+      function appendQueryParameter(pageNum) {
+        let url = new URL(window.location.href);
+        url.searchParams.set('page', pageNum);
+  
+        window.location.href = url.href;
+      }
+    </script>
