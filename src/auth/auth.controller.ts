@@ -39,6 +39,11 @@ export class AuthController {
     return await this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
+  @Get('/me')
+  getMe(@Req() req: any) {
+    return req.user;
+  }
+
   // test OK
   // 회원가입 시 아이디체크
   @Get('/user/:userId')

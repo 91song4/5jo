@@ -56,9 +56,14 @@ export class CouponService {
     return coupon;
   }
 
+  async getAllCouponsByUserId(userId: number) {
+    return this.giveCouponRepository.find({ where: { userId } });
+  }
+
   // 유저에게 쿠폰 지급
   async giveCoupon(userId: number, couponId: number) {
     const { dateOfUse } = await this.getCouponById(couponId);
+    console.log(dateOfUse);
     let date = new Date();
     date.setDate(date.getDate() + Number(dateOfUse) * 30);
     const giveCoupon = await this.giveCouponRepository.insert({

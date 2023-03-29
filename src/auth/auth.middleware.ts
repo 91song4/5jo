@@ -49,8 +49,6 @@ export class AuthMiddleware implements NestMiddleware {
       hashedRefreshToken.hashedRefreshToken,
     );
 
-    console.log(compareRefreshToken);
-
     if (!compareRefreshToken) {
       await this.cacheManager.del(id);
       throw new UnauthorizedException('Refresh Token이 일치하지 않습니다.');

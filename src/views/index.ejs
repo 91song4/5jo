@@ -36,12 +36,16 @@
         <%if(components ==='rooms'){%> <%-include('rooms')%> <%}%>
         <!-- 리뷰 -->
         <%if(components ==='community'){%> <%-include('community')%> <%}%>
+        <!-- 리뷰 상세정보 -->
+        <%if(components ==='review'){%> <%-include('review')%> <%}%>
         <!-- 실시간 채팅방 -->
         <%if(components ==='chatting'){%> <%-include('chatting')%> <%}%>
         <!-- 마이페이지 -->
         <%if(components ==='mypage'){%> <%-include('mypage')%><%}%>
         <!-- 관리자 메인 -->
         <% if(components === 'main'){ %> <%-include('main') %> <%} %>
+         <!-- 리뷰 쓰기 -->
+         <% if(components === 'community-post'){ %> <%-include('community-post') %> <%} %>
       </section>
       <!-- end hero section -->
     </div>

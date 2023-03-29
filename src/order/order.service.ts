@@ -12,6 +12,7 @@ export class OrderService {
     private dataSource: DataSource,
   ) {}
 
+  // POST 주문 만들기 + 쿼리러너(트랜잭션)
   async createOrder(
     userId: number,
     campId: number,
@@ -20,6 +21,8 @@ export class OrderService {
     receipt: number,
     isReview: boolean,
     type: number,
+    emergencyContact: string,
+    requirements: string,
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -33,6 +36,8 @@ export class OrderService {
         receipt,
         isReview,
         type,
+        emergencyContact,
+        requirements,
       });
       const reservationCalendar = await queryRunner.manager
         .getRepository(ReservationCalendar)
@@ -54,7 +59,7 @@ export class OrderService {
     }
   }
 
-  // 주문 가져오기 ( GET )
+  // 주문 가져오기 ( GET ) -- emergencyContact, requirements 추가해야함.
   async getAllOrders(page): Promise<Order[]> {
     console.log(page);
 
@@ -123,6 +128,8 @@ export class OrderService {
     receipt: number,
     isReview: boolean,
     type: number,
+    emergencyContact: string,
+    requirements: string,
   ) {
     return this.orderRepository.update(id, {
       id,
@@ -131,6 +138,8 @@ export class OrderService {
       receipt,
       isReview,
       type,
+      emergencyContact,
+      requirements,
     });
   }
 
