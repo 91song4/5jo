@@ -48,7 +48,6 @@
 
     // 삭제버튼
     deleteBtn.addEventListener('click', async () => {
-      debugger;
       const { data: userId } = await axios.get('/api/auth/me');
       const { data } = await axios.get('/api/auth/user', {
         params: {
