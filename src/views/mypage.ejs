@@ -78,28 +78,66 @@
             수정
           </button>
         </div>
-      </div>
-      <div class="wrap_two">
-        <div></div>
-        <div class="buttons">
-          <button type="button" class="btn btn-outline-dark">쿠폰</button>
-          <button type="button" class="btn btn-outline-dark">내 리뷰</button>
-          <button type="button" class="btn btn-outline-dark">예약확인</button>
+        <div class="coupon_form">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">내 쿠폰</th>
+                <th scope="col">쿠폰명</th>
+                <th scope="col">사용여부</th>
+                <th scope="col">만료일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td><%=myCoupons[0].couponId%></td>
+                <td><%=myCoupons[0].isUsed%></td>
+                <td><%=myCoupons[0].endDate%></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="wrap_three"></div>
+      <div class="wrap_button">
+        <div></div>
+        <div class="buttons">
+          <button
+            type="button"
+            id="get-my-coupons"
+            class="btn btn-outline-dark"
+          >
+            쿠폰
+          </button>
+          <button
+            type="button"
+            id="get-my-reviews"
+            class="btn btn-outline-dark"
+          >
+            내 리뷰
+          </button>
+          <button type="button" id="get-my-orders" class="btn btn-outline-dark">
+            예약확인
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </body>
 <style>
+  .coupon_form {
+    width: 100%;
+    height: auto;
+    border: 1px black solid;
+  }
   .wrap_one {
     display: flex;
     margin: 5px;
     width: 100%;
-    height: 500px;
+    height: auto;
     border: 1px black solid;
   }
-  .wrap_two > .buttons {
+  .wrap_button > .buttons {
     margin: 2px;
     float: right;
   }
@@ -107,61 +145,10 @@
 
 <script src="/js/mypage.js"></script>
 <script>
-  console.log('mypage.ejs');
-  // 데이터
-  const mypageName = document.querySelector('#mypage-name');
-  const mypageEmail = document.querySelector('#mypage-email');
-  const mypagePhone = document.querySelector('#mypage-phone');
-  const mypageBirthday = document.querySelector('#mypage-birthday');
-  const mypagePassword = document.querySelector('#mypage-password');
-  const mypageInputs = document.querySelectorAll('input');
+  console.log('<%=userInfo%>');
+  console.log('<%=myCoupons[0].id%>');
+  console.log('<%=myReviews[0].id%>');
+  console.log('<%=myOrders[0].id%>');
 
-  mypageInputs.forEach((input) => (input.disabled = true));
-
-  // 버튼
-  const mypageWithdrawalBtn = document.querySelector('#mypage-withdrawal');
-  const realUpdateBtn = document.querySelector('#real_update_button');
-
-  realUpdateBtn.addEventListener('click', () => {
-    const updateBtn = really();
-    mypageInputs.forEach((input) => {
-      if (input.id !== 'mypage-birthday') {
-        input.disabled = false;
-      }
-    });
-
-    updateBtn.addEventListener('click', () => {
-      const userId = localStorage.getItem('userId');
-      try {
-        axios
-          .put(`/api/users`, {
-            name: mypageName.value,
-            phone: mypagePhone.value,
-            email: mypageEmail.value,
-            password: mypagePassword.value,
-          })
-          .then((response) => {
-            alert('유저정보 업데이트 완료');
-            window.location.href = `/view/mypage`;
-          })
-          .catch((error) => alert(error.response.data.message));
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
-  });
-
-  mypageWithdrawalBtn.addEventListener('click', () => {
-    try {
-      axios
-        .delete('/api/auth/withdrawal')
-        .then((response) => {
-          localStorage.clear();
-          window.location.href = '/';
-        })
-        .catch((error) => alert(error.response.data.message));
-    } catch (error) {
-      console.erroe(error.message);
-    }
-  });
+  getMyCoupons.addEventListener('click', () => {});
 </script>

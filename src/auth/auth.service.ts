@@ -103,12 +103,11 @@ export class AuthService {
       refreshToken,
       Number.parseInt(saltRound) ?? 10,
     );
+    const userId = userData.id;
 
-    await this.cacheManager.set(userData.id, {
-      hashedRefreshToken,
-    });
+    await this.cacheManager.set(userData.id, { hashedRefreshToken });
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, userId };
   }
 
   /**로그아웃
@@ -207,6 +206,7 @@ export class AuthService {
   // UnauthorizedException 걸리면 redis 삭제
   deleteRefreshToken(token) {
     const { id }: any = this.jwtService.decode(token);
+    console.log(id);
     this.cacheManager.del(id);
   }
   /** where로 원하는 컬럼 불러오기

@@ -1,0 +1,69 @@
+<%-include('./components/review-form.ejs') %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('{userId: <%- reviewId %>}');
+    const reviewId = document.location.pathname.split('/').pop();
+    const reviewTitle = document.querySelector('#review-title');
+    const reviewUserId = document.querySelector('#review-userId');
+    const reviewContent = document.querySelector('#review-content');
+    const updateBtn = document.querySelector('#review-update');
+    const deleteBtn = document.querySelector('#review-delete');
+
+    // Review 정보 불러오기
+    axios.get(`/api/reviews/${reviewId}`).then((response) => {
+      reviewTitle.value = response.data.title;
+      reviewUserId.value = response.data.userId;
+      reviewContent.textContent = response.data.content;
+    });
+
+    // 수정버튼
+    updateBtn.addEventListener('click', async () => {
+      const { data: userId } = await axios.get('/api/auth/me');
+      const { data } = await axios.get('/api/auth/user', {
+        params: {
+          whereColumns: { userId: reviewUserId.value },
+          selectColumns: ['id'],
+        },
+      });
+      if (!data.id || +data.id !== userId) {
+        alert('권한이 없습니다!');
+        return (window.location.href = '/view/community');
+      }
+
+      reviewTitle.disabled = false;
+      reviewContent.disabled = false;
+      updateBtn.textContent = '확인';
+      updateBtn.addEventListener('click', () => {
+        axios
+          .put(`/api/reviews/${reviewId}`, {
+            title: reviewTitle.value,
+            content: reviewContent.value,
+          })
+          .then(() => {
+            window.location.href = `/view/review/${reviewId}`;
+          });
+      });
+    });
+
+    // 삭제버튼
+    deleteBtn.addEventListener('click', async () => {
+      debugger;
+      const { data: userId } = await axios.get('/api/auth/me');
+      const { data } = await axios.get('/api/auth/user', {
+        params: {
+          whereColumns: { userId: reviewUserId.value },
+          selectColumns: ['id'],
+        },
+      });
+      if (!data.id || +data.id !== userId) {
+        alert('권한이 없습니다!');
+        return (window.location.href = '/view/community');
+      }
+
+      axios.delete(`/api/reviews/${reviewId}`).then(() => {
+        window.location.href = '/view/community';
+      });
+    });
+  });
+</script>

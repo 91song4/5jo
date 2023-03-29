@@ -1,0 +1,31 @@
+  <div class="reviews">
+      <tr>
+      <div style=" height: 550px;">
+        <input type="text" id="title" placeholder="제목" style="width: 30%; text-align: left;"/><br>
+        <div style="margin-top: 30px; margin-left: auto; margin-right: auto; text-align: center;">
+          <textarea id="content" placeholder="내용" style="width: 50%; height: 350px; text-align: left;"></textarea>
+        </div>
+          <button onclick="window.location.href='/view/community'" id="review-list-btn">이전으로</button>
+            <button id="write-btn">작성완료</button>
+       
+           </div>
+      </tr>
+  </div>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    // input data
+    const titleInput = document.querySelector('#title');
+    const contentInput = document.querySelector('#content');
+
+    // btn
+    const writeListBtn = document.querySelector('#write-btn');
+
+    writeListBtn.addEventListener('click',()=>{
+      axios.post('/api/reviews',{
+        title: titleInput.value, content: contentInput.value
+      }).then(()=>{
+        window.location.href = '/view/community';
+      })
+    })
+  })
+</script>
