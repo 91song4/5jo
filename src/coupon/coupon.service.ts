@@ -64,7 +64,7 @@ export class CouponService {
   async giveCoupon(userId: number, couponId: number) {
     const { dateOfUse } = await this.getCouponById(couponId);
     console.log(dateOfUse);
-    let date = new Date();
+    const date = new Date();
     date.setDate(date.getDate() + Number(dateOfUse) * 30);
     const giveCoupon = await this.giveCouponRepository.insert({
       couponId,
