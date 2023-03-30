@@ -57,7 +57,12 @@ export class CouponService {
   }
 
   async getAllCouponsByUserId(userId: number) {
-    return this.giveCouponRepository.find({ where: { userId } });
+    const mycoupon = this.couponRepository
+      .createQueryBuilder('c')
+      .leftJoin(GiveCoupon, 'u', 'u.couponId = c.id')
+      .select(['c.*', 'u.*'])
+      .getRawMany();
+    return mycoupon;
   }
 
   // 유저에게 쿠폰 지급

@@ -141,7 +141,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  
+
                   <th scope="col">쿠폰명</th>
                   <th scope="col">사용여부</th>
                   <th scope="col">만료일</th>
@@ -156,11 +156,16 @@
             .querySelector('.get_data_form')
             .insertAdjacentHTML('beforeend', temp_html);
           for (let i = 0; i < response.data.length; i++) {
+            let time = response.data[i].endDate.split('T', 1);
+            if (response.data[i].isUsed == false) {
+              response.data[i].isUsed = '미사용';
+            } else {
+              response.data[i].isUsed = '사용완료';
+            }
             let temp_html = `<tr>
-                  
-                  <th>${response.data[i].couponId}</th>
+                  <th>${response.data[i].name}</th>
                   <th>${response.data[i].isUsed}</th>
-                  <th>${response.data[i].endDate}</th>
+                  <th>${time}</th>
                 </tr>`;
             document
               .querySelector('#mycoupons')
