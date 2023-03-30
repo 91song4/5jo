@@ -52,6 +52,9 @@ import { APP_GUARD } from '@nestjs/core';
 import JwtAuthenticationGuard from './auth/jwt-authentication.guard';
 import { ReservationCalendarController } from './reservation_calendar/reservation_calendar.controller';
 import { ReviewController } from './review/review.controller';
+import { DepositWithoutBankbookController } from './deposit-without-bankbook/deposit-without-bankbook.controller';
+import { DepositWithoutBankbookService } from './deposit-without-bankbook/deposit-without-bankbook.service';
+import { DepositWithoutBankbookModule } from './deposit-without-bankbook/deposit-without-bankbook.module';
 
 import * as redisStore from 'cache-manager-ioredis';
 @Module({
@@ -87,9 +90,10 @@ import * as redisStore from 'cache-manager-ioredis';
     ReviewModule,
     ReservationCalendarModule,
     TestModule,
+    DepositWithoutBankbookModule,
   ],
-  controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage],
-  providers: [AppService, AuthMiddleware],
+  controllers: [AppController, ManagementPage, AuthPage, HomePage, MyPage, DepositWithoutBankbookController],
+  providers: [AppService, AuthMiddleware, DepositWithoutBankbookService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

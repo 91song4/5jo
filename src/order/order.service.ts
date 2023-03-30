@@ -117,7 +117,27 @@ export class OrderService {
 
   // 유저의 주문 목록 가져오기 ( GET )
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return await this.orderRepository.find({ where: { userId } });
+    return await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.camp', 'camp')
+      .select([
+        'order.id',
+        'order.userId',
+        'order.campId',
+        'order.selectedDay',
+        'order.headcount',
+        'order.receipt',
+        'order.isReview',
+        'order.type',
+        'order.emergencyContact',
+        'order.requirements',
+        'order.createdAt',
+        'order.updatedAt',
+        'order.deletedAt',
+        'camp.name',
+      ])
+      .where('order.userId = :userId', { userId })
+      .getMany();
   }
 
   // 주문 정보 수정하기 ( PUT )
