@@ -28,7 +28,7 @@
               <td>
                 <button
                   class="btn btn-outline-dark"
-                  onclick="location.replace('/view/review/' + <%= reviews[i].id %>)"
+                  onclick="location.replace('/view/review/' + '<%= reviews[i].id %>')"
                 >
                   상세보기
                 </button>
@@ -46,7 +46,7 @@
     </div>
     <button
       style="margin: 5px"
-      onclick="location.href='/view/community-post'"
+      id="review-post-btn"
       type="button"
       class="btn btn-light"
     >
@@ -57,13 +57,40 @@
   </section>
 </body>
 <script>
-  console.log('<%- reviewsMeta.page %>');
-  const totalPage = parseInt('<%- reviewsMeta.lastPage %>', 10);
-  const pageNationLi = document.querySelector('#pagination li');
-  for (let i = 1; i <= totalPage; ++i) {
-    const a = document.createElement('a');
-    a.href = `/view/community?page=${i}&limit=5`;
-    a.textContent = i + ' ';
-    pageNationLi.appendChild(a);
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('<%- reviewsMeta.page %>');
+    // data
+    const totalPage = parseInt('<%- reviewsMeta.lastPage %>', 10);
+    const pageNationLi = document.querySelector('#pagination li');
+
+    // btn
+    const postBtn = document.querySelector('#review-post-btn');
+
+    // 페이지네이션 숫자 붙이기
+    for (let i = 1; i <= totalPage; ++i) {
+      const a = document.createElement('a');
+      a.href = `/view/community?page=${i}&limit=5`;
+      a.textContent = i + ' ';
+      pageNationLi.appendChild(a);
+    }
+
+    // 글작성 버튼 눌렀을때, 조건체크 해서 페이지 넘기기
+    // 조건 1. 로그인을 한 유저여야 한다.
+    // 조건 2. 현재 접속자 id가 Orders 테이블에 있어야 한다.
+    // 조건 2-1. 해당 Orders의 isReview의 값이 false여야 한다.
+    postBtn.addEventListener('click', async () => {
+      const { data: userId } = await axios.get('/api/auth/me');
+      const { data: orders } = await axios.get(`/api/orders/${userId}`);
+      const canReviewOrders = orders.filter(
+        (order) => order.isReview === false,
+      );
+      if (canReviewOrders.length < 1) {
+        return alert('리뷰작성 가능한 주문이 없습니다.');
+      }
+      document.cookie = `canReviewOrders=${JSON.stringify(
+        canReviewOrders,
+      )}; path=/view/community-post`;
+      window.location.href = '/view/community-post';
+    });
+  });
 </script>
