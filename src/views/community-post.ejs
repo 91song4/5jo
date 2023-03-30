@@ -12,6 +12,16 @@
       </tr>
   </div>
 <script>
+  const canReviewOrdes = [{id: 1, isReview: false},{id: 2, isReview: false}]
+  function writeReviewAndDeleteCookie(id) {
+  const order = canReviewOrdes.find(order = order.id === id);
+  if (!order) return;
+  order.isReview = ture;
+  document.cookie = 'canReviewOrders='+ JSON.stringify (canReviewOrdes) + '; path=/view/community-post; expires=Sat, 01 Jan 1972 00:00:00 GMT';
+  return canReviewOrdes;
+  }
+
+  
   document.addEventListener('DOMContentLoaded',()=>{
     // input data
     const titleInput = document.querySelector('#title');
@@ -28,4 +38,6 @@
       })
     })
   })
+
+  
 </script>
