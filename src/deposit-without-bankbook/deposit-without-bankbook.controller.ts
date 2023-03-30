@@ -12,7 +12,7 @@ import { DepositWithoutBankbook } from './deposit-without-bankbook.entity';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { UpdateDepositDto } from './dto/update-deposit.dto';
 
-@Controller('deposits')
+@Controller('/deposits')
 export class DepositWithoutBankbookController {
   constructor(private readonly depositService: DepositWithoutBankbookService) {}
 
