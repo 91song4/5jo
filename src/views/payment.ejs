@@ -91,6 +91,15 @@
       </div>
     </div>
   </section>
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>이름을 입력해주세요</h2>
+      <input type="text" id="name-input" />
+      <button id="complete-btn">확인</button>
+    </div>
+  </div>
 </body>
 
 <script>
@@ -99,11 +108,15 @@
     const { campName, selectedDay, totalPeople, totalPrice } = JSON.parse(
       localStorage.getItem('paymentInfo'),
     );
+    let data = {};
     getPaymentInfo();
+
+    console.log('캠프네임은 정확하게 긁어오는건가?', campName);
 
     // 부족한 정보 API로 받아오고
     const response = await axios.get('/api/camps');
     const camp = response.data.find((camp) => camp.name === campName);
+    console.log('파인드 이후에 걸리는건가?', camp);
     const campId = camp ? camp.id : null;
     console.log('camp ID : ', campId);
 
@@ -132,6 +145,31 @@
       paymentMethod = 'deposit';
       depositBtn.classList.add('active');
       cardPaymentBtn.classList.remove('active');
+      // 모달 가져오고
+      const modal = document.getElementById('myModal');
+
+      // 닫기 버튼
+      const closeBtn = modal.querySelector('.close');
+
+      // 완료 버튼
+      const completeBtn = modal.querySelector('#complete-btn');
+
+      // 버튼 클릭 시 오픈
+      modal.style.display = 'block';
+
+      // 닫기버튼 누르면 사라짐
+      closeBtn.addEventListener('click', function () {
+        modal.style.display = 'none';
+      });
+
+      // 완료 버튼을 누르면, 인풋 내용을 변수에 담고
+      completeBtn.addEventListener('click', function () {
+        const nameInput = modal.querySelector('#name-input');
+        const name = nameInput.value;
+        // 저장
+        data.name = name;
+        modal.style.display = 'none';
+      });
     });
 
     // 결제하기 버튼 세팅
@@ -176,19 +214,32 @@
         );
       }
 
+      // 입력할 데이터를 미리 객체로 싼 다음
+      let postData = {
+        userId,
+        campId,
+        selectedDay,
+        headcount: totalPeople,
+        receipt: totalPrice,
+        isReview: false,
+        type: paymentMethod,
+        emergencyContact: emergencyContact,
+        requirements: requirements,
+      };
+
+      // 결제타입(방식)이 1이라면(무통장) 아래와같이 기입받은 이름을 추가
+      if (paymentMethod === 1) {
+        const nameInput = document.getElementById('name-input');
+        const name = nameInput.value;
+        postData = {
+          ...postData,
+          name: name,
+        };
+      }
+
       try {
         axios
-          .post('/api/orders', {
-            userId,
-            campId,
-            selectedDay,
-            headcount: totalPeople,
-            receipt: totalPrice,
-            isReview: false,
-            type: paymentMethod,
-            emergencyContact: emergencyContact,
-            requirements: requirements,
-          })
+          .post('/api/orders', postData)
           .then((response) => {
             alert('예약 완료');
             window.location.href = '/';

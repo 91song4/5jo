@@ -35,6 +35,7 @@ export class OrderController {
       body.type,
       body.emergencyContact,
       body.requirements,
+      body.name,
     );
   }
 

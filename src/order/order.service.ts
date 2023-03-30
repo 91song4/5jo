@@ -24,6 +24,7 @@ export class OrderService {
     type: number,
     emergencyContact: string,
     requirements: string,
+    name: string,
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -41,11 +42,14 @@ export class OrderService {
         requirements,
       });
 
+      // 결제타입이 1이면 해당 무통장 테이블에도 데이터를 추가하기
       if (type === 1) {
         const depositWithoutBankbook = await queryRunner.manager
           .getRepository(DepositWithoutBankbook)
           .create();
-        depositWithoutBankbook.depositorName = '어떻게 해야 넣지?';
+        // 포린 키 관계이기 때문에 위에서 생성된 주문의 id를 이렇게 받아올 수 있음.
+        depositWithoutBankbook.orderId = returned.id;
+        depositWithoutBankbook.depositorName = name;
         await queryRunner.manager
           .getRepository(DepositWithoutBankbook)
           .save(depositWithoutBankbook);
@@ -57,7 +61,6 @@ export class OrderService {
       reservationCalendar.campId = returned.campId;
       reservationCalendar.reservedDate = new Date(returned.selectedDay);
       reservationCalendar.isReserved = true;
-
       await queryRunner.manager
         .getRepository(ReservationCalendar)
         .save(reservationCalendar);

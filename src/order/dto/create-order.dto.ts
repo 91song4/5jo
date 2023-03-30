@@ -2,6 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class CreateOrderDto {
+  @IsNumber()
+  readonly id: number;
+
   @ApiProperty({ example: 1, description: '유저 번호', required: true })
   @IsNumber()
   readonly userId: number;
@@ -47,4 +50,7 @@ export class CreateOrderDto {
 
   @IsString()
   readonly requirements: string | null;
+
+  @IsString()
+  readonly name: string;
 }
