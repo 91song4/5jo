@@ -2,25 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DepositWithoutBankbook } from './deposit-without-bankbook.entity';
-import { CreateDepositDto } from './dto/create-deposit.dto';
 import { UpdateDepositDto } from './dto/update-deposit.dto';
 
 @Injectable()
 export class DepositWithoutBankbookService {
   constructor(
     @InjectRepository(DepositWithoutBankbook)
-    private depositRepository: Repository<DepositWithoutBankbook>,
+    private readonly depositRepository: Repository<DepositWithoutBankbook>,
   ) {}
 
   // POST API
-  async create(depositDto: CreateDepositDto): Promise<DepositWithoutBankbook> {
-    const deposit = new DepositWithoutBankbook();
-    deposit.orderId = depositDto.orderId;
-    deposit.depositorName = depositDto.depositorName;
-    deposit.accountHolderName = depositDto.accountHolderName;
-    deposit.bankName = depositDto.bankName;
-    deposit.accountNumber = depositDto.accountNumber;
-    return this.depositRepository.save(deposit);
+  async create(
+    orderId: number,
+    depositorName: string,
+    accountHolderName: string,
+    bankName: string,
+    accountNumber: string,
+  ) {
+    const DepositWithoutBankbook = this.depositRepository.insert({
+      orderId,
+      depositorName,
+      accountHolderName,
+      bankName,
+      accountNumber,
+    });
+    return DepositWithoutBankbook;
   }
 
   // GET API FOR ALL
