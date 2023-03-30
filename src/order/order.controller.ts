@@ -16,14 +16,14 @@ import { Order } from './order.entity';
 import { OrderService } from './order.service';
 
 @ApiTags('Order')
-@Controller('')
+@Controller('/orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   // 주문 추가 ( POST )
   @ApiResponse({ type: ResOrderDto, status: 201, description: '성공' })
   @ApiOperation({ summary: '캠프 예약' })
-  @Post('/orders')
+  @Post()
   createOrder(@Body() body: CreateOrderDto) {
     return this.orderService.createOrder(
       body.userId,
@@ -41,7 +41,7 @@ export class OrderController {
   // 주문 가져오기 ( GET )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '모든 주문정보 확인' })
-  @Get('/orders')
+  @Get()
   async getAllOrders(@Query() query): Promise<Order[]> {
     return await this.orderService.getAllOrders(query.page);
   }
@@ -49,7 +49,7 @@ export class OrderController {
   // 유저의 주문 목록 가져오기 ( GET )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '유저의 주문 목록 가져오기' })
-  @Get('/orders/:userId')
+  @Get(':userId')
   async getOrdersByUserId(@Param('userId') userId: number): Promise<Order[]> {
     return this.orderService.getOrdersByUserId(userId);
   }
@@ -63,7 +63,7 @@ export class OrderController {
   // 주문 업데이트 ( PUT )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '주문 업데이트' })
-  @Put('/orders/:id')
+  @Put(':id')
   updateOrder(@Param('id') orderId: number, @Body() body: UpdateOrderDto) {
     return this.orderService.updateOrder(
       orderId,
@@ -80,7 +80,7 @@ export class OrderController {
   // 주문 삭제 ( DELETE )
   @ApiResponse({ type: ResOrderDto, status: 200, description: '성공' })
   @ApiOperation({ summary: '주문 삭제' })
-  @Delete('/orders/:id')
+  @Delete(':id')
   deleteOrder(@Param('id') orderId: number) {
     return this.orderService.deleteOrder(orderId);
   }

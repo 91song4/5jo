@@ -6,7 +6,8 @@ import { DepositWithoutBankbookController } from './deposit-without-bankbook.con
 
 @Module({
   imports: [TypeOrmModule.forFeature([DepositWithoutBankbook])],
-  providers: [DepositWithoutBankbookService],
   controllers: [DepositWithoutBankbookController],
+  providers: [DepositWithoutBankbookService],
+  exports: [DepositWithoutBankbookService],
 })
 export class DepositWithoutBankbookModule {}
