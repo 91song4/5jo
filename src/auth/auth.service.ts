@@ -171,19 +171,22 @@ export class AuthService {
    * @phone 휴대폰번호
    */
   async findUserPassword(findUserPasswordDto: FindUserPasswordDto) {
-    const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
-
-    if (!user) {
-      return user;
-    }
-
-    await this.cacheManager.set(user.userId, 1);
-    setTimeout(async () => {
-      if (await this.cacheManager.get(user.userId)) {
-        this.cacheManager.del(user.userId);
+    try {
+      const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
+      if (!user) {
+        return user;
       }
-    }, 1000 * 60 * 3);
-    return user;
+
+      await this.cacheManager.set(user.userId, 1);
+      setTimeout(async () => {
+        if (await this.cacheManager.get(user.userId)) {
+          this.cacheManager.del(user.userId);
+        }
+      }, 1000 * 60 * 3);
+      return user;
+    } catch (err) {
+      throw err;
+    }
   }
 
   /**
