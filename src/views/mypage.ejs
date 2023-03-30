@@ -129,8 +129,6 @@
 
 <script src="/js/mypage.js"></script>
 <script>
-  console.log('<%=userInfo%>');
-
   getMyCoupons.addEventListener('click', () => {
     try {
       axios
@@ -228,7 +226,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  
+                  <th scope="col">캠프명</th>
                   <th scope="col">캠프번호</th>
                   <th scope="col">총액</th>
                   <th scope="col">예약일</th>
@@ -246,7 +244,7 @@
           for (let i = 0; i < response.data.length; i++) {
             let time = response.data[i].selectedDay.split('T', 1);
             let temp_html = `<tr>
-                  
+                  <th>${response.data[i].camp.name}</th>
                   <th>${response.data[i].campId}번</th>
                   <th>${response.data[i].receipt}원</th>
                   <th>${time}</th>
