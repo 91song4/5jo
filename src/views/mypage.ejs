@@ -78,23 +78,7 @@
             수정
           </button>
         </div>
-        <div class="coupon_form">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">내 쿠폰</th>
-                <th scope="col">쿠폰명</th>
-                <th scope="col">사용여부</th>
-                <th scope="col">만료일</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="get_data_form"></div>
       </div>
       <div class="wrap_button">
         <div></div>
@@ -122,7 +106,7 @@
   </section>
 </body>
 <style>
-  .coupon_form {
+  .get_data_form {
     width: 100%;
     height: auto;
     border: 1px black solid;
@@ -134,6 +118,9 @@
     height: auto;
     border: 1px black solid;
   }
+  .wrap_one > .user_form {
+    width: 400px;
+  }
   .wrap_button > .buttons {
     margin: 2px;
     float: right;
@@ -142,7 +129,135 @@
 
 <script src="/js/mypage.js"></script>
 <script>
-  console.log('<%=userInfo%>');
+  getMyCoupons.addEventListener('click', () => {
+    try {
+      axios
+        .get(`/api/coupon/mycoupon/<%=userInfo.id%>`, {})
+        .then((response) => {
+          document.querySelector('.get_data_form').innerHTML = '';
+          console.log(response.data);
+          let temp_html = `
+          <div class="get_coupon_data_form">
+            <table class="table">
+              <thead>
+                <tr>
+                  
+                  <th scope="col">쿠폰명</th>
+                  <th scope="col">사용여부</th>
+                  <th scope="col">만료일</th>
+                </tr>
+              </thead>
+              <tbody id="mycoupons">
 
-  getMyCoupons.addEventListener('click', () => {});
+              </tbody>
+            </table>
+          </div>`;
+          document
+            .querySelector('.get_data_form')
+            .insertAdjacentHTML('beforeend', temp_html);
+          for (let i = 0; i < response.data.length; i++) {
+            let temp_html = `<tr>
+                  
+                  <th>${response.data[i].couponId}</th>
+                  <th>${response.data[i].isUsed}</th>
+                  <th>${response.data[i].endDate}</th>
+                </tr>`;
+            document
+              .querySelector('#mycoupons')
+              .insertAdjacentHTML('beforeend', temp_html);
+          }
+        })
+        .catch((error) => alert(error.response.data.message));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+  getMyReviews.addEventListener('click', () => {
+    try {
+      axios
+        .get(`/api/reviews/myreview/<%=userInfo.userId%>`, {})
+        .then((response) => {
+          document.querySelector('.get_data_form').innerHTML = '';
+          console.log(response.data);
+          let temp_html = `
+          <div class="get_review_data_form">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>상세보기</th>
+                </tr>
+              </thead>
+              <tbody id="myreviews">
+
+              </tbody>
+            </table>
+          </div>`;
+          document
+            .querySelector('.get_data_form')
+            .insertAdjacentHTML('beforeend', temp_html);
+          for (let i = 0; i < response.data.length; i++) {
+            let temp_html = `<tr>
+                  <th scope="row">${i + 1}</th>
+                  <td>${response.data[i].title}</td>
+                  <td><button type="button" class="btn btn-outline-dark">>_<</button></td>
+                </tr>`;
+            document
+              .querySelector('#myreviews')
+              .insertAdjacentHTML('beforeend', temp_html);
+          }
+        })
+        .catch((error) => alert(error.response.data.message));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+  getMyOrders.addEventListener('click', () => {
+    try {
+      axios
+        .get(`/api/orders/<%=userInfo.id%>`, {})
+        .then((response) => {
+          document.querySelector('.get_data_form').innerHTML = '';
+
+          console.log(response.data);
+          let temp_html = `
+          <div class="get_order_data_form">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">캠프명</th>
+                  <th scope="col">캠프번호</th>
+                  <th scope="col">총액</th>
+                  <th scope="col">예약일</th>
+                  <th scope="col">상세보기</th>
+                </tr>
+              </thead>
+              <tbody id="myorders">
+
+              </tbody>
+            </table>
+          </div>`;
+          document
+            .querySelector('.get_data_form')
+            .insertAdjacentHTML('beforeend', temp_html);
+          for (let i = 0; i < response.data.length; i++) {
+            let time = response.data[i].selectedDay.split('T', 1);
+            let temp_html = `<tr>
+                  <th>${response.data[i].camp.name}</th>
+                  <th>${response.data[i].campId}번</th>
+                  <th>${response.data[i].receipt}원</th>
+                  <th>${time}</th>
+                  <td><button type="button" class="btn btn-outline-dark">>_<</button></td>
+                </tr>`;
+            document
+              .querySelector('#myorders')
+              .insertAdjacentHTML('beforeend', temp_html);
+          }
+        })
+        .catch((error) => alert(error.response.data.message));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
 </script>

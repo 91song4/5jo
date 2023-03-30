@@ -23,15 +23,15 @@ export class MyPage {
   @Render('index')
   async mypage(@Req() req: Request) {
     const userInfo = req.user as User;
-    const myCoupons = await this.couponService.getAllCouponsByUserId(
-      userInfo.id,
-    );
-    const myOrders = await this.orderService.getOrdersByUserId(userInfo.id);
-    const myReviews = await this.reviewService.getReviewByUserId(
-      userInfo.userId,
-    );
-    console.log(userInfo, myCoupons, myOrders, myReviews);
-    return { components: 'mypage', userInfo, myCoupons, myOrders, myReviews };
+    // const myCoupons = await this.couponService.getAllCouponsByUserId(
+    //   userInfo.id,
+    // );
+    // const myOrders = await this.orderService.getOrdersByUserId(userInfo.id);
+    // const myReviews = await this.reviewService.getReviewByUserId(
+    //   userInfo.userId,
+    // );
+    // console.log(userInfo, myCoupons, myOrders, myReviews);
+    return { components: 'mypage', userInfo };
   }
 
   // 미들웨어 적용가능 or 어스가드 완성 시 main.page.ts로 옮겨가야함
