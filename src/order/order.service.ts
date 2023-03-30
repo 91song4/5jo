@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DepositWithoutBankbook } from 'src/deposit-without-bankbook/deposit-without-bankbook.entity';
 import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
 import { Repository, DataSource } from 'typeorm';
 import { Order } from './order.entity';
@@ -39,12 +40,24 @@ export class OrderService {
         emergencyContact,
         requirements,
       });
+
+      if (type === 1) {
+        const depositWithoutBankbook = await queryRunner.manager
+          .getRepository(DepositWithoutBankbook)
+          .create();
+        depositWithoutBankbook.depositorName = '어떻게 해야 넣지?';
+        await queryRunner.manager
+          .getRepository(DepositWithoutBankbook)
+          .save(depositWithoutBankbook);
+      }
+
       const reservationCalendar = await queryRunner.manager
         .getRepository(ReservationCalendar)
         .create();
       reservationCalendar.campId = returned.campId;
       reservationCalendar.reservedDate = new Date(returned.selectedDay);
       reservationCalendar.isReserved = true;
+
       await queryRunner.manager
         .getRepository(ReservationCalendar)
         .save(reservationCalendar);

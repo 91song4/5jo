@@ -6,34 +6,38 @@ export class createDepositWithoutBankbookTable1680153879560
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'DepositWithoutBankbook',
+        name: 'DepositWithoutBankbooks',
         columns: [
           {
             name: 'id',
-            type: 'bigint unsigned',
+            type: 'bigint',
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'increment',
           },
           {
-            name: 'orderId',
-            type: 'int',
-          },
-          {
             name: 'depositorName',
             type: 'varchar',
+            length: '10',
+            isNullable: false,
           },
           {
             name: 'accountHolderName',
             type: 'varchar',
+            length: '10',
+            isNullable: true,
           },
           {
             name: 'bankName',
+            length: '15',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'accountNumber',
+            length: '15',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'createdAt',
@@ -55,15 +59,7 @@ export class createDepositWithoutBankbookTable1680153879560
             default: null,
           },
         ],
-        foreignKeys: [
-          {
-            columnNames: ['orderId'],
-            referencedTableName: 'Orders',
-            referencedColumnNames: ['id'],
-          },
-        ],
       }),
-      true,
     );
   }
 

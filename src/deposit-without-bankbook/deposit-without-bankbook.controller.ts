@@ -12,15 +12,19 @@ import { DepositWithoutBankbook } from './deposit-without-bankbook.entity';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { UpdateDepositDto } from './dto/update-deposit.dto';
 
-@Controller('/deposits')
+@Controller('deposits')
 export class DepositWithoutBankbookController {
   constructor(private readonly depositService: DepositWithoutBankbookService) {}
 
   @Post()
-  create(
-    @Body() createDepositDto: CreateDepositDto,
-  ): Promise<DepositWithoutBankbook> {
-    return this.depositService.create(createDepositDto);
+  create(@Body() data: CreateDepositDto) {
+    return this.depositService.create(
+      data.orderId,
+      data.depositorName,
+      data.accountHolderName,
+      data.bankName,
+      data.accountNumber,
+    );
   }
 
   @Get()
