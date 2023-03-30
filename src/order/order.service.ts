@@ -91,9 +91,9 @@ export class OrderService {
         U.USERID AS userId,
         O.CAMPID AS ordercampId,
         C.NAME AS CampName
-      FROM ORDERS O
-        INNER JOIN USERS U ON O.USERID = U.ID
-        INNER JOIN CAMPS C ON O.CAMPID = C.ID
+      FROM Orders O
+        INNER JOIN Users U ON O.USERID = U.ID
+        INNER JOIN Camps C ON O.CAMPID = C.ID
       ORDER BY O.id
       LIMIT ${5} OFFSET ${(page - 1) * 5}
     `);
@@ -117,7 +117,27 @@ export class OrderService {
 
   // 유저의 주문 목록 가져오기 ( GET )
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return await this.orderRepository.find({ where: { userId } });
+    return await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.camp', 'camp')
+      .select([
+        'order.id',
+        'order.userId',
+        'order.campId',
+        'order.selectedDay',
+        'order.headcount',
+        'order.receipt',
+        'order.isReview',
+        'order.type',
+        'order.emergencyContact',
+        'order.requirements',
+        'order.createdAt',
+        'order.updatedAt',
+        'order.deletedAt',
+        'camp.name',
+      ])
+      .where('order.userId = :userId', { userId })
+      .getMany();
   }
 
   // 주문 정보 수정하기 ( PUT )

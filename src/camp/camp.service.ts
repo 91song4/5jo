@@ -9,8 +9,15 @@ export class CampService {
   ) {}
 
   // 캠프 목록 조회
-  async getCamps() {
-    return await this.campRepository.find();
+  async getCamps(page) {
+    if (page === undefined) {
+      page = 1;
+    }
+    return await this.campRepository.find({
+      // 페이지네이션 구현 코드
+      skip: (page - 1) * 12,
+      take: 12,
+    });
   }
 
   // 캠프 상세 조회

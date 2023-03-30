@@ -58,6 +58,16 @@ export class ReviewService {
       console.log(err);
     }
   }
+  async getReviewByUserId(userId: string) {
+    try {
+      const review = await this.reviewRepository.find({
+        where: { userId },
+      });
+      return review;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   //리뷰 작성
   createReview(

@@ -45,9 +45,16 @@ export class CouponController {
       data.maxDiscount,
     );
   }
+
+  // 쿠폰 지급
   @Post('/give')
   giveCoupon(@Body() data: GiveCouponDto) {
-    return this.couponService.giveCoupon(data.couponId, data.userId);
+    return this.couponService.giveCoupon(data.userId, data.couponId);
+  }
+
+  @Get('/mycoupon/:id')
+  getAllCouponsByUserId(@Param('id') userId: number) {
+    return this.couponService.getAllCouponsByUserId(userId);
   }
 
   // 쿠폰 정보 수정

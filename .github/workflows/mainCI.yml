@@ -1,11 +1,11 @@
-name: glamping-CICD
+name: glamping-CI
 
 on:
-  push:
+  pull_request:
     branches: main
 
 jobs:
-  AUTO_DEPLOY:
+  AUTO_INTERGRATION:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,11 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSH_KEY }}
+
           script: |
             cd 5jo
-            git pull origin main
-            npm run deploy
+            git switch dev
+            git pull origin dev
+            npm i
+            npm run build --if-present
+            npm run test

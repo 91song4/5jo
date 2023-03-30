@@ -86,12 +86,6 @@ export class HomePage {
     };
   }
 
-  @Get('/payment')
-  @Render('index')
-  async payment() {
-    return { components: 'payment' };
-  }
-
   @Get('/community-post')
   @Render('index')
   async communitypost() {

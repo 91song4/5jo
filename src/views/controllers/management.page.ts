@@ -30,8 +30,12 @@ export class ManagementPage {
 
   @Get('/management/camp')
   @Render('management')
-  async camps() {
-    const camps = await this.campService.getCamps();
+  async camps(@Query() query) {
+    if (query.page === undefined) {
+      query['page'] = 1;
+    }
+
+    const camps = await this.campService.getCamps(query.page);
     return { component: 'camps', camps };
   }
 
