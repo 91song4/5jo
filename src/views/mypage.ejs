@@ -135,7 +135,6 @@
         .get(`/api/coupon/mycoupon/<%=userInfo.id%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-          console.log(response.data);
           let temp_html = `
           <div class="get_coupon_data_form">
             <table class="table">
@@ -183,7 +182,6 @@
         .get(`/api/reviews/myreview/<%=userInfo.userId%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-          console.log(response.data);
           let temp_html = `
           <div class="get_review_data_form">
             <table class="table">
@@ -206,7 +204,9 @@
             let temp_html = `<tr>
                   <th scope="row">${i + 1}</th>
                   <td>${response.data[i].title}</td>
-                  <td><button type="button" class="btn btn-outline-dark">>_<</button></td>
+                  <td><button type="button" class="btn btn-outline-dark" onclick="location.replace('/view/review/${
+                    response.data[i].id
+                  }')">+</button></td>
                 </tr>`;
             document
               .querySelector('#myreviews')
@@ -224,8 +224,6 @@
         .get(`/api/orders/<%=userInfo.id%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-
-          console.log(response.data);
           let temp_html = `
           <div class="get_order_data_form">
             <table class="table">
