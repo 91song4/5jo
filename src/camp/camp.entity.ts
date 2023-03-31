@@ -32,7 +32,7 @@ export class Camp {
   @Column('boolean')
   isRepair: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   repairEndDate: null | Date;
 
   @CreateDateColumn()

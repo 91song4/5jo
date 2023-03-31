@@ -36,6 +36,12 @@ export class ReviewController {
     return this.reviewService.getReviewById(Number(reviewId));
   }
 
+  // 내 리뷰 조회
+  @Get('/myreview/:id')
+  getReviewByUserId(@Param('id') userId: string) {
+    return this.reviewService.getReviewByUserId(userId);
+  }
+
   // 리뷰 작성
   @Post()
   createReview(@Body() data: CreateReviewDto) {

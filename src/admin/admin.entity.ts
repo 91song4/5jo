@@ -12,7 +12,7 @@ import { User } from '../users/users.entity';
 
 @Entity({ schema: 'glamping', name: 'Admins' })
 export class Admin {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @CreateDateColumn({ nullable: true })

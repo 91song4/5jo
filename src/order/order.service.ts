@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DepositWithoutBankbook } from 'src/deposit-without-bankbook/deposit-without-bankbook.entity';
 import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
 import { Repository, DataSource } from 'typeorm';
 import { Order } from './order.entity';
@@ -23,6 +24,7 @@ export class OrderService {
     type: number,
     emergencyContact: string,
     requirements: string,
+    name: string,
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -39,6 +41,20 @@ export class OrderService {
         emergencyContact,
         requirements,
       });
+
+      // 결제타입이 1이면 해당 무통장 테이블에도 데이터를 추가하기
+      if (type === 1) {
+        const depositWithoutBankbook = await queryRunner.manager
+          .getRepository(DepositWithoutBankbook)
+          .create();
+        // 포린 키 관계이기 때문에 위에서 생성된 주문의 id를 이렇게 받아올 수 있음.
+        depositWithoutBankbook.orderId = returned.id;
+        depositWithoutBankbook.depositorName = name;
+        await queryRunner.manager
+          .getRepository(DepositWithoutBankbook)
+          .save(depositWithoutBankbook);
+      }
+
       const reservationCalendar = await queryRunner.manager
         .getRepository(ReservationCalendar)
         .create();
@@ -117,7 +133,27 @@ export class OrderService {
 
   // 유저의 주문 목록 가져오기 ( GET )
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return await this.orderRepository.find({ where: { userId } });
+    return await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.camp', 'camp')
+      .select([
+        'order.id',
+        'order.userId',
+        'order.campId',
+        'order.selectedDay',
+        'order.headcount',
+        'order.receipt',
+        'order.isReview',
+        'order.type',
+        'order.emergencyContact',
+        'order.requirements',
+        'order.createdAt',
+        'order.updatedAt',
+        'order.deletedAt',
+        'camp.name',
+      ])
+      .where('order.userId = :userId', { userId })
+      .getMany();
   }
 
   // 주문 정보 수정하기 ( PUT )

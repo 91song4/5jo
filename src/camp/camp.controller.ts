@@ -18,7 +18,6 @@ import { CreateCampDto } from './dto/create-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 
 @ApiTags('camp')
-@UseGuards(JwtAuthenticationGuard)
 @Controller('camps')
 export class CampController {
   constructor(private readonly campService: CampService) {}
@@ -36,7 +35,6 @@ export class CampController {
   // 캠프 상세 조회
   @Get('/:id')
   getCampById(@Param('id') campId: number) {
-    console.log({ campId });
     return this.campService.getCampById(Number(campId));
   }
 
