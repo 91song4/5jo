@@ -15,13 +15,24 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
 import { JwtGoogleStrategy } from './jwt-social-google.strategy';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
-import { SmsService } from 'src/sms/sms.service';
+import { Admin } from 'src/admin/admin.entity';
+import { Order } from 'src/order/order.entity';
+import { Camp } from 'src/camp/camp.entity';
+import { ReservationCalendar } from 'src/reservation_calendar/reservation_calendar.entity';
+import { Review } from 'src/review/review.entity';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([
+      User,
+      Admin,
+      Order,
+      Camp,
+      ReservationCalendar,
+      Review,
+    ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useClass: JwtConfigService,

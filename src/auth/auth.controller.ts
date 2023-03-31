@@ -15,7 +15,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LoginUserDto } from './dtos/login-user.dto';
 import { Request, Response } from 'express';
 import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
@@ -30,7 +29,8 @@ import { CreateSocialUserDto } from './dtos/create-social-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 유저 선택해서 가져오기
   @Get('/user')
   async getUserSelect(
@@ -39,26 +39,31 @@ export class AuthController {
     return await this.authService.getUserSelect(whereColumns, selectColumns);
   }
 
+  // 접속한 유저 primary key 가져오기
   @Get('/me')
   getMe(@Req() req: any) {
+    console.log(req.user);
     return req.user;
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 회원가입 시 아이디체크
   @Get('/user/:userId')
   async isExist(@Param('userId') userId: string) {
     return this.authService.getUserSelect({ userId }, ['userId']);
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 아이디 찾기
   @Post('/lost/id')
   async findUserId(@Body() findUserIdDto: FindUserIdDto) {
     return await this.authService.getUserSelect(findUserIdDto, ['userId']);
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - NOT OK
   // 비밀번호 찾기
   @Post('/lost/password')
   async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {

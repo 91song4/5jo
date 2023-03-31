@@ -173,6 +173,7 @@ export class AuthService {
   async findUserPassword(findUserPasswordDto: FindUserPasswordDto) {
     try {
       const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
+      // console.log({ user });
       if (!user) {
         return user;
       }
@@ -218,13 +219,12 @@ export class AuthService {
    */
   async getUserSelect(whereColumns, selectColumns?) {
     if (!whereColumns) {
-      return null;
+      throw new NotFoundException();
     }
     const userData = await this.userRepository.findOne({
       select: [...selectColumns],
       where: { ...whereColumns },
     });
-
     return userData;
   }
 
