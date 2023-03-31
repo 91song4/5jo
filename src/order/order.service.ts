@@ -131,6 +131,10 @@ export class OrderService {
     }));
   }
 
+  async getOrderById(orderId: number) {
+    return await this.orderRepository.find({ where: { id: orderId } });
+  }
+
   // 유저의 주문 목록 가져오기 ( GET )
   async getOrdersByUserId(userId: number): Promise<Order[]> {
     return await this.orderRepository
