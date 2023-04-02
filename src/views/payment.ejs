@@ -12,7 +12,7 @@
             <th scope="col">이용 날짜</th>
             <th scope="col">이용 인원</th>
             <th scope="col">총 금액</th>
-            <th scope="col">쿠폰</th>
+            <th scope="col">쿠폰명</th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +25,16 @@
           </tr>
         </tbody>
       </table>
+      <div class="coupon-container">
+        <div class="discount-percentage-wrap">
+          할인 적용 %
+          <div id="discountPercentage" class="discount-percentage"></div>
+        </div>
+        <div class="max-discount-wrap">
+          최대할인금액
+          <div id="maxDiscount" class="max-discount"></div>
+        </div>
+      </div>
       <div>
         <div class="price-wrap">
           <div>총 결제 금액 :</div>
@@ -75,9 +85,13 @@
         </div>
         <div class="updown"></div>
         <div class="payment-wrap">
-          <div>
-            <button class="coupon-btn" onclick="couponSearch()">
-              쿠폰 선택하기
+          <!-- Dropdown -->
+          <div class="coupon-dropdown">
+            <select id="coupon-dropdown">
+              <option value="">사용 가능한 쿠폰 없음</option>
+            </select>
+            <button id="apply-coupon-btn" class="apply-coupon-btn">
+              쿠폰 적용하기
             </button>
           </div>
           <div class="rules-wrap">
@@ -96,10 +110,11 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>이름을 입력해주세요</h2>
-      <input type="text" id="name-input" />
-      <button id="complete-btn">확인</button>
+      <input type="text" id="name-input" class="name-input" />
+      <button id="complete-btn" class="complete-btn">확인</button>
     </div>
   </div>
+  <input type="hidden" id="hidden" />
 </body>
 
 <script>
@@ -109,14 +124,16 @@
       localStorage.getItem('paymentInfo'),
     );
     let data = {};
+
+    // 유저가 선택한 주문 정보를 뿌려줌
     getPaymentInfo();
 
-    console.log('캠프네임은 정확하게 긁어오는건가?', campName);
+    // id정보는 미리 변수에 넣어주고
+    const userId = '<%=userInfo.id%>';
 
     // 부족한 정보 API로 받아오고
     const response = await axios.get('/api/camps');
     const camp = response.data.find((camp) => camp.name === campName);
-    console.log('파인드 이후에 걸리는건가?', camp);
     const campId = camp ? camp.id : null;
     console.log('camp ID : ', campId);
 
@@ -126,12 +143,93 @@
 
     let paymentMethod;
 
-    // 쿠폰 완성되면 해야하는거
-    // 쿠폰 버튼을 누르면 GET API 발동 후 쿠폰을 선택할 수 있게 해야함.
-    // 선택한 쿠폰의 할인 퍼센트에 따라 totalPrice에 반영하고 변수에 할당함 ( discountTotalPrice )
-    // 할당된 변수를 const discountTotalPriceFromCommas = discountTotalPrice.toLocaleString('ko-KR')를 이용해서 문자열 뒤에서 3개마다 , 찍어줌
-    // document.querySelector('#total-price',).innerHTML = `${discountTotalPriceFromCommas} 원`;
-    // 적용하고 결제 POST API에 discountTotalPriceFromCommas 할당
+    // 보유중인 쿠폰 가져오기 - userId를 받아와서 사용해야 하기 때문에 정의된 변수보다 아래에서 호출함
+    getCouponInfoByUserId();
+
+    // 쿠폰 버튼 정의
+    async function getCouponInfoByUserId() {
+      try {
+        const userCouponsResponse = await axios.get(
+          `/api/coupon/mycoupon/${userId}`,
+        );
+        console.log(
+          '유저가 소유한 쿠폰 제대로 들고오는지',
+          userCouponsResponse.data,
+        );
+        const userCoupons = userCouponsResponse.data.couponInfo;
+        console.log('보유중인 쿠폰 상세정보', userCoupons);
+
+        // 사용이 가능한 쿠폰만 걸러냄
+        const availableCoupons = userCoupons.filter((coupon) => !coupon.isUsed);
+        console.log('가져온 데이터를 검증해보자', availableCoupons);
+
+        if (availableCoupons.length === 0) {
+          alert('사용 가능한 쿠폰이 없습니다.');
+          return;
+        }
+
+        // 드롭다운 메뉴에 보유중인 쿠폰 표시해줌
+        const couponDropdown = document.querySelector('#coupon-dropdown');
+        couponDropdown.innerHTML =
+          '<option value="">쿠폰을 선택하세요</option>';
+        availableCoupons.forEach((coupon) => {
+          const couponOption = document.createElement('option');
+          couponOption.value = coupon.id;
+          couponOption.text = `${coupon.name} (${coupon.discount}% off)`;
+          couponDropdown.add(couponOption);
+        });
+
+        // 선택한 쿠폰이 바뀌면
+        couponDropdown.addEventListener('change', () => {
+          const selectedCouponId = parseInt(couponDropdown.value);
+          const selectedCoupon = availableCoupons.filter(
+            (coupon) => parseInt(coupon.id) === selectedCouponId,
+          );
+
+          if (selectedCoupon.length > 0) {
+            // 필터를 걸치면 배열 형태라서 첫번째 객체의 discount 값을 변수로 지정
+            const discountPercentage = selectedCoupon[0].discount;
+            // 최대 할인금액 가져오기
+            const maxDiscount = selectedCoupon[0].maxDiscount;
+            const discount = discountPercentage / 100;
+            // 쿠폰 이름 표시용 변수
+            const couponName = selectedCoupon[0].name;
+
+            // 할인 두가자
+            let discountedPrice = totalPrice - totalPrice * discount;
+
+            // 할인된 금액이 최대 할인금액을 넘어섰다면, 값을 재설정
+            if (totalPrice - discountedPrice > maxDiscount) {
+              discountedPrice = totalPrice - maxDiscount;
+            } // 위에서 계산한번 하고, if문에서 max할인값이랑 비교하고 다시 담거든요? 그거를 밑에서
+
+            const applyCouponBtn = document.querySelector('#apply-coupon-btn');
+
+            // 쿠폰 선택하고 버튼 누르면 정보갱신
+            applyCouponBtn.addEventListener('click', () => {
+              document.querySelector('#coupon').innerHTML = couponName;
+              document.querySelector(
+                '#discountPercentage',
+              ).innerHTML = `${discountPercentage}%`;
+              document.querySelector(
+                '#maxDiscount',
+              ).innerHTML = `${maxDiscount.toLocaleString('ko-KR')} 원`;
+              document.querySelector(
+                '#total-price',
+              ).innerHTML = `${discountedPrice.toLocaleString('ko-KR')} 원`;
+              // 다른 함수에서 사용하기 위해 밸류 숨김
+              document.querySelector('#hidden').value = discountedPrice;
+            });
+          } else {
+            // 여기 에러처리 어떻게 해야 하는지 진짜 모르겠음
+            console.log('올바른 쿠폰을 선택해주십시오.');
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        alert('잘못된 요청입니다. 다시 시도해 주십시오');
+      }
+    }
 
     // 카드결제 버튼 세팅
     cardPaymentBtn.addEventListener('click', function () {
@@ -178,6 +276,7 @@
         alert('원하시는 결제 방식을 먼저 선택해주세요');
         return;
       }
+
       payment(paymentMethod);
     });
 
@@ -190,13 +289,15 @@
       document.querySelector('#totalPeople').innerHTML = `${totalPeople} 명`;
       document.querySelector('#price').innerHTML = `${totalPriceWithCommas} 원`;
       document.querySelector('#coupon').innerHTML = '사용하지 않음';
+      document.querySelector('#discountPercentage').innerHTML =
+        '선택된 쿠폰 없음';
+      document.querySelector('#maxDiscount').innerHTML = '선택된 쿠폰 없음';
       document.querySelector(
         '#total-price',
       ).innerHTML = `${totalPriceWithCommas} 원`;
     }
 
-    const userId = '<%=userInfo.id%>';
-
+    // 결제 진행함수 ( 버튼이 눌려야 실행 )
     function payment(paymentMethod) {
       paymentMethod = paymentMethod === 'card' ? 0 : 1;
       // 버튼을 누른 이후에 작성된 비상연락처, 요청사항을 가져옴
@@ -214,13 +315,16 @@
         );
       }
 
+      // 히든밸류 뽑아오기
+      const discountedPrice = document.getElementById('hidden').value;
+
       // 입력할 데이터를 미리 객체로 싼 다음
       let postData = {
         userId,
         campId,
         selectedDay,
         headcount: totalPeople,
-        receipt: totalPrice,
+        receipt: discountedPrice,
         isReview: false,
         type: paymentMethod,
         emergencyContact: emergencyContact,
@@ -231,11 +335,15 @@
       if (paymentMethod === 1) {
         const nameInput = document.getElementById('name-input');
         const name = nameInput.value;
+        if (!name) {
+        }
         postData = {
           ...postData,
           name: name,
         };
       }
+
+      if (!discountedPrice) return;
 
       try {
         axios

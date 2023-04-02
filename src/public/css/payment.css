@@ -1,9 +1,18 @@
-.about_section {
-  color: black;
-}
-
 tr {
   font-size: large;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+select {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.about_section {
+  color: black;
 }
 
 .price-wrap {
@@ -97,7 +106,7 @@ hr {
   text-shadow: 0px 1px 0px #5c5c5c;
 }
 
-.coupon-btn {
+.apply-coupon-btn {
   font-size: 24px;
   padding: 10px 20px;
 
@@ -105,7 +114,7 @@ hr {
   border: 1px solid #f3ad84;
 }
 
-.coupon-btn:hover {
+.apply-coupon-btn:hover {
   background-color: #ffa43b;
 }
 
@@ -167,6 +176,7 @@ hr {
 }
 
 .modal {
+  color: #000;
   display: none;
   position: fixed;
   z-index: 1;
@@ -183,7 +193,18 @@ hr {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 500px;
+  height: 250px;
+}
+
+.name-input {
+  width: 200px;
+  margin: 20px auto 30px auto;
+}
+
+.complete-btn {
+  width: 50px;
+  margin: 0px auto;
 }
 
 .close {
@@ -200,6 +221,44 @@ hr {
   cursor: pointer;
 }
 
+.coupon-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* button {
+  padding: 10px;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+} */
+
+.coupon-container {
+  width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 100px auto;
+  justify-content: space-between;
+  padding: 20px;
+
+  border-top: 1px solid #c7ccd1;
+}
+
+.discount-percentage-wrap,
+.max-discount-wrap {
+  font-size: large;
+  font-weight: bold;
+}
+
+.discount-percentage,
+.max-discount {
+  font-size: large;
+  font-weight: normal;
+  margin-top: 10px;
+}
 @media (max-width: 1700px) {
   .user-info,
   .payment-wrap {
