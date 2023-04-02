@@ -70,7 +70,8 @@ export class AuthController {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
   @Post('/phone')
   async sendSMS(@Body() { phone }: SendSMSDto) {
@@ -127,6 +128,7 @@ export class AuthController {
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
   async login(@Req() req: Request, @Res() res: Response) {
+    console.log({ reqUser: req.user });
     const userData: any = req.user;
     const { accessToken, refreshToken } = await this.authService.login(
       userData,
