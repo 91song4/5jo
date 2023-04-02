@@ -16,6 +16,7 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: any, res: any, next: (error?: any) => void) {
+    console.log('@@@@@#####', req);
     const { accessToken, refreshToken } = req.cookies;
 
     if (!accessToken) {

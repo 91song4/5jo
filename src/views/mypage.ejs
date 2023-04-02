@@ -5,8 +5,6 @@
       <div class="d-flex justify-content-center">
         <h2 style="color: black" class="custom_heading">내 정보</h2>
       </div>
-      <br />
-
       <div class="wrap_one">
         <div class="user_form">
           <div class="input-group mb-3">
@@ -81,7 +79,8 @@
         <div class="get_data_form"></div>
       </div>
       <div class="wrap_button">
-        <div></div>
+        <!-- Button trigger modal -->
+
         <div class="buttons">
           <button
             type="button"
@@ -103,13 +102,22 @@
         </div>
       </div>
     </div>
+    <div id="detail_order_form" class="about_container">
+      <div class="wrap_one">
+        <div class="detail_order_form"></div>
+      </div>
+    </div>
   </section>
 </body>
 <style>
-  .get_data_form {
+  .get_data_form,
+  .detail_order_form {
     width: 100%;
     height: auto;
     border: 1px black solid;
+  }
+  #detail_order_form {
+    min-height: 200px;
   }
   .wrap_one {
     display: flex;
@@ -135,13 +143,12 @@
         .get(`/api/coupon/mycoupon/<%=userInfo.id%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-          console.log(response.data);
           let temp_html = `
           <div class="get_coupon_data_form">
             <table class="table">
               <thead>
                 <tr>
-                  
+
                   <th scope="col">쿠폰명</th>
                   <th scope="col">사용여부</th>
                   <th scope="col">만료일</th>
@@ -156,11 +163,16 @@
             .querySelector('.get_data_form')
             .insertAdjacentHTML('beforeend', temp_html);
           for (let i = 0; i < response.data.length; i++) {
+            let time = response.data[i].endDate.split('T', 1);
+            if (response.data[i].isUsed == false) {
+              response.data[i].isUsed = '미사용';
+            } else {
+              response.data[i].isUsed = '사용완료';
+            }
             let temp_html = `<tr>
-                  
-                  <th>${response.data[i].couponId}</th>
+                  <th>${response.data[i].name}</th>
                   <th>${response.data[i].isUsed}</th>
-                  <th>${response.data[i].endDate}</th>
+                  <th>${time}</th>
                 </tr>`;
             document
               .querySelector('#mycoupons')
@@ -178,7 +190,6 @@
         .get(`/api/reviews/myreview/<%=userInfo.userId%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-          console.log(response.data);
           let temp_html = `
           <div class="get_review_data_form">
             <table class="table">
@@ -201,7 +212,9 @@
             let temp_html = `<tr>
                   <th scope="row">${i + 1}</th>
                   <td>${response.data[i].title}</td>
-                  <td><button type="button" class="btn btn-outline-dark">>_<</button></td>
+                  <td><button type="button" class="btn btn-outline-dark" onclick="location.replace('/view/review/${
+                    response.data[i].id
+                  }')">+</button></td>
                 </tr>`;
             document
               .querySelector('#myreviews')
@@ -219,16 +232,15 @@
         .get(`/api/orders/<%=userInfo.id%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
-
-          console.log(response.data);
           let temp_html = `
           <div class="get_order_data_form">
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col">주문번호</th>
                   <th scope="col">캠프명</th>
                   <th scope="col">캠프번호</th>
-                  <th scope="col">총액</th>
+                  
                   <th scope="col">예약일</th>
                   <th scope="col">상세보기</th>
                 </tr>
@@ -244,11 +256,12 @@
           for (let i = 0; i < response.data.length; i++) {
             let time = response.data[i].selectedDay.split('T', 1);
             let temp_html = `<tr>
+                  <th>${response.data[i].id}</th>
                   <th>${response.data[i].camp.name}</th>
                   <th>${response.data[i].campId}번</th>
-                  <th>${response.data[i].receipt}원</th>
+                  
                   <th>${time}</th>
-                  <td><button type="button" class="btn btn-outline-dark">>_<</button></td>
+                  <td><button onclick='detail_order(${response.data[i].id})' type="button" class="btn btn-outline-dark">>_<</button></td>
                 </tr>`;
             document
               .querySelector('#myorders')
@@ -260,4 +273,45 @@
       console.error(error.message);
     }
   });
+  function detail_order(order_id) {
+    axios
+      .get(`/api/orders/detail/${order_id}`, {})
+      .then((response) => {
+        document.querySelector('.detail_order_form').innerHTML = '';
+        let createdAt = response.data[0].createdAt.split('T', 1);
+        let selectedDay = response.data[0].selectedDay.split('T', 1);
+        let isReview = response.data[0].isReview;
+        if (isReview == false) {
+          isReview = '미작성';
+        } else {
+          isReview = '작성완료';
+        }
+        document.querySelector('#detail_order_form').style.display = 'flex';
+        let temp_html = `
+        <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">주문번호</th>
+                  <th scope="col">주문일</th>
+                  <th scope="col">금액</th>
+                  <th scope="col">예약일</th>
+                  <th scope="col">리뷰작성여부</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>${response.data[0].id}</th>
+                  <th>${createdAt}</th>
+                  <th>${response.data[0].receipt}원</th>
+                  <th>${selectedDay}</th>
+                  <th>${isReview}</th>
+                </tr>
+              </tbody>
+          </table>`;
+        document
+          .querySelector('.detail_order_form')
+          .insertAdjacentHTML('beforeend', temp_html);
+      })
+      .catch((error) => alert(error.response.data.message));
+  }
 </script>
