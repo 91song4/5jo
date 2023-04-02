@@ -63,14 +63,15 @@ export class AuthController {
   }
 
   // test unit - OK
-  // test E2E - NOT OK
+  // test E2E - OK
   // 비밀번호 찾기
   @Post('/lost/password')
   async findUserPassword(@Body() findUserPasswordDto: FindUserPasswordDto) {
     return await this.authService.findUserPassword(findUserPasswordDto);
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 비밀번호 찾기 - 휴댄폰 인증번호 보내기
   @Post('/phone')
   async sendSMS(@Body() { phone }: SendSMSDto) {
@@ -122,7 +123,8 @@ export class AuthController {
     this.authService.createSocialUser(createSocialUserDto);
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 로그인
   @UseGuards(LocalAuthenticationGuard)
   @Post('/log-in')
@@ -138,14 +140,14 @@ export class AuthController {
     res.send({ message: '로그인 성공' });
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 로그아웃
   // @UseGuards(AuthGuard('jwt'))
   @Post('/log-out')
   async logout(@Req() req: Request, @Res() res: Response) {
     // const { id }: any = req.user;
     const id: any = req.user;
-    console.log(id, typeof id);
     await this.authService.logout(id);
 
     res.clearCookie('accessToken');
@@ -154,7 +156,8 @@ export class AuthController {
     res.send({ message: '로그아웃 성공' });
   }
 
-  // test OK
+  // test unit - OK
+  // test E2E - OK
   // 회원가입
   @Post('/sign-up')
   async createUser(@Body() userDto: CreateUserDto) {
