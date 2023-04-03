@@ -616,8 +616,6 @@ pre code {
 
 .container-fluid {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -4432,6 +4430,8 @@ input[type='button'].btn-block {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 0.5rem 1rem;
+  background-color: #000;
+  width: 100%;
 }
 
 .navbar > .container,
