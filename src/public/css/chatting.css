@@ -32,9 +32,7 @@
   width: 800px;
   height: 600px;
   overflow: scroll;
-  background-color: wheat;
-  background: url(https://cdn.blackpaper.shop/chatting_back.jpg);
-  background-position: center;
+  background-color: rgb(255, 228, 177);
 }
 .chat_wrap .chat ul {
   width: 100%;
