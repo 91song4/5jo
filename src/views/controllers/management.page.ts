@@ -66,6 +66,15 @@ export class ManagementPage {
     return { component: 'coupons', coupons };
   }
 
+  @Get('/management/coupon/give')
+  @Render('management')
+  async couponGiveForm() {
+    const coupons = await this.couponService.getCoupons();
+    const users = await this.usersService.getUsersInformation(1);
+
+    return { component: 'couponGive', coupons, users };
+  }
+
   @Get('/management/coupon/register')
   @Render('management')
   async couponForm() {
