@@ -44,10 +44,10 @@ export class ReviewController {
 
   // 리뷰 작성
   @Post()
-  createReview(@Body() data: CreateReviewDto) {
-    return this.reviewService.createReview(
+  async createReview(@Req() req, @Body() data: CreateReviewDto) {
+    return await this.reviewService.createReview(
       data.orderId,
-      data.userId,
+      req.user,
       data.title,
       data.content,
     );
