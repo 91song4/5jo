@@ -1,3 +1,37 @@
+function selectBoxUser() {
+  let value = document.getElementById('select-user');
+  console.log(value.options[value.selectedIndex].value);
+}
+function selectBoxCoupon() {
+  let value = document.getElementById('select-coupon');
+  console.log(value.options[value.selectedIndex].value);
+}
+function give_coupon() {
+  let user = document.getElementById('select-user');
+  let coupon = document.getElementById('select-coupon');
+  let userId = user.options[user.selectedIndex].value;
+  let couponId = coupon.options[coupon.selectedIndex].value;
+  if (userId === '선택하기') {
+    return alert('선택해주세요');
+  } else if (couponId === '선택하기') {
+    return alert('선택해주세요');
+  }
+  try {
+    axios
+      .post(`/api/coupon/give`, {
+        userId,
+        couponId,
+      })
+      .then((response) => {
+        alert('쿠폰 지급 성공');
+        window.location.href = `/view/management/coupon`;
+      })
+      .catch((error) => alert(error.response.data.message));
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 function createCamp() {
   let name = $('#name').val();
   let headcount = $('#headcount').val();
