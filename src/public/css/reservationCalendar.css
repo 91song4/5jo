@@ -132,3 +132,7 @@
 .sec_cal .cal_wrap .day.disable {
   color: #ddd;
 }
+
+.calendar-div {
+  margin-top: 50px;
+}
