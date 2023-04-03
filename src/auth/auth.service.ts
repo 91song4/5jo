@@ -21,6 +21,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { SmsService } from 'src/sms/sms.service';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -66,10 +67,17 @@ export class AuthService {
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
     const accessToken = await this.createAccessToken(user.id);
     const refreshToken = await this.createRefreshToken(user.id);
-    await this.cacheManager.set(refreshToken, user.id);
+
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      Number.parseInt(saltRound) ?? 10,
+    );
+    await this.cacheManager.set(String(user.id), { hashedRefreshToken });
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
+
     res.redirect(process.env.BASIC_ORIGIN);
   }
 

@@ -53,7 +53,7 @@ describe('CampController (e2e)', () => {
     const res = await server.get(url);
 
     // Then
-    expect(res.body.length).toEqual(12);
+    expect(res.body.length).toEqual(14);
     expect(res.body[11]).toEqual(
       expect.objectContaining({
         id,
