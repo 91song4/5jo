@@ -88,11 +88,6 @@ body {
   height: auto;
 }
 
-.header_section .container-fluid {
-  padding-right: 25px;
-  padding-left: 25px;
-}
-
 .header_section .nav_container {
   margin: 0 auto;
 }
@@ -588,19 +583,19 @@ a:focus {
 
 /* footer section*/
 .footer_section {
-  background-color: #ffffff;
-  padding: 20px;
+  background-color: #000000;
+  padding: 40px;
   font-weight: 500;
 }
 
 .footer_section p {
-  color: #292929;
+  color: #ffffff;
   margin: 0;
   text-align: center;
 }
 
 .footer_section a {
-  color: #292929;
+  color: #ffffff;
 }
 
 /* end footer section*/

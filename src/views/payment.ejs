@@ -316,7 +316,7 @@
       }
 
       // 히든밸류 뽑아오기
-      const discountedPrice = document.getElementById('hidden').value;
+      const discountedPrice = parseInt(document.getElementById('hidden').value);
 
       // 입력할 데이터를 미리 객체로 싼 다음
       let postData = {
@@ -343,7 +343,9 @@
         };
       }
 
-      if (!discountedPrice) return;
+      if (!discountedPrice) {
+        postData.receipt = totalPrice;
+      }
 
       try {
         axios
