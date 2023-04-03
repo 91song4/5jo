@@ -22,8 +22,7 @@ jobs:
 
           script: |
             cd 5jo
-            git switch dev
             git pull origin dev
             npm i
             npm run build --if-present
-            npm run test
+            npm run test:e2e

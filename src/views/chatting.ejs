@@ -46,7 +46,7 @@
     let { data: {name:userName} } = await axios.get('/api/auth/user', {
       params: {
         whereColumns: { id: userId },
-        selectColumns: ['name'],
+        selectColumns: ['name','userId'],
       },
     });
 

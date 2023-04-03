@@ -57,8 +57,8 @@ describe('CampService', () => {
   });
   describe('getCamps', () => {
     it('전체 캠프 조회', async () => {
-      await service.getCamps();
-      expect(campRepository.find).toHaveBeenCalledWith();
+      await service.getCamps(1);
+      expect(campRepository.find).toHaveBeenCalledWith({ skip: 0, take: 15 });
     });
   });
   describe('getCampById', () => {

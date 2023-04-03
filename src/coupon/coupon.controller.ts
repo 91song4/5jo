@@ -16,6 +16,7 @@ import { CouponService } from './coupon.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 import { UpdateCouponDto } from './dto/update-coupon.dto';
 import { GiveCouponDto } from './dto/give-coupon.dto';
+import { parseJSON } from 'date-fns';
 
 @UseGuards(AuthGuard('jwt'))
 @ApiTags('coupon')
@@ -52,9 +53,12 @@ export class CouponController {
     return this.couponService.giveCoupon(data.userId, data.couponId);
   }
 
+  // 유저가 보유중인 쿠폰 가져오기
   @Get('/mycoupon/:id')
   getAllCouponsByUserId(@Param('id') userId: number) {
-    return this.couponService.getAllCouponsByUserId(userId);
+    const mycoupon = this.couponService.getAllCouponsByUserId(userId);
+
+    return mycoupon;
   }
 
   // 쿠폰 정보 수정

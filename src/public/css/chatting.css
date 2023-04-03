@@ -5,17 +5,20 @@
 
 .chat-form {
   display: flex;
+  justify-content: center;
 }
 
 .users {
-  width: 300px;
-  height: 600px;
+  min-width: 150px;
+  min-height: 500px;
   background-color: white;
-  margin-left: 17%;
+
   overflow: scroll;
 }
 
 .chat_wrap .header {
+  width: 950px;
+  margin: 0 auto;
   font-size: 14px;
   padding: 15px 0;
   background: #f18c7e;
@@ -30,6 +33,8 @@
   height: 600px;
   overflow: scroll;
   background-color: wheat;
+  background: url(https://cdn.blackpaper.shop/chatting_back.jpg);
+  background-position: center;
 }
 .chat_wrap .chat ul {
   width: 100%;
@@ -66,12 +71,11 @@
 }
 
 .chat_wrap .input-div {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
   background-color: #fff;
   text-align: center;
-  border-top: 1px solid #f18c7e;
+  border: 1px solid #f18c7e;
 }
 .chat_wrap .input-div > textarea {
   width: 100%;
