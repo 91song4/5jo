@@ -15,8 +15,8 @@ export class CampService {
     }
     return await this.campRepository.find({
       // 페이지네이션 구현 코드
-      skip: (page - 1) * 12,
-      take: 12,
+      skip: (page - 1) * 15,
+      take: 15,
     });
   }
 

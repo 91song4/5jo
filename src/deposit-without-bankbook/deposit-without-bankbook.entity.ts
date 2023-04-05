@@ -10,7 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'glamping', name: 'DepositWithoutBankbooks' })
 export class DepositWithoutBankbook {
   @PrimaryGeneratedColumn()
   id: number;
@@ -41,5 +41,5 @@ export class DepositWithoutBankbook {
 
   @OneToOne(() => Order)
   @JoinColumn()
-  product: Order;
+  order: Order;
 }

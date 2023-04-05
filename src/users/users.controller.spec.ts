@@ -2,21 +2,22 @@ import { Query } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { number } from 'joi';
 import { UsersController } from './users.controller';
+import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
+
+// mockUsersService 내가 이안에서 가짜로 서비스를 만들겠다.
+const mockUsersService = {
+  createUsersInformation: jest.fn(),
+  getUsersInformation: jest.fn(),
+  getUsersInformationById: jest.fn(),
+  updateUsersInformation: jest.fn(),
+  deleteUsersInformation: jest.fn(),
+};
 
 // 바구니 묶어 주는 애
 describe('UsersController', () => {
   // 어떤걸 테스트할 것인지 적어줌.
   let controller: UsersController;
-
-  // mockUsersService 내가 이안에서 가짜로 서비스를 만들겠다.
-  let mockUsersService = {
-    createUsersInformation: jest.fn(),
-    getUsersInformation: jest.fn(),
-    getUsersInformationById: jest.fn(),
-    updateUsersInformation: jest.fn(),
-    deleteUsersInformation: jest.fn(),
-  };
 
   // 묶어주는애
   // it('should be defined', () => {
@@ -108,9 +109,7 @@ describe('UsersController', () => {
       expect(mockUsersService.getUsersInformationById).toHaveBeenCalledTimes(1);
 
       // toHaveBeenCalledWith 인자를 뭘로 전달했느냐?
-      expect(mockUsersService.getUsersInformationById).toHaveBeenLastCalledWith(
-        0,
-      );
+      expect(mockUsersService.getUsersInformationById).toHaveBeenCalledWith(0);
     });
   });
 
@@ -132,15 +131,12 @@ describe('UsersController', () => {
       expect(mockUsersService.updateUsersInformation).toHaveBeenCalledTimes(1);
 
       // toHaveBeenCalledWith 인자를 뭘로 전달했느냐?
-      expect(mockUsersService.updateUsersInformation).toHaveBeenLastCalledWith(
-        3,
-        {
-          name: 'name',
-          email: 'email',
-          password: 'password',
-          phone: 'phone',
-        },
-      );
+      expect(mockUsersService.updateUsersInformation).toHaveBeenCalledWith(3, {
+        name: 'name',
+        email: 'email',
+        password: 'password',
+        phone: 'phone',
+      });
     });
   });
 
@@ -151,6 +147,7 @@ describe('UsersController', () => {
 
       // When
       const expected = await controller.deleteUsersInformation(2);
+
       // Then
       expect(expected).toEqual('kiki');
 
@@ -158,9 +155,7 @@ describe('UsersController', () => {
       expect(mockUsersService.deleteUsersInformation).toHaveBeenCalledTimes(1);
 
       // toHaveBeenCalledWith 인자를 뭘로 전달했느냐?
-      expect(mockUsersService.deleteUsersInformation).toHaveBeenLastCalledWith(
-        2,
-      );
+      expect(mockUsersService.deleteUsersInformation).toHaveBeenCalledWith(2);
     });
   });
 });

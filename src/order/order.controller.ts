@@ -35,6 +35,7 @@ export class OrderController {
       body.type,
       body.emergencyContact,
       body.requirements,
+      body.name,
     );
   }
 
@@ -44,6 +45,12 @@ export class OrderController {
   @Get()
   async getAllOrders(@Query() query): Promise<Order[]> {
     return await this.orderService.getAllOrders(query.page);
+  }
+
+  // 주문번호로 찾기 (GET)
+  @Get('/detail/:id')
+  async getOrderById(@Param('id') orderId: number) {
+    return await this.orderService.getOrderById(orderId);
   }
 
   // 유저의 주문 목록 가져오기 ( GET )

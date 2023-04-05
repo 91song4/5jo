@@ -1,23 +1,57 @@
 <body>
   <section class="calendar-wrap">
-    <div class="sec_cal">
-      <div class="cal_nav">
-        <a href="javascript:;" class="nav-btn go-prev">prev</a>
-        <div class="year-month"></div>
-        <a href="javascript:;" class="nav-btn go-next">next</a>
-        <a href="javascript:;" class="today-btn go-today">Today</a>
+    <div class="calendar-div">
+      <div style="display: inline-block; float: right; margin: 0 50px; padding: 5px; background-color: rgb(200, 188, 172); color: black">
+        <h6
+          style="
+            display: flex;
+            justify-content: right;
+            text-align: center;
+            margin-right: 20px;
+            /* background-color: yellowgreen; */
+          "
+        >
+          오늘의 날씨
+        </h6>
+        <h6 class="time" style="
+        display: flex;
+        justify-content: right;
+        text-align: center;
+        margin-right: 20px;">현재 시간 :   </h3>
+        <h6 class="ctemp" style="
+        display: flex;
+        justify-content: right;
+        text-align: center;
+        margin-right: 20px;">현재 온도 :   </h3>
+        <h6 class="icon" style="
+        display: flex;
+        justify-content: right;
+        text-align: center;
+        margin-right: 20px;"></h6>
       </div>
-      <div class="cal_wrap">
-        <div class="days">
-          <div class="day">SUN</div>
-          <div class="day">MON</div>
-          <div class="day">TUE</div>
-          <div class="day">WED</div>
-          <div class="day">THU</div>
-          <div class="day">FRI</div>
-          <div class="day">SAT</div>
+
+
+
+      <div class="sec_cal">
+        <div class="cal_nav">
+          <a href="javascript:;" class="nav-btn go-prev">prev</a>
+          <div class="year-month"></div>
+          <a href="javascript:;" class="nav-btn go-next">next</a>
+          <a href="javascript:;" class="today-btn go-today">Today</a>
         </div>
-        <div class="dates"></div>
+
+        <div class="cal_wrap">
+          <div class="days">
+            <div class="day">SUN</div>
+            <div class="day">MON</div>
+            <div class="day">TUE</div>
+            <div class="day">WED</div>
+            <div class="day">THU</div>
+            <div class="day">FRI</div>
+            <div class="day">SAT</div>
+          </div>
+          <div class="dates"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -102,6 +136,8 @@
           dateElement.textContent = i;
           dateElement.addEventListener('click', handleDateClick);
           calendar.appendChild(dateElement);
+
+          
         }
 
         // 오늘 날짜 표기
@@ -117,7 +153,14 @@
           ) {
             currentMonthDate[todayDate - 1].style.backgroundColor =
               'rgb(255, 183, 128)';
+
+            // let weathericon = document.createElement('div')
+            // weathericon.classList.add('icon')
+            // currentMonthDate[todayDate - 1].appendChild(weathericon)
           }
+
+
+          
         }
       }
 
@@ -175,4 +218,42 @@
       }
     }
   });
+</script>
+
+
+
+<script>
+  $.getJSON(
+    'http://api.openweathermap.org/data/2.5/weather?lat=37.5683&lon=126.9778&appid=8287161f88bde0e518e09cd2d9b10191&units=metric',
+    function (result) {
+      // $(`.time`).append(result.dt);
+      $(`.ctemp`).append(result.main.temp);
+
+      var wiconUrl =
+        '<img src="https://openweathermap.org/img/wn/' +
+        result.weather[0].icon +
+        '.png" alt="' +
+        result.weather[0].description +
+        '">';
+      $(`.icon`).html(wiconUrl);
+
+
+
+      var ct = result.dt;
+
+      function converTime(t) {
+        var ot = new Date(t * 1000);
+        // Thu Mar 30 2023 14:17:12 GMT+0900 (한국 표준시)
+
+        var hr = ot.getHours();
+        var m = ot.getMinutes();
+        var s = ot.getSeconds();
+
+        return hr + ':' + m + ':' + s;
+      }
+
+      var currentTime = converTime(ct);
+      $(`.time`).append(currentTime);
+    },
+  );
 </script>

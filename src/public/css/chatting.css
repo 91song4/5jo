@@ -32,8 +32,7 @@
   width: 800px;
   height: 600px;
   overflow: scroll;
-  background-color: wheat;
-  background: url('../img/a.jpeg');
+  background-color: rgb(255, 228, 177);
 }
 .chat_wrap .chat ul {
   width: 100%;
