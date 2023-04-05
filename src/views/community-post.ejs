@@ -36,25 +36,6 @@
 </div>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-<<<<<<< HEAD
-    // 쿠키에 담겨있는 주문목록을 가져온다.(리뷰작성이 가능한 주문목록)
-    const canReviewOrdes = JSON.parse(document.cookie.split('=')[1]);
-
-    const orderIdInput = document.getElementById('orderid');
-    orderIdInput.value = '주문 ID값';
-    // 리뷰 작성을 하면 isReview 를 true 로 바뀐다
-    // 쿠키를 삭제한다
-
-    function writeReviewAndDeleteCookie(id) {
-      const order = canReviewOrdes.find((order = order.id === id));
-      if (!order) return;
-      order.isReview = ture;
-      document.cookie =
-        'canReviewOrders=; path=/view/community-post; expires=Sat, 01 Jan 1972 00:00:00 GMT';
-      return canReviewOrdes;
-      debugger;
-    }
-=======
     const orders = JSON.parse(document.cookie.split('=')[1]);
     const ordersSelect = document.querySelector('#orders-select');
 
@@ -64,7 +45,6 @@
       option.text = order.camp.name + order.selectedDay.split('T')[0];
       ordersSelect.appendChild(option);
     });
->>>>>>> dev
 
     // input data
     const titleInput = document.querySelector('#title');
