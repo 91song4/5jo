@@ -161,9 +161,7 @@ export class AuthController {
   // 회원가입
   @Post('/sign-up')
   async createUser(@Body() userDto: CreateUserDto) {
-    const id = await this.authService.createUser(userDto);
-
-    return id;
+    return await this.authService.createUser(userDto);
   }
 
   // 회원탈퇴
