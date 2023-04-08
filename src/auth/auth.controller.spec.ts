@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { date, number, string } from 'joi';
+import { array, date, number, string } from 'joi';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,7 +21,6 @@ import { AuthModule } from 'src/auth/auth.module';
 describe('AuthController', () => {
   // 어떤것을 테스트해줄 것인지 적어줌
   let authController: AuthController;
-  let authService: AuthService;
 
   const mockAuthService = {
     createUser: jest.fn(),
@@ -46,7 +45,6 @@ describe('AuthController', () => {
       .compile();
 
     authController = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
   });
 
   // 테스트가 끝나고 한번 실행
@@ -70,8 +68,8 @@ describe('AuthController', () => {
       const res = await authController.createUser(createUserDto);
 
       // Then
-      expect(authService.createUser).toHaveBeenCalledTimes(1);
-      expect(authService.createUser).toHaveBeenCalledWith(createUserDto);
+      expect(mockAuthService.createUser).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
     });
 
     it('service.createUser의 return값이 controller.createUser의 return값과 일치하는지', async () => {
@@ -91,6 +89,60 @@ describe('AuthController', () => {
       const res = await authController.createUser(createUserDto);
       // Then
       expect(res).toEqual(mockAuthService.createUser(createUserDto));
+    });
+  });
+
+  describe('where, select 선택해서 유저 정보 가져오기', () => {
+    it('dto -> service로 잘 전달 되는지', async () => {
+      // Given
+      const getUserSelectDto: GetUserSelectDto = {
+        whereColumns: {
+          id: expect.any(number),
+          userId: expect.any(string),
+          name: expect.any(string),
+        },
+        selectColumns: expect.any(array<string>),
+      };
+
+      // When
+      await authController.getUserSelect(getUserSelectDto);
+
+      // Then
+      expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
+        getUserSelectDto.whereColumns,
+        getUserSelectDto.selectColumns,
+      );
+    });
+
+    it('controller.getUserSelect와 service.getUserSelect의 return 값이 같은지', async () => {
+      // Given
+      const getUserSelectDto: GetUserSelectDto = {
+        whereColumns: {
+          id: expect.any(number),
+          userId: expect.any(string),
+          name: expect.any(string),
+        },
+        selectColumns: ['userId', 'name'],
+      };
+
+      const authServiceReturnValue = {
+        userId: expect.any(string),
+        name: expect.any(string),
+      };
+
+      mockAuthService.getUserSelect.mockReturnValue(authServiceReturnValue);
+
+      // When
+      const res = await authController.getUserSelect(getUserSelectDto);
+
+      // Then
+      expect(res).toEqual(
+        mockAuthService.getUserSelect(
+          getUserSelectDto.whereColumns,
+          getUserSelectDto.selectColumns,
+        ),
+      );
     });
   });
 });

@@ -20,7 +20,7 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { SmsService } from 'src/sms/sms.service';
+import { SmsService } from '../sms/sms.service';
 import fs from 'fs';
 
 dotenv.config();
