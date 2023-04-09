@@ -213,4 +213,48 @@ describe('AuthController', () => {
       expect(res).toEqual({ message: '인증번호를 발송하였습니다.' });
     });
   });
+
+  describe('비밀번호 찾기 -> 휴대폰 인증 -> 인증번호 체크', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const certificationNumber: number = 123123;
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
+
+      // When
+      await authController.certification(certificationNumber, sendSMSDto);
+
+      // Then
+      expect(mockAuthService.certification).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.certification).toHaveBeenCalledWith({
+        certificationNumber,
+        phone: sendSMSDto.phone,
+      });
+    });
+
+    it('controller.certification, service.certification 둘 의 리턴값이 같은지', async () => {
+      // Given
+      const certificationNumber: number = 123123;
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
+
+      const authServiceCertificationReturnValue = true;
+
+      mockAuthService.certification.mockReturnValue(
+        authServiceCertificationReturnValue,
+      );
+
+      // When
+      const res = await authController.certification(
+        certificationNumber,
+        sendSMSDto,
+      );
+
+      // Then
+      expect(res).toEqual(
+        mockAuthService.certification({
+          certificationNumber,
+          phone: sendSMSDto.phone,
+        }),
+      );
+    });
+  });
 });
