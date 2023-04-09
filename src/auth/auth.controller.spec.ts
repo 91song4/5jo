@@ -145,4 +145,47 @@ describe('AuthController', () => {
       );
     });
   });
+
+  describe('비밀번호 찾기', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const findUserPasswordDto: FindUserPasswordDto = {
+        userId: 'test-userId',
+        email: 'test@email.com',
+        phone: '010-1133-1133',
+      };
+
+      // When
+      await authController.findUserPassword(findUserPasswordDto);
+
+      // Then
+      expect(mockAuthService.findUserPassword).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.findUserPassword).toHaveBeenCalledWith(
+        findUserPasswordDto,
+      );
+    });
+
+    it('controller.findUserPassword와 service.getUserSelect의 return 값이 같은지', async () => {
+      // Given
+      const findUserPasswordDto: FindUserPasswordDto = {
+        userId: 'test-userId',
+        email: 'test@email.com',
+        phone: '010-1133-1133',
+      };
+
+      const findUserPasswordReturnValue = { userId: expect.any(string) };
+
+      mockAuthService.findUserPassword.mockResolvedValue(
+        findUserPasswordReturnValue,
+      );
+
+      // When
+      const res = authController.findUserPassword(findUserPasswordDto);
+
+      // Then
+      expect(res).toEqual(
+        mockAuthService.findUserPassword(findUserPasswordDto),
+      );
+    });
+  });
 });
