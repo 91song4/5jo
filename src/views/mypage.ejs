@@ -140,7 +140,7 @@
   getMyCoupons.addEventListener('click', () => {
     try {
       axios
-        .get(`/api/coupon/mycoupon/<%=userInfo.id%>`, {})
+        .get(`/api/coupon/mypage/coupon/<%=userInfo.id%>`, {})
         .then((response) => {
           document.querySelector('.get_data_form').innerHTML = '';
           let temp_html = `

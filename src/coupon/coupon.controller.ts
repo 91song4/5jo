@@ -60,6 +60,12 @@ export class CouponController {
 
     return mycoupon;
   }
+  @Get('/mypage/coupon/:id')
+  getAllCouponsByUserIdUseMyPage(@Param('id') userId: number) {
+    const mycoupon = this.couponService.getAllCouponsByUserIdUseMyPage(userId);
+
+    return mycoupon;
+  }
 
   // 쿠폰 정보 수정
   @Put('/:id')

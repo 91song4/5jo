@@ -64,7 +64,6 @@ export class CouponService {
     });
 
     const couponIds = userCoupons.map((coupon) => coupon.couponId);
-    console.log('asdasd', couponIds);
 
     // 보유중인 쿠폰의 상세 정보를 보여주기 위해 불러옴
     const couponInfo = await this.couponRepository.find({
@@ -72,6 +71,15 @@ export class CouponService {
     });
 
     return { userCoupons, couponInfo };
+  }
+
+  async getAllCouponsByUserIdUseMyPage(userId: number) {
+    const mycoupon = this.couponRepository
+      .createQueryBuilder('c')
+      .leftJoin(GiveCoupon, 'u', 'u.couponId = c.id')
+      .select(['c.*', 'u.*'])
+      .getRawMany();
+    return mycoupon;
   }
 
   // 유저에게 쿠폰 지급
