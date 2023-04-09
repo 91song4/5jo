@@ -1,21 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { array, date, number, string } from 'joi';
+import { array, number, string } from 'joi';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { GetUserSelectDto } from './dtos/get-user-select.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { SendSMSDto } from './dtos/send-sms.dto';
 import * as mocks from 'node-mocks-http';
-import { SmsModule } from 'src/sms/sms.module';
-import { ConfigModule } from '@nestjs/config';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
-import { Repository } from 'typeorm';
-import { UsersModule } from 'src/users/users.module';
-import { AuthModule } from 'src/auth/auth.module';
 
 // 전체적인 바구니describe
 describe('AuthController', () => {
