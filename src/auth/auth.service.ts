@@ -218,7 +218,6 @@ export class AuthService {
   // UnauthorizedException 걸리면 redis 삭제
   deleteRefreshToken(token) {
     const { id }: any = this.jwtService.decode(token);
-    console.log(id);
     this.cacheManager.del(id);
   }
   /** where로 원하는 컬럼 불러오기

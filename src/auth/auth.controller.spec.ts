@@ -257,4 +257,205 @@ describe('AuthController', () => {
       );
     });
   });
+
+  describe('비밀번호 재설정', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const userId: string = 'test-userId;';
+      const resetPasswordDto: ResetPasswordDto = { password: 'password' };
+
+      // When
+      await authController.resetPassword(userId, resetPasswordDto);
+
+      // Then
+      expect(mockAuthService.resetPassword).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.resetPassword).toHaveBeenCalledWith(
+        userId,
+        resetPasswordDto.password,
+      );
+    });
+
+    it('controller.resetPassword, service.resetPassword 둘 의 리턴값이 같은지', async () => {
+      // Given
+      const userId: string = 'test-userId;';
+      const resetPasswordDto: ResetPasswordDto = { password: 'password' };
+
+      const authServiceResetPasswordReturnValue = {
+        message: '비밀번호 재설정 완료',
+      };
+
+      mockAuthService.resetPassword.mockResolvedValue(
+        authServiceResetPasswordReturnValue,
+      );
+
+      // When
+      const res = authController.resetPassword(userId, resetPasswordDto);
+
+      // Then
+      expect(res).toEqual(
+        mockAuthService.resetPassword(userId, resetPasswordDto.password),
+      );
+    });
+  });
+
+  describe('eroor status 401을 만났을때', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      req.cookies = { accessToken: 'accessToken' };
+
+      // When
+      authController.deleteRefreshToken(req);
+
+      // Then
+      expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledWith(
+        req.cookies.accessToken,
+      );
+    });
+  });
+
+  describe('로그인', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
+
+      mockAuthService.login.mockResolvedValue({
+        accessToken: 'returnAccessToken',
+        refreshToken: 'returnRefreshToken',
+      });
+
+      // When
+      await authController.login(req, res);
+
+      // Then
+      expect(mockAuthService.login).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.login).toHaveBeenCalledWith(req.user, req.cookies);
+    });
+
+    it('service.login의 return 값으로 쿠키설정 제대로 하는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
+
+      res.cookie = jest.fn();
+      res.send = jest.fn();
+
+      mockAuthService.login.mockReturnValue({
+        accessToken: 'returnAccessToken',
+        refreshToken: 'returnRefreshToken',
+      });
+
+      // When
+      const result = await authController.login(req, res);
+
+      const { accessToken, refreshToken } = mockAuthService.login(
+        req.user,
+        req.cookies,
+      );
+
+      // Then
+      expect(res.cookie).toHaveBeenCalledTimes(2);
+      expect(res.cookie).toHaveBeenCalledWith('accessToken', accessToken, {
+        httpOnly: true,
+      });
+      expect(res.cookie).toHaveBeenCalledWith('refreshToken', refreshToken, {
+        httpOnly: true,
+      });
+      expect(res.send).toHaveBeenCalledWith({ message: '로그인 성공' });
+    });
+  });
+
+  describe('로그아웃', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
+
+      // When
+      await authController.logout(req, res);
+
+      // Then
+      expect(mockAuthService.logout).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.logout).toHaveBeenCalledWith(req.user);
+    });
+
+    it('clearCookie 진행', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
+
+      res.clearCookie = jest.fn();
+      res.send = jest.fn();
+
+      // When
+      await authController.logout(req, res);
+
+      // Then
+      expect(res.clearCookie).toHaveBeenCalledTimes(2);
+      expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
+      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+      expect(res.send).toHaveBeenCalledWith({ message: '로그아웃 성공' });
+    });
+  });
+
+  describe('회원탈퇴', () => {
+    it('service.deleteUser 인수 제대로 전달 되는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
+
+      // When
+      await authController.deleteUser(req, res);
+
+      // Then
+      expect(mockAuthService.deleteUser).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.deleteUser).toHaveBeenCalledWith(req.cookies);
+    });
+  });
+
+  it('clearCookie 진행', async () => {
+    // Given
+    const req = mocks.createRequest();
+    const res = mocks.createResponse();
+
+    req.cookies = {
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+    };
+
+    res.clearCookie = jest.fn();
+    res.send = jest.fn();
+
+    // When
+    await authController.deleteUser(req, res);
+
+    // Then
+    expect(res.clearCookie).toHaveBeenCalledTimes(2);
+    expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
+    expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+    expect(res.send).toHaveBeenCalledWith({ message: '회원탈퇴 완료' });
+  });
 });
