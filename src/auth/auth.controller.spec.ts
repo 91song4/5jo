@@ -188,4 +188,29 @@ describe('AuthController', () => {
       );
     });
   });
+
+  describe('비밀번호 찾기 - 휴대폰 인증', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
+
+      // When
+      await authController.sendSMS(sendSMSDto);
+
+      // Then
+      expect(mockAuthService.sendSMS).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.sendSMS).toHaveBeenCalledWith(sendSMSDto.phone);
+    });
+
+    it('제대로 return을 뱉는지', async () => {
+      // Given
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
+
+      // When
+      const res = await authController.sendSMS(sendSMSDto);
+
+      // Then
+      expect(res).toEqual({ message: '인증번호를 발송하였습니다.' });
+    });
+  });
 });
