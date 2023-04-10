@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { number, string } from 'joi';
+import { array, number, string } from 'joi';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { FindUserIdDto } from './dtos/find-user-id.dto';
 import { FindUserPasswordDto } from './dtos/find-user-password.dto';
 import { GetUserSelectDto } from './dtos/get-user-select.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
@@ -28,7 +27,6 @@ describe('AuthController', () => {
     deleteUser: jest.fn(),
   };
 
-  // 테스트마다 한번씩 실행해주는 친구 - beforeEach
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
@@ -41,119 +39,130 @@ describe('AuthController', () => {
     authController = module.get<AuthController>(AuthController);
   });
 
-  // 제일 큰 바구니 안에 또 바구니가 들어가 있는것
-  describe('getUserSelect()', () => {
-    // ''안에 있는건 설명해준것
-    it('탐색조건, 가져올 컬럼 선택해서 유저정보찾기', async () => {
+  // 테스트가 끝나고 한번 실행
+  afterEach(async () => {
+    jest.clearAllMocks();
+  });
+
+  describe('회원가입', () => {
+    it('dto 데이터가 service로 잘 넘어가는지', async () => {
       // Given
-      const getUserSelectDto: GetUserSelectDto = {
-        whereColumns: { id: 1 },
-        selectColumns: ['userId', 'name'],
+      const createUserDto: CreateUserDto = {
+        userId: 'test-userId',
+        password: '123',
+        name: 'test-name',
+        phone: '010-1234-1234',
+        email: 'test@test.com',
+        birthday: new Date(),
       };
 
-      const getUserSelectReturnValue = {
-        userId: 'admin',
-        name: '최고 관리자',
-      };
-
-      mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
-
-      // When 어떤걸 테스트 하고 싶은지
-      const expected = await authController.getUserSelect(getUserSelectDto);
+      // When
+      const res = await authController.createUser(createUserDto);
 
       // Then
-      // 성공 시 리턴값 일치
-      expect(expected).toEqual(getUserSelectReturnValue);
+      expect(mockAuthService.createUser).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
+    });
 
-      // service.getUserSelect 호출 횟수 1번이 맞는지
+    it('service.createUser의 return값이 controller.createUser의 return값과 일치하는지', async () => {
+      // Given
+      const createUserDto: CreateUserDto = {
+        userId: 'test-userId',
+        password: '123',
+        name: 'test-name',
+        phone: '010-1234-1234',
+        email: 'test@test.com',
+        birthday: new Date(),
+      };
+      const authServiceReturnValue = { id: expect.any(number) };
+      mockAuthService.createUser.mockReturnValue(authServiceReturnValue);
+
+      // When
+      const res = await authController.createUser(createUserDto);
+      // Then
+      expect(res).toEqual(mockAuthService.createUser(createUserDto));
+    });
+  });
+
+  describe('where, select 선택해서 유저 정보 가져오기', () => {
+    it('dto -> service로 잘 전달 되는지', async () => {
+      // Given
+      const getUserSelectDto: GetUserSelectDto = {
+        whereColumns: {
+          id: expect.any(number),
+          userId: expect.any(string),
+          name: expect.any(string),
+        },
+        selectColumns: expect.any(array<string>),
+      };
+
+      // When
+      await authController.getUserSelect(getUserSelectDto);
+
+      // Then
       expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
-
-      // service.getUserSelect 인수 전달 제대로 했는지
       expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
         getUserSelectDto.whereColumns,
         getUserSelectDto.selectColumns,
       );
     });
-  });
 
-  describe('isExist()', () => {
-    it('정상작동', async () => {
+    it('controller.getUserSelect와 service.getUserSelect의 return 값이 같은지', async () => {
       // Given
-      const isExistParams = 'admin';
-
-      const getUserSelectReturnValue = {
-        userId: 'admin',
+      const getUserSelectDto: GetUserSelectDto = {
+        whereColumns: {
+          id: expect.any(number),
+          userId: expect.any(string),
+          name: expect.any(string),
+        },
+        selectColumns: ['userId', 'name'],
       };
 
-      mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
+      const authServiceReturnValue = {
+        userId: expect.any(string),
+        name: expect.any(string),
+      };
+
+      mockAuthService.getUserSelect.mockReturnValue(authServiceReturnValue);
 
       // When
-      const expected = await authController.isExist(isExistParams);
+      const res = await authController.getUserSelect(getUserSelectDto);
 
       // Then
-      expect(expected).toEqual(getUserSelectReturnValue);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
-        { userId: isExistParams },
-        ['userId'],
-      );
-    });
-
-    it('잘못된 id 전달', async () => {
-      // Given
-      const isExistParams = undefined;
-
-      const getUserSelectReturnValue = null;
-
-      mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
-
-      // When
-      const expected = await authController.isExist(isExistParams);
-
-      // Then
-      expect(expected).toEqual(getUserSelectReturnValue);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
-        { userId: isExistParams },
-        ['userId'],
+      expect(res).toEqual(
+        mockAuthService.getUserSelect(
+          getUserSelectDto.whereColumns,
+          getUserSelectDto.selectColumns,
+        ),
       );
     });
   });
 
-  describe('findUserId()', () => {
-    it('정상 작동', async () => {
-      // Given
-      const findUserIdDto: FindUserIdDto = {
-        name: '송지훈',
-        email: 'song4@gmail.com',
-      };
-
-      const getUserSelectReturnValue = {
-        userId: expect.any(number),
-      };
-
-      mockAuthService.getUserSelect.mockResolvedValue(getUserSelectReturnValue);
-
-      // When
-      const expected = await authController.findUserId(findUserIdDto);
-
-      // Then
-      expect(expected).toEqual(getUserSelectReturnValue);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.getUserSelect).toHaveBeenCalledWith(
-        findUserIdDto,
-        ['userId'],
-      );
-    });
-  });
-
-  describe('findUserPassword()', () => {
-    it('비밀번호 찾기 페이지 정상작동 시', async () => {
+  describe('비밀번호 찾기', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
       // Given
       const findUserPasswordDto: FindUserPasswordDto = {
-        email: 'song4@gmail.com',
-        phone: '010-2638-5808',
-        userId: 'admin',
+        userId: 'test-userId',
+        email: 'test@email.com',
+        phone: '010-1133-1133',
+      };
+
+      // When
+      await authController.findUserPassword(findUserPasswordDto);
+
+      // Then
+      expect(mockAuthService.findUserPassword).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.findUserPassword).toHaveBeenCalledWith(
+        findUserPasswordDto,
+      );
+    });
+
+    it('controller.findUserPassword와 service.getUserSelect의 return 값이 같은지', async () => {
+      // Given
+      const findUserPasswordDto: FindUserPasswordDto = {
+        userId: 'test-userId',
+        email: 'test@email.com',
+        phone: '010-1133-1133',
       };
 
       const findUserPasswordReturnValue = { userId: expect.any(string) };
@@ -161,146 +170,229 @@ describe('AuthController', () => {
       mockAuthService.findUserPassword.mockResolvedValue(
         findUserPasswordReturnValue,
       );
+
       // When
-      const expected = await authController.findUserPassword(
-        findUserPasswordDto,
-      );
+      const res = authController.findUserPassword(findUserPasswordDto);
+
       // Then
-      expect(expected).toEqual(findUserPasswordReturnValue);
-      expect(mockAuthService.findUserPassword).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.findUserPassword).toHaveBeenCalledWith(
-        findUserPasswordDto,
+      expect(res).toEqual(
+        mockAuthService.findUserPassword(findUserPasswordDto),
       );
     });
   });
 
-  describe('sendSMS()', () => {
-    it('정상작동', async () => {
+  describe('비밀번호 찾기 - 휴대폰 인증', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
       // Given
-      const sendSMSDto: SendSMSDto = { phone: '010-2638-5808' };
-      const sendSMSReturnValue = { message: '인증번호를 발송하였습니다.' };
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
 
       // When
-      const expected = await authController.sendSMS(sendSMSDto);
+      await authController.sendSMS(sendSMSDto);
 
       // Then
-      expect(expected).toEqual(sendSMSReturnValue);
       expect(mockAuthService.sendSMS).toHaveBeenCalledTimes(1);
       expect(mockAuthService.sendSMS).toHaveBeenCalledWith(sendSMSDto.phone);
     });
-  });
 
-  describe('certification()', () => {
-    it('정상작동', async () => {
+    it('제대로 return을 뱉는지', async () => {
       // Given
-      const certificationDto = {
-        param: 279521,
-        body: { phone: '010-2638-5808' },
-      };
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
 
-      const certificationReturnValue = true;
-
-      mockAuthService.certification.mockResolvedValue(certificationReturnValue);
       // When
-      const expected = await authController.certification(
-        certificationDto.param,
-        certificationDto.body,
-      );
+      const res = await authController.sendSMS(sendSMSDto);
 
       // Then
-      expect(expected).toEqual(certificationReturnValue);
+      expect(res).toEqual({ message: '인증번호를 발송하였습니다.' });
+    });
+  });
+
+  describe('비밀번호 찾기 -> 휴대폰 인증 -> 인증번호 체크', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const certificationNumber: number = 123123;
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
+
+      // When
+      await authController.certification(certificationNumber, sendSMSDto);
+
+      // Then
       expect(mockAuthService.certification).toHaveBeenCalledTimes(1);
       expect(mockAuthService.certification).toHaveBeenCalledWith({
-        certificationNumber: certificationDto.param,
-        phone: certificationDto.body.phone,
+        certificationNumber,
+        phone: sendSMSDto.phone,
       });
     });
-  });
 
-  describe('resetPassword()', () => {
-    it('in nomal operation', async () => {
+    it('controller.certification, service.certification 둘 의 리턴값이 같은지', async () => {
       // Given
-      const param = 'admin';
-      const body: ResetPasswordDto = { password: '123213' };
+      const certificationNumber: number = 123123;
+      const sendSMSDto: SendSMSDto = { phone: '010-1234-1234' };
 
-      const resetPasswordReturnValue = { message: '비밀번호 재설정 완료' };
-      mockAuthService.resetPassword.mockResolvedValue(resetPasswordReturnValue);
+      const authServiceCertificationReturnValue = true;
+
+      mockAuthService.certification.mockReturnValue(
+        authServiceCertificationReturnValue,
+      );
 
       // When
-      const result = await authController.resetPassword(param, body);
+      const res = await authController.certification(
+        certificationNumber,
+        sendSMSDto,
+      );
 
       // Then
-      expect(result).toEqual(resetPasswordReturnValue);
-      expect(mockAuthService.resetPassword).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.resetPassword).toHaveBeenCalledWith(
-        param,
-        body.password,
+      expect(res).toEqual(
+        mockAuthService.certification({
+          certificationNumber,
+          phone: sendSMSDto.phone,
+        }),
       );
     });
   });
 
-  describe('deleteRefreshToken()', () => {
-    it('in nomal operation', async () => {
+  describe('비밀번호 재설정', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
+      // Given
+      const userId: string = 'test-userId;';
+      const resetPasswordDto: ResetPasswordDto = { password: 'password' };
+
+      // When
+      await authController.resetPassword(userId, resetPasswordDto);
+
+      // Then
+      expect(mockAuthService.resetPassword).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.resetPassword).toHaveBeenCalledWith(
+        userId,
+        resetPasswordDto.password,
+      );
+    });
+
+    it('controller.resetPassword, service.resetPassword 둘 의 리턴값이 같은지', async () => {
+      // Given
+      const userId: string = 'test-userId;';
+      const resetPasswordDto: ResetPasswordDto = { password: 'password' };
+
+      const authServiceResetPasswordReturnValue = {
+        message: '비밀번호 재설정 완료',
+      };
+
+      mockAuthService.resetPassword.mockResolvedValue(
+        authServiceResetPasswordReturnValue,
+      );
+
+      // When
+      const res = authController.resetPassword(userId, resetPasswordDto);
+
+      // Then
+      expect(res).toEqual(
+        mockAuthService.resetPassword(userId, resetPasswordDto.password),
+      );
+    });
+  });
+
+  describe('eroor status 401을 만났을때', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
       // Given
       const req = mocks.createRequest();
-      req.cookies = {
-        accessToken: 'accesToken',
-      };
+      req.cookies = { accessToken: 'accessToken' };
+
       // When
       authController.deleteRefreshToken(req);
+
       // Then
+      expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledTimes(1);
       expect(mockAuthService.deleteRefreshToken).toHaveBeenCalledWith(
         req.cookies.accessToken,
       );
     });
   });
 
-  describe('login()', () => {
-    it('in nomal operation', async () => {
+  describe('로그인', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
       // Given
       const req = mocks.createRequest();
       const res = mocks.createResponse();
 
-      req.user = { id: 'admin', password: '1234' };
+      req.user = '1';
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
+
+      mockAuthService.login.mockResolvedValue({
+        accessToken: 'returnAccessToken',
+        refreshToken: 'returnRefreshToken',
+      });
+
+      // When
+      await authController.login(req, res);
+
+      // Then
+      expect(mockAuthService.login).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.login).toHaveBeenCalledWith(req.user, req.cookies);
+    });
+
+    it('service.login의 return 값으로 쿠키설정 제대로 하는지', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
+      req.cookies = {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      };
 
       res.cookie = jest.fn();
       res.send = jest.fn();
 
-      const loginReturnValue = {
-        accessToken: 'newAccesToken',
-        refreshToken: 'newRefreshToken',
-      };
-
-      mockAuthService.login.mockResolvedValue(loginReturnValue);
+      mockAuthService.login.mockReturnValue({
+        accessToken: 'returnAccessToken',
+        refreshToken: 'returnRefreshToken',
+      });
 
       // When
-      await authController.login(req, res);
-      // Then
-      expect(mockAuthService.login).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.login).toHaveBeenCalledWith(req.user, req.cookies);
+      const result = await authController.login(req, res);
 
+      const { accessToken, refreshToken } = mockAuthService.login(
+        req.user,
+        req.cookies,
+      );
+
+      // Then
       expect(res.cookie).toHaveBeenCalledTimes(2);
-      expect(res.cookie).toHaveBeenCalledWith(
-        'accessToken',
-        loginReturnValue.accessToken,
-        { httpOnly: true },
-      );
-      expect(res.cookie).toHaveBeenCalledWith(
-        'refreshToken',
-        loginReturnValue.refreshToken,
-        { httpOnly: true },
-      );
+      expect(res.cookie).toHaveBeenCalledWith('accessToken', accessToken, {
+        httpOnly: true,
+      });
+      expect(res.cookie).toHaveBeenCalledWith('refreshToken', refreshToken, {
+        httpOnly: true,
+      });
       expect(res.send).toHaveBeenCalledWith({ message: '로그인 성공' });
     });
   });
 
-  describe('logout()', () => {
-    it('in nomal operation', async () => {
+  describe('로그아웃', () => {
+    it('dto -> service 제대로 전달 되는지', async () => {
       // Given
       const req = mocks.createRequest();
       const res = mocks.createResponse();
-      req.user = 1;
-      const id = req.user;
+
+      req.user = '1';
+
+      // When
+      await authController.logout(req, res);
+
+      // Then
+      expect(mockAuthService.logout).toHaveBeenCalledTimes(1);
+      expect(mockAuthService.logout).toHaveBeenCalledWith(req.user);
+    });
+
+    it('clearCookie 진행', async () => {
+      // Given
+      const req = mocks.createRequest();
+      const res = mocks.createResponse();
+
+      req.user = '1';
 
       res.clearCookie = jest.fn();
       res.send = jest.fn();
@@ -309,52 +401,15 @@ describe('AuthController', () => {
       await authController.logout(req, res);
 
       // Then
-      expect(mockAuthService.logout).toHaveBeenCalledTimes(1);
-      expect(mockAuthService.logout).toHaveBeenCalledWith(id);
-
       expect(res.clearCookie).toHaveBeenCalledTimes(2);
       expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
       expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
-
       expect(res.send).toHaveBeenCalledWith({ message: '로그아웃 성공' });
     });
   });
 
-  describe('createUser()', () => {
-    it('회원가입', async () => {
-      // Given
-      const createUserDto: CreateUserDto = {
-        userId: 'song',
-        password: '123',
-        name: '송지훈',
-        phone: '010-2638-5808',
-        email: 'song4@gmail.com',
-        birthday: new Date('1991-05-24'),
-      };
-
-      mockAuthService.createUser.mockResolvedValue({ id: expect.any(number) });
-
-      // When
-      const createUserReturnValue = await authController.createUser(
-        createUserDto,
-      );
-
-      // Then
-      // 성공 시 리턴값 일치하는지
-      expect(createUserReturnValue).toEqual({
-        id: expect.any(number),
-      });
-
-      // service.createUser 호출 횟수 1번이 맞는지
-      expect(mockAuthService.createUser).toHaveBeenCalledTimes(1);
-
-      // service.createUser 인수 전달 제대로 했는지
-      expect(mockAuthService.createUser).toHaveBeenCalledWith(createUserDto);
-    });
-  });
-
-  describe('deleteUser()', () => {
-    it('in nomal operation', async () => {
+  describe('회원탈퇴', () => {
+    it('service.deleteUser 인수 제대로 전달 되는지', async () => {
       // Given
       const req = mocks.createRequest();
       const res = mocks.createResponse();
@@ -364,28 +419,35 @@ describe('AuthController', () => {
         refreshToken: 'refreshToken',
       };
 
-      res.clearCookie = jest.fn();
-      res.send = jest.fn();
-
       // When
       await authController.deleteUser(req, res);
 
       // Then
       expect(mockAuthService.deleteUser).toHaveBeenCalledTimes(1);
       expect(mockAuthService.deleteUser).toHaveBeenCalledWith(req.cookies);
-
-      expect(res.clearCookie).toHaveBeenCalledTimes(2);
-      expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
-      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
-
-      expect(res.send).toHaveBeenCalledWith({ message: '회원탈퇴 완료' });
     });
   });
 
-  // 테스트가 끝나고 한번 실행
-  afterEach(async () => {
-    jest.clearAllMocks();
-    // jest.resetAllMocks();
-    // jest.restoreAllMocks();
+  it('clearCookie 진행', async () => {
+    // Given
+    const req = mocks.createRequest();
+    const res = mocks.createResponse();
+
+    req.cookies = {
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+    };
+
+    res.clearCookie = jest.fn();
+    res.send = jest.fn();
+
+    // When
+    await authController.deleteUser(req, res);
+
+    // Then
+    expect(res.clearCookie).toHaveBeenCalledTimes(2);
+    expect(res.clearCookie).toHaveBeenCalledWith('accessToken');
+    expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+    expect(res.send).toHaveBeenCalledWith({ message: '회원탈퇴 완료' });
   });
 });

@@ -20,7 +20,7 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { SmsService } from 'src/sms/sms.service';
+import { SmsService } from '../sms/sms.service';
 import fs from 'fs';
 
 dotenv.config();
@@ -218,7 +218,6 @@ export class AuthService {
   // UnauthorizedException 걸리면 redis 삭제
   deleteRefreshToken(token) {
     const { id }: any = this.jwtService.decode(token);
-    console.log(id);
     this.cacheManager.del(id);
   }
   /** where로 원하는 컬럼 불러오기

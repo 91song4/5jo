@@ -103,5 +103,6 @@ jobs:
             export TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
 
             cd 5jo
+            npm run migration:run
             git pull origin main
             npm run deploy
