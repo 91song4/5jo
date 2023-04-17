@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { Camp } from 'src/camp/camp.entity';
 import { CampDummy } from './dummy/camp.dummy';
 import { before } from 'node:test';
+import exp from 'constants';
 
 describe('CampController (e2e)', () => {
   let app: INestApplication;
@@ -34,9 +35,9 @@ describe('CampController (e2e)', () => {
 
     app = module.createNestApplication();
     server = supertest(app.getHttpServer());
-    campRepository = module.get(getRepositoryToken(Camp));
     await app.init();
 
+    campRepository = module.get(getRepositoryToken(Camp));
     await campRepository.insert(CampDummy);
   });
 
@@ -53,7 +54,7 @@ describe('CampController (e2e)', () => {
     const res = await server.get(url);
 
     // Then
-    expect(res.body.length).toEqual(12);
+    expect(res.body.length).toEqual(14);
     expect(res.body[11]).toEqual(
       expect.objectContaining({
         id,
@@ -87,5 +88,57 @@ describe('CampController (e2e)', () => {
         isRepair,
       }),
     );
+  });
+  test('캠프 정보 수정 (14번)', async () => {
+    // Given
+    const url = '/camps/14';
+    const { id, name, type, headcount, price, repairEndDate, isRepair } =
+      CampDummy[13];
+
+    // When
+    const res = await server.put(url).send({
+      id,
+      name,
+      type,
+      headcount,
+      price,
+      repairEndDate: '2024-01-01',
+      isRepair: true,
+    });
+
+    // Then
+    expect(res.statusCode).toEqual(200);
+  });
+  test('캠프 등록', async () => {
+    // Given
+    const url = '/camps';
+    const camp = { name: 'aaa', type: 4, headcount: 8, price: 12 };
+
+    // When
+    const res = await server.post(url).send(camp);
+
+    // Then
+    expect(res.statusCode).toEqual(201);
+    expect(res.body.raw).toEqual(15);
+  });
+  test('캠프 정보 수정 (14번)', async () => {
+    // Given
+    const url = '/camps/14';
+
+    // When
+    const res = await server.put(url);
+
+    // Then
+    expect(res.statusCode).toEqual(200);
+  });
+  test('캠프 정보 삭제 (14번)', async () => {
+    // Given
+    const url = '/camps/14';
+
+    // When
+    const res = await server.delete(url);
+
+    // Then
+    expect(res.statusCode).toEqual(200);
   });
 });

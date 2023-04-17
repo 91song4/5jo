@@ -7,6 +7,9 @@
         placeholder="제목"
         style="width: 30%; text-align: left"
       /><br />
+      <div>
+        <select id="orders-select"></select>
+      </div>
       <div
         style="
           margin-top: 30px;
@@ -33,6 +36,16 @@
 </div>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const orders = JSON.parse(document.cookie.split('=')[1]);
+    const ordersSelect = document.querySelector('#orders-select');
+
+    orders.forEach((order) => {
+      const option = document.createElement('option');
+      option.value = order.id;
+      option.text = order.camp.name + order.selectedDay.split('T')[0];
+      ordersSelect.appendChild(option);
+    });
+
     // input data
     const titleInput = document.querySelector('#title');
     const contentInput = document.querySelector('#content');
@@ -43,10 +56,13 @@
     writeListBtn.addEventListener('click', () => {
       axios
         .post('/api/reviews', {
+          orderId: parseInt(ordersSelect.value, 10),
           title: titleInput.value,
           content: contentInput.value,
         })
         .then(() => {
+          document.cookie =
+            'canReviewOrders=; path=/view/community-post; expires=Sat, 01 Jan 1972 00:00:00 GMT';
           window.location.href = '/view/community';
         });
     });

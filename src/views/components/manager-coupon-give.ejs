@@ -1,0 +1,22 @@
+<div class="coupons">
+    쿠폰 지급 페이지</br>
+    <div style="max-width: 300px;">
+        유저
+        <select id="select-user" onchange="selectBoxUser()" class="form-select" aria-label="Default  select example">
+            <option selected>선택하기</option>
+            <% for(let i = 0; i<users[0].length; i++){ %>
+                <option value="<%=users[0][i].id%>"><%=users[0][i].name%></option>
+                <% } %>
+          </select>
+          쿠폰
+          <select id="select-coupon" onchange="selectBoxCoupon(this)" class="form-select" aria-label="Default  select example">
+            <option selected>선택하기</option>
+            <% for(let i = 0; i<coupons.length; i++){ %>
+                <option value="<%=coupons[i].id%>"><%=coupons[i].name%></option>
+                <% } %>
+          </select>
+    </div></br>
+    
+    <button onclick="location.replace('/view/management/coupon')">뒤로가기</button>
+    <button onclick="give_coupon()">지급하기</button>
+</div>

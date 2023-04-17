@@ -53,9 +53,16 @@ export class CouponController {
     return this.couponService.giveCoupon(data.userId, data.couponId);
   }
 
+  // 유저가 보유중인 쿠폰 가져오기
   @Get('/mycoupon/:id')
   getAllCouponsByUserId(@Param('id') userId: number) {
     const mycoupon = this.couponService.getAllCouponsByUserId(userId);
+
+    return mycoupon;
+  }
+  @Get('/mypage/coupon/:id')
+  getAllCouponsByUserIdUseMyPage(@Param('id') userId: number) {
+    const mycoupon = this.couponService.getAllCouponsByUserIdUseMyPage(userId);
 
     return mycoupon;
   }

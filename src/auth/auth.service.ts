@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,6 +20,8 @@ import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
+import { SmsService } from '../sms/sms.service';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -66,10 +67,17 @@ export class AuthService {
     // 3. 회원가입이 되어있다면? 로그인(AT, RT를 생성해서 브라우저에 전송)한다
     const accessToken = await this.createAccessToken(user.id);
     const refreshToken = await this.createRefreshToken(user.id);
-    await this.cacheManager.set(refreshToken, user.id);
+
+    const saltRound = process.env.HASH_SALT_OR_ROUND;
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      Number.parseInt(saltRound) ?? 10,
+    );
+    await this.cacheManager.set(String(user.id), { hashedRefreshToken });
 
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
+
     res.redirect(process.env.BASIC_ORIGIN);
   }
 
@@ -171,19 +179,23 @@ export class AuthService {
    * @phone 휴대폰번호
    */
   async findUserPassword(findUserPasswordDto: FindUserPasswordDto) {
-    const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
-
-    if (!user) {
-      return user;
-    }
-
-    await this.cacheManager.set(user.userId, 1);
-    setTimeout(async () => {
-      if (await this.cacheManager.get(user.userId)) {
-        this.cacheManager.del(user.userId);
+    try {
+      const user = await this.getUserSelect(findUserPasswordDto, ['userId']);
+      // console.log({ user });
+      if (!user) {
+        return user;
       }
-    }, 1000 * 60 * 3);
-    return user;
+
+      await this.cacheManager.set(user.userId, 1);
+      setTimeout(async () => {
+        if (await this.cacheManager.get(user.userId)) {
+          this.cacheManager.del(user.userId);
+        }
+      }, 1000 * 60 * 3);
+      return user;
+    } catch (err) {
+      throw err;
+    }
   }
 
   /**
@@ -206,7 +218,6 @@ export class AuthService {
   // UnauthorizedException 걸리면 redis 삭제
   deleteRefreshToken(token) {
     const { id }: any = this.jwtService.decode(token);
-    console.log(id);
     this.cacheManager.del(id);
   }
   /** where로 원하는 컬럼 불러오기
@@ -215,13 +226,12 @@ export class AuthService {
    */
   async getUserSelect(whereColumns, selectColumns?) {
     if (!whereColumns) {
-      return null;
+      throw new NotFoundException();
     }
     const userData = await this.userRepository.findOne({
       select: [...selectColumns],
       where: { ...whereColumns },
     });
-
     return userData;
   }
 
@@ -239,7 +249,7 @@ export class AuthService {
 
   async certification({ certificationNumber, phone }) {
     const certificationNumberDB = await this.cacheManager.get(phone);
-    const isAuthentication = certificationNumber === +certificationNumberDB;
+    const isAuthentication = +certificationNumber === +certificationNumberDB;
 
     if (!isAuthentication) {
       return false;

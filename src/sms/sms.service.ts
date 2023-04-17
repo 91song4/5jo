@@ -13,11 +13,15 @@ export class SmsService {
     const randomNumber = Math.random().toString().split('.')[1];
     const certificationNumber = randomNumber.substring(0, 6);
 
-    await this.twilioService.client.messages.create({
-      body: certificationNumber,
-      from: this.configService.get('TWILIO_PHONE_NUMBER'),
-      to: '82' + phone,
-    });
+    try {
+      await this.twilioService.client.messages.create({
+        body: certificationNumber,
+        from: this.configService.get('TWILIO_PHONE_NUMBER'),
+        to: '82' + phone,
+      });
+    } catch (err) {
+      throw err;
+    }
 
     return certificationNumber;
   }
