@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>weather forecast 5days</h2>
+    <table>
+      <thead>
+        <tr>
+          <td>시간</td>
+          <td>온도</td>
+          <td>아이콘</td>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr>
+          <td>현재 시간</td>
+          <td>현재 온도</td>
+        </tr> -->
+      </tbody>
+    </table>
+
+    <script
+      src="http://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $.getJSON(
+        'http://api.openweathermap.org/data/2.5/forecast?lat=37.5683&lon=126.9778&appid=8287161f88bde0e518e09cd2d9b10191&units=metric',
+        function (result) {
+          for (var i = 0; i < 39; i++) {
+            var ctime = result.list[i].dt;
+            var ctemp = result.list[i].main.temp;
+
+            function converTime(t) {
+              var ot = new Date(t * 1000);
+              // Thu Mar 30 2023 14:17:12 GMT+0900 (한국 표준시)
+
+              var dm = ot.getMonth() + 1;
+              var dt = ot.getDate();
+              var hr = ot.getHours();
+              var m = ot.getMinutes();
+              var s = ot.getSeconds();
+
+              return dm + '월' + dt + '일--' + hr + '시';
+            }
+            var currentTime = converTime(ctime);
+
+            var weathericon =
+              '<img src="https://openweathermap.org/img/wn/' +
+              result.list[i].weather[0].icon +
+              '.png" alt="' +
+              result.list[i].weather[0].description +
+              '">';
+
+            var tableHtml =
+              '<tr>' +
+              '<td>' +
+              currentTime +
+              '</td>' +
+              '<td>' +
+              ctemp +
+              '</td>' +
+              '<td>' +
+              weathericon +
+              '</td>' +
+              '</tr>';
+
+            $('tbody').append(tableHtml);
+          }
+        },
+      );
+    </script>
+  </body>
+</html>

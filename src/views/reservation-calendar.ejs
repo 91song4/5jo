@@ -1,7 +1,7 @@
 <body>
   <section class="calendar-wrap">
     <div>
-      <div style="display: inline-block; float: right; margin: 0 50px; padding: 5px; background-color: rgb(200, 188, 172); color: black">
+      <div style="display: inline-block; float: right; margin: 0 50px; padding: 5px; background-color: rgb(223, 220, 216); color: black">
         <h6
           style="
             display: flex;
@@ -154,9 +154,26 @@
             currentMonthDate[todayDate - 1].style.backgroundColor =
               'rgb(255, 183, 128)';
 
-            // let weathericon = document.createElement('div')
-            // weathericon.classList.add('icon')
-            // currentMonthDate[todayDate - 1].appendChild(weathericon)
+            currentMonthDate[todayDate - 1].style.position = 'relative'
+              
+              let weathericon = document.createElement('div')
+              weathericon.classList.add('icon')
+              
+              let currenttemp = document.createElement('div')
+              currenttemp.classList.add('ctemp')
+              
+              let divdiv = document.createElement('div')
+              divdiv.appendChild(weathericon)
+              divdiv.appendChild(currenttemp)
+              currentMonthDate[todayDate - 1].appendChild(divdiv)
+
+              divdiv.style.position = 'absolute'
+              divdiv.style.bottom = '0'
+              divdiv.style.right = '0'
+              currenttemp.style.fontSize = '5px'
+
+              // document.querySelector('.icon').style.width = '5px'
+              // document.querySelector('.icon').style.height = '5px'
           }
 
 

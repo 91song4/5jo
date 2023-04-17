@@ -132,3 +132,8 @@
 .sec_cal .cal_wrap .day.disable {
   color: #ddd;
 }
+
+.icon img {
+  width: 30px;
+  height: 30px;
+}
