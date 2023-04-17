@@ -43,32 +43,32 @@ describe('UsersController', () => {
 
   // 제일 큰 바구니 안에 또 다른 바구니가 들어가 있는것
   describe('createUsersInformation()', () => {
-    it('유저정보 생성 API 정상작동 시', () => {
+    it('유저정보 생성 API 정상작동 시', async () => {
       // Given
       mockUsersService.createUsersInformation.mockReturnValue('hehe');
       // When
       const date = new Date();
 
-      controller.createUsersInformation({
-        name: 'testname',
+      const expected = await controller.createUsersInformation({
         userId: 'testId',
+        name: 'testname',
         phone: 'testphone',
         email: 'testmail',
-        birthday: date,
         password: 'testpassword',
+        birthday: date,
       });
 
       // Then
       // 성공시 리턴값 일치
-      expect(mockUsersService.createUsersInformation()).toEqual('hehe');
+      expect(expected).toEqual('hehe');
       expect(mockUsersService.createUsersInformation).toHaveBeenCalledTimes(1);
       expect(mockUsersService.createUsersInformation).toHaveBeenCalledWith(
-        'testname',
         'testId',
+        'testname',
         'testphone',
         'testmail',
-        date,
         'testpassword',
+        date,
       );
     });
   });
@@ -131,12 +131,13 @@ describe('UsersController', () => {
       expect(mockUsersService.updateUsersInformation).toHaveBeenCalledTimes(1);
 
       // toHaveBeenCalledWith 인자를 뭘로 전달했느냐?
-      expect(mockUsersService.updateUsersInformation).toHaveBeenCalledWith(3, {
-        name: 'name',
-        email: 'email',
-        password: 'password',
-        phone: 'phone',
-      });
+      expect(mockUsersService.updateUsersInformation).toHaveBeenCalledWith(
+        3,
+        'name',
+        'phone',
+        'email',
+        'password',
+      );
     });
   });
 

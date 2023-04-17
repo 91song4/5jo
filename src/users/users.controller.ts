@@ -24,10 +24,7 @@ import { Request } from 'express';
 // routing path is /users -> http://localhost:3000/api
 export class UsersController {
   // 서비스 주입을 해야됨.
-  constructor(
-    private readonly usersService: UsersService,
-    private logger: Logger,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   // 유저 정보 조회 API
 
@@ -52,7 +49,6 @@ export class UsersController {
     try {
       // 해당 유저 정보를 어떤 내용으로 수정할까?
       console.log(id);
-      this.logger.log(JSON.stringify(data));
 
       const result = await this.usersService.updateUsersInformation(
         id,
@@ -71,7 +67,7 @@ export class UsersController {
   @Put()
   async updateUser(@Req() req: any, @Body() data: UpdateUsersInformationDto) {
     // 해당 유저 정보를 어떤 내용으로 수정할까?
-    this.logger.log(JSON.stringify(data));
+
     const { id } = req.user;
 
     return await this.usersService.updateUsersInformation(
